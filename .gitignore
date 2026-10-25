@@ -1,0 +1,12 @@
+bin/
+obj/
+*.user
+.vs/
+*.img
+*.vhd
+testdata/large/
+TestResults/
+publish/
+
+installer/redist/
+fixtures/

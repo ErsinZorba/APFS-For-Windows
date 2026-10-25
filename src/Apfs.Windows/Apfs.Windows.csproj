@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Apfs.Windows</RootNamespace>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Apfs.Core\Apfs.Core.csproj" />
+    <InternalsVisibleTo Include="Apfs.Tests" />
+  </ItemGroup>
+</Project>

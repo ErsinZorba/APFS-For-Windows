@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>Apfs.Mount</RootNamespace>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Apfs.Core\Apfs.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Kurulu WinFsp sürümüyle eşleşmeli: 2.2.x paketi 2.1 sürücüsünü reddediyor ("need 2.2, have 2.1").
+         2.1.25156 = winget'in kurduğu son kararlı WinFsp 2025. -->
+    <PackageReference Include="winfsp.net" Version="2.1.25156" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="Apfs.Tests" />
+  </ItemGroup>
+</Project>

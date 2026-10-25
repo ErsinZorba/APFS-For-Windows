@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <AssemblyName>apfs-devwriter</AssemblyName>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Apfs.Core\Apfs.Core.csproj" />
+    <ProjectReference Include="..\..\src\Apfs.Mount\Apfs.Mount.csproj" />
+    <ProjectReference Include="..\..\src\Apfs.Windows\Apfs.Windows.csproj" />
+  </ItemGroup>
+</Project>

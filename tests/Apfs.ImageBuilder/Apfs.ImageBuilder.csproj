@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Test amaçlı APFS görüntüsü üreticisi. Bilinçli olarak Apfs.Core'a BAĞIMLI DEĞİLDİR:
+    okuyucu ile üretici aynı yanlışı paylaşmasın diye biçim burada ayrıca, spesifikasyondan yazılmıştır.
+    Üretilen görüntüler ayrıca bağımsız bir okuyucu olan 7-Zip ile doğrulanır.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Apfs.ImageBuilder</RootNamespace>
+    <AssemblyName>apfs-mkimage</AssemblyName>
+  </PropertyGroup>
+</Project>
