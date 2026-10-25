@@ -1,5 +1,8 @@
 using System.Diagnostics;
+using System.Globalization;
+using Apfs.Localization;
 using Apfs.Tray.Ui;
+using Apfs.Windows.Localization;
 
 namespace Apfs.Tray;
 
@@ -12,10 +15,14 @@ internal sealed class MainForm : Form
     private readonly AppController _app;
     private readonly DiskListView _list;
     private readonly FriendlyButton _rescan;
+    private readonly ContextMenuStrip _languageMenu = new();
     private bool _hintShown;
 
     /// <summary>Pencere ilk kez tepsiye gizlendiğinde (kullanıcıya bir kez bilgi vermek için).</summary>
     public event Action? HiddenToTray;
+
+    /// <summary>Kullanıcı başka bir arayüz dili seçti (kaydedildi); metinler yeniden başlatınca değişir.</summary>
+    public event Action? RestartRequested;
 
     public MainForm(AppController app)
     {
@@ -47,7 +54,7 @@ internal sealed class MainForm : Form
         header.Controls.Add(new Label { Text = "APFS for Windows", Font = Theme.Title, ForeColor = Theme.Text, AutoSize = true, Margin = Padding.Empty }, 1, 0);
         header.Controls.Add(new Label
         {
-            Text = "Mac diskleriniz güvende: önce salt okunur, isterseniz yazılabilir.", ForeColor = Theme.Muted, AutoSize = true, Margin = new Padding(0, this.S(2), 0, 0),
+            Text = WinText.U("Main.Subtitle"), ForeColor = Theme.Muted, AutoSize = true, Margin = new Padding(0, this.S(2), 0, 0),
         }, 1, 1);
 
         _list = new DiskListView(app, compact: false)
@@ -58,22 +65,28 @@ internal sealed class MainForm : Form
         // Alt: işlemler ve sürüm
         var footer = new TableLayoutPanel
         {
-            Dock = DockStyle.Bottom, AutoSize = true, ColumnCount = 3, BackColor = Theme.Background,
+            Dock = DockStyle.Bottom, AutoSize = true, ColumnCount = 4, BackColor = Theme.Background,
             Padding = new Padding(this.S(16), this.S(8), this.S(20), this.S(14)),
         };
         footer.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         footer.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
         footer.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
-        _rescan = new FriendlyButton("Yeniden tara", FriendlyButton.Kind.Secondary) { BusyText = "Taranıyor…" };
+        footer.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+        _rescan = new FriendlyButton(WinText.U("Action.Rescan"), FriendlyButton.Kind.Secondary) { BusyText = WinText.U("Action.Rescanning") };
         _rescan.Click += async (_, _) => await _app.RescanAsync();
-        var log = new FriendlyButton("Günlüğü aç", FriendlyButton.Kind.Quiet);
+        var log = new FriendlyButton(WinText.U("Action.OpenLog"), FriendlyButton.Kind.Quiet);
         log.Click += (_, _) => AppController.OpenLog();
         string version = Application.ProductVersion.Split('+')[0];
         footer.Controls.Add(_rescan, 0, 0);
         footer.Controls.Add(log, 1, 0);
-        var about = new FriendlyButton($"Sürüm {version}", FriendlyButton.Kind.Quiet) { Anchor = AnchorStyles.Right, Font = Theme.Small };
+        var about = new FriendlyButton(WinText.U("Main.Version", version), FriendlyButton.Kind.Quiet) { Anchor = AnchorStyles.Right, Font = Theme.Small };
         about.Click += (_, _) => ShowAbout(version);
-        footer.Controls.Add(about, 2, 0);
+        // Dil: geçerli dilin kendi dilindeki adı; tıklayınca seçim menüsü (sade, göze batmayan)
+        string current = Languages.Supported.FirstOrDefault(l => l.Name == CultureInfo.CurrentUICulture.Name).NativeName ?? "English";
+        var language = new FriendlyButton(current, FriendlyButton.Kind.Quiet) { Anchor = AnchorStyles.Right, Font = Theme.Small };
+        language.Click += (_, _) => ShowLanguageMenu(language);
+        footer.Controls.Add(language, 2, 0);
+        footer.Controls.Add(about, 3, 0);
 
         Controls.Add(_list);
         Controls.Add(footer);
@@ -89,6 +102,28 @@ internal sealed class MainForm : Form
         _list.Rebuild();
     }
 
+    /// <summary>"Windows dili" + desteklenen diller (kendi dillerindeki adlarıyla); seçilen kaydedilir, program yeniden başlar.</summary>
+    private void ShowLanguageMenu(Control anchor)
+    {
+        var saved = LanguageSetting.Load();
+        _languageMenu.Items.Clear();
+        _languageMenu.Items.Add(new ToolStripMenuItem(WinText.U("Language.Windows"), null, (_, _) => ChooseLanguage(null)) { Checked = saved is null });
+        _languageMenu.Items.Add(new ToolStripSeparator());
+        foreach (var (name, native) in Languages.Supported)
+        {
+            var culture = CultureInfo.GetCultureInfo(name);
+            _languageMenu.Items.Add(new ToolStripMenuItem(native, null, (_, _) => ChooseLanguage(culture)) { Checked = saved?.Name == name });
+        }
+        _languageMenu.Show(anchor, new Point(0, anchor.Height));
+    }
+
+    private void ChooseLanguage(CultureInfo? language)
+    {
+        if (LanguageSetting.Load()?.Name == language?.Name) return;
+        LanguageSetting.Save(language);
+        RestartRequested?.Invoke();
+    }
+
     /// <summary>
     /// Hakkında penceresi. WinFsp lisansı (FLOSS istisnası) WinFsp telif notunun ve depo bağlantısının arayüzde bulunmasını
     /// şart koşar; not burada durur.
@@ -99,7 +134,7 @@ internal sealed class MainForm : Form
         {
             Caption = "APFS for Windows",
             Heading = $"APFS for Windows {version}",
-            Text = "Mac'te biçimlendirilmiş APFS diskleri Windows'ta açar: varsayılan olarak salt okunur, isteğe bağlı yazma (deneysel). Açık kaynak, GPLv3 lisansı.\n" +
+            Text = WinText.U("About.Text") + "\n" +
                    "<a href=\"https://github.com/ErsinZorba/APFS-for-Windows\">github.com/ErsinZorba/APFS-for-Windows</a>",
             Footnote = new TaskDialogFootnote(
                 "WinFsp - Windows File System Proxy, Copyright (C) Bill Zissimopoulos\n" +
@@ -138,7 +173,11 @@ internal sealed class MainForm : Form
 
     protected override void Dispose(bool disposing)
     {
-        if (disposing) _app.Changed -= OnChanged;
+        if (disposing)
+        {
+            _app.Changed -= OnChanged;
+            _languageMenu.Dispose();
+        }
         base.Dispose(disposing);
     }
 }

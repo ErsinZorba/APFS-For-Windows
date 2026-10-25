@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Error.AccessDenied" xml:space="preserve">
+    <value>拒绝访问。</value>
+  </data>
+  <data name="Error.AlreadyExists" xml:space="preserve">
+    <value>已存在同名的文件或文件夹。</value>
+  </data>
+  <data name="Error.ChecksumMismatch" xml:space="preserve">
+    <value>磁盘上某个块的校验和不匹配；这一部分可能已损坏。没有向你的磁盘写入任何内容。</value>
+  </data>
+  <data name="Error.Corrupt" xml:space="preserve">
+    <value>磁盘上的某个结构似乎已损坏。无法读取这一部分；没有向你的磁盘写入任何内容。</value>
+  </data>
+  <data name="Error.DirectoryNotEmpty" xml:space="preserve">
+    <value>文件夹不为空。</value>
+  </data>
+  <data name="Error.DiskFull" xml:space="preserve">
+    <value>磁盘已满。</value>
+  </data>
+  <data name="Error.Encrypted" xml:space="preserve">
+    <value>此卷已加密。需要密码才能打开。</value>
+  </data>
+  <data name="Error.InvalidArgument" xml:space="preserve">
+    <value>值无效。</value>
+  </data>
+  <data name="Error.IoError" xml:space="preserve">
+    <value>无法读取磁盘。磁盘可能已被移除或出现故障。</value>
+  </data>
+  <data name="Error.NoValidCheckpoint" xml:space="preserve">
+    <value>APFS 容器的检查点没有一个是完好的。磁盘可能已严重损坏。没有向你的磁盘写入任何内容。</value>
+  </data>
+  <data name="Error.NotApfs" xml:space="preserve">
+    <value>此磁盘或文件不是 APFS 格式。</value>
+  </data>
+  <data name="Error.NotFound" xml:space="preserve">
+    <value>找不到文件或文件夹。</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>未知错误。</value>
+  </data>
+  <data name="Error.Unsupported" xml:space="preserve">
+    <value>尚不支持此功能。</value>
+  </data>
+  <data name="Error.WrongPassword" xml:space="preserve">
+    <value>密码错误。</value>
+  </data>
+  <data name="Gate.BlockSize" xml:space="preserve">
+    <value>块大小为 {0}；仅支持 4096 字节的块。</value>
+  </data>
+  <data name="Gate.CheckpointArea" xml:space="preserve">
+    <value>磁盘的检查点区域存在碎片；不支持这种布局。</value>
+  </data>
+  <data name="Gate.EncRolled" xml:space="preserve">
+    <value>卷 "{0}" 的加密后来被更改过（ENC_ROLLED）；不会写入这样的磁盘。</value>
+  </data>
+  <data name="Gate.EncryptionInProgress" xml:space="preserve">
+    <value>卷 "{0}" 上由 macOS 启动的加密操作尚未完成；不会写入这样的磁盘。</value>
+  </data>
+  <data name="Gate.Fusion" xml:space="preserve">
+    <value>不支持写入 Fusion Drive 容器。</value>
+  </data>
+  <data name="Gate.Inconsistent" xml:space="preserve">
+    <value>在磁盘的内部结构中发现不一致；为安全起见，未启用写入。请在 Mac 上通过磁盘工具 → 急救来检查该磁盘。</value>
+  </data>
+  <data name="Gate.Locked" xml:space="preserve">
+    <value>卷 "{0}" 已加密；请先将其解锁，再允许写入。</value>
+  </data>
+  <data name="Gate.OmapUnreadable" xml:space="preserve">
+    <value>无法读取卷 "{0}" 的对象映射。</value>
+  </data>
+  <data name="Gate.OpenWarnings" xml:space="preserve">
+    <value>打开磁盘时发现问题（最新的检查点可能无法使用）。</value>
+  </data>
+  <data name="Gate.Sealed" xml:space="preserve">
+    <value>"{0}" 是已签名系统卷。</value>
+  </data>
+  <data name="Gate.Snapshots" xml:space="preserve">
+    <value>卷 "{0}" 包含快照（例如 Time Machine）；不支持写入这样的磁盘。</value>
+  </data>
+  <data name="Gate.SystemVolume" xml:space="preserve">
+    <value>"{0}" 是 macOS 系统卷、备份卷或内部卷；不会写入此磁盘。</value>
+  </data>
+  <data name="Gate.UnknownContainerFeature" xml:space="preserve">
+    <value>该磁盘使用了此版本无法识别的 APFS 功能。</value>
+  </data>
+  <data name="Gate.UnknownVolumeFeature" xml:space="preserve">
+    <value>卷 "{0}" 使用了此版本无法识别的 APFS 功能。</value>
+  </data>
+  <data name="Gate.Unresolvable" xml:space="preserve">
+    <value>该磁盘包含此版本无法解析的结构；由于无法核实每个块的归属，未启用写入。</value>
+  </data>
+  <data name="Gate.UnsupportedEncryption" xml:space="preserve">
+    <value>卷 "{0}" 使用了此版本无法写入的加密类型（硬件加密或每个文件独立的密钥）。</value>
+  </data>
+  <data name="Gate.UnsupportedVolumeSetting" xml:space="preserve">
+    <value>卷 "{0}" 有一项此版本不支持的设置。</value>
+  </data>
+  <data name="Gate.VolumeUnreadable" xml:space="preserve">
+    <value>无法读取某个卷（{0}）。</value>
+  </data>
+  <data name="Gate.WriteBlocker" xml:space="preserve">
+    <value>该磁盘有一项此版本无法保持更新的功能（{0}）；未启用写入。</value>
+  </data>
+  <data name="Mount.WinFspMissing" xml:space="preserve">
+    <value>未安装 WinFsp。安装方法：winget install WinFsp.WinFsp</value>
+  </data>
+  <data name="Mount.WinFspNotLoaded" xml:space="preserve">
+    <value>未安装 WinFsp 或无法加载（{0}）。安装方法：winget install WinFsp.WinFsp</value>
+  </data>
+  <data name="Partition.Numbered" xml:space="preserve">
+    <value>分区 {0}</value>
+  </data>
+  <data name="Partition.Unpartitioned" xml:space="preserve">
+    <value>未分区的 APFS 容器</value>
+  </data>
+  <data name="Volume.RoleBackup" xml:space="preserve">
+    <value>备份</value>
+  </data>
+  <data name="Volume.RoleData" xml:space="preserve">
+    <value>数据</value>
+  </data>
+  <data name="Volume.RoleInstaller" xml:space="preserve">
+    <value>安装程序</value>
+  </data>
+  <data name="Volume.RolePreboot" xml:space="preserve">
+    <value>预启动</value>
+  </data>
+  <data name="Volume.RoleRecovery" xml:space="preserve">
+    <value>恢复</value>
+  </data>
+  <data name="Volume.RoleSystem" xml:space="preserve">
+    <value>系统</value>
+  </data>
+  <data name="Volume.RoleUpdate" xml:space="preserve">
+    <value>更新</value>
+  </data>
+  <data name="Volume.RoleUser" xml:space="preserve">
+    <value>用户</value>
+  </data>
+  <data name="Volume.RoleVm" xml:space="preserve">
+    <value>虚拟内存</value>
+  </data>
+</root>

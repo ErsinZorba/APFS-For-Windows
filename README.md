@@ -1,142 +1,160 @@
 # APFS for Windows
 
-Mac'te biçimlendirilmiş **APFS** diskleri Windows 11'de normal bir sürücü gibi açmanızı sağlayan açık kaynaklı, hafif bir araç.
-Diski takarsınız, birkaç saniye içinde Dosya Gezgini'nde sürücü harfi olarak belirir; dosyaları açar, kopyalarsınız.
+**English** | [Türkçe](README.tr.md)
 
-> **Önce salt okunur.** Diskler her zaman salt okunur bağlanır; program kendiliğinden diske hiçbir şey yazmaz. Bir diske yazmak
-> isterseniz kartındaki **Yazmaya izin ver** düğmesiyle o disk için ayrıca izin verirsiniz (deneysel; bkz. "Yazma"). Verilerinizin
-> güvenliği her şeyden önce gelir.
+A lightweight, open-source tool that lets you open Mac-formatted **APFS** disks on Windows 11 like any other drive.
+Plug the disk in and within a few seconds it shows up in File Explorer with a drive letter; open and copy your files.
 
-## Neler destekleniyor
+> **Read-only first.** Disks are always mounted read-only; the program never writes to a disk on its own. If you want to write to
+> a disk, you allow it separately for that disk with the **Allow writing** button on its card (experimental; see "Writing").
+> The safety of your data comes first.
+
+## What is supported
 | | |
 |---|---|
-| Takınca kendiliğinden bağlanma | Arka planda çalışan hizmet APFS disklerini bulur ve bağlar |
-| Sade arayüz | Ana pencere ve tepside küçük bir panel: diskler, "Aç", "Kilidi aç", "Güvenle çıkar" |
-| Birden çok birim | Her kullanıcı birimi ayrı sürücü harfi alır; macOS'un iç birimleri (Önyükleme, Kurtarma…) gizlenir |
-| Şifreli birimler (deneysel) | Tepsi simgesi parolayı sorar (ipucuyla); parola hiçbir yere kaydedilmez |
-| Sıkıştırılmış dosyalar | zlib, LZVN, LZFSE (macOS'un şeffaf sıkıştırması) |
-| Türkçe ve Unicode adlar | ç, ğ, ı, İ, ö, ş, ü; Mac'in NFD biçimi; Windows'ta yasak karakterler (`: ? *` …) |
-| Büyük dosyalar | 4 GB üstü, çok parçalı ve seyrek dosyalar |
-| Bozuk diskler | Program çökmez; ne olduğunu Türkçe bildirir; sağlam birimler açılmaya devam eder |
+| Automatic mounting | A background service finds APFS disks and mounts them |
+| Simple interface | A main window and a small panel in the notification area: disks, "Open", "Unlock", "Safely eject" |
+| Multiple volumes | Each user volume gets its own drive letter; macOS internal volumes (Preboot, Recovery…) are hidden |
+| Encrypted volumes (experimental) | The tray icon asks for the password (with its hint); the password is never saved |
+| Compressed files | zlib, LZVN, LZFSE (macOS transparent compression) |
+| Unicode names | Accented and non-Latin names; the Mac's NFD form; characters forbidden on Windows (`: ? *` …) |
+| Large files | Over 4 GB, fragmented and sparse files |
+| Damaged disks | The program does not crash; it tells you what happened in plain words; intact volumes still open |
+| 10 interface languages | English, Türkçe, Deutsch, Français, Español, Português (Brasil), Italiano, 日本語, 简体中文, 한국어 |
 
-## Kurulum
-`APFS-for-Windows-Setup-1.2.1.exe` dosyasını çalıştırın ve sihirbazı izleyin (İleri › Kur › Son). Windows 10/11 (64 bit) yeter;
-başka bir şey kurmanız gerekmez: .NET programla birlikte gelir, [WinFsp](https://winfsp.dev) sürücüsü yoksa sihirbaz onu da kurar.
-Kurulumdan sonra Başlat menüsünde **APFS for Windows** bulunur ve tepsi simgesi her oturumda kendiliğinden açılır.
+## Installation
+Run `APFS-for-Windows-Setup-1.3.0.exe` and follow the wizard (Next › Install › Finish). Windows 10/11 (64-bit) is all you need;
+nothing else has to be installed: .NET comes with the program, and if the [WinFsp](https://winfsp.dev) driver is missing the wizard
+installs it too. After installation, **APFS for Windows** is in the Start menu and the tray icon starts automatically at every sign-in.
 
-Kaldırmak için: **Ayarlar › Uygulamalar › Yüklü uygulamalar › APFS for Windows › Kaldır**. Kaldırma disklerinize hiçbir şey yazmaz;
-günlük (`C:\ProgramData\APFS for Windows\log.txt`) incelemeniz için bırakılır, WinFsp kaldırılmaz.
+To uninstall: **Settings › Apps › Installed apps › APFS for Windows › Uninstall**. Uninstalling writes nothing to your disks;
+the log (`C:\ProgramData\APFS for Windows\log.txt`) is kept for you to inspect, and WinFsp is not removed.
 
-## Kullanım
-- **Ana pencere** (Başlat menüsü veya tepsi menüsünden "Ana pencereyi aç"): takılı Mac diskleri kart olarak görünür. Her birimin
-  yanında **Aç** (Gezgin'de açar), şifreliyse **Kilidi aç**, açılamadıysa **Ayrıntı**; kartın altında **Güvenle çıkar**.
-  Pencereyi kapatmak programı kapatmaz; diskler bağlı kalır ve program tepside çalışmaya devam eder.
-- **Tepsi paneli**: saatin yanındaki APFS simgesine sol tıklayın; aynı işlemler küçük bir panelde. Sağ tık menüsünde
-  "Ana pencereyi aç", disk başına "güvenle çıkar", "Yeniden tara", "Günlüğü aç" ve "Çıkış" bulunur.
+## Usage
+- **Main window** (Start menu, or "Open main window" in the tray menu): attached Mac disks appear as cards. Next to each volume:
+  **Open** (opens it in File Explorer), **Unlock** if it is encrypted, **Details** if it could not be opened; **Safely eject** at the
+  bottom of the card. Closing the window does not close the program; the disks stay mounted and the program keeps running in the
+  notification area.
+- **Tray panel**: left-click the APFS icon next to the clock; the same actions in a small panel. The right-click menu has
+  "Open main window", "safely eject" for each disk, "Scan again", "Open log" and "Exit".
 
-## Yazma (deneysel)
-Diskin kartındaki **Yazmaya izin ver**'e tıklayın ve uyarıyı onaylayın. Program diski önce baştan sona denetler; her şey yolundaysa
-sürücü **yazılabilir** olarak yeniden bağlanır (kartta turuncu nokta, "yazılabilir (deneysel)"). Artık Gezgin'de dosya kopyalayabilir,
-klasör açabilir, adlandırabilir, silebilir ve dosyaları düzenleyip kaydedebilirsiniz. **Salt okunura dön** değişiklikleri kaydedip
-diski yeniden salt okunur bağlar.
+## Language
+The program starts in the Windows display language (English, Turkish, German, French, Spanish, Brazilian Portuguese, Italian,
+Japanese, Simplified Chinese, Korean; English for any other language). To change it, click the language button at the bottom of
+the main window (it shows the name of the current language) and pick one from the list; the program restarts in that language.
+"Windows language" follows the Windows language again. Log details and the command line are in English and Turkish only (English
+for the other languages).
 
-- **Önce yedek alın.** Yazma özelliği yenidir; önemli dosyalarınızın bir kopyası olsun.
-- **Diski çıkarmadan veya Mac'e takmadan önce mutlaka "Güvenle çıkar"ı kullanın.** Değişiklikler birkaç saniyede bir kaydedilir;
-  Güvenle çıkar son değişiklikleri de kaydeder ve diski "düzgün kapatıldı" olarak işaretler.
-- Yazma yarıda kesilirse (kablo çekilmesi, elektrik kesintisi) disk bir önceki kaydedilmiş hâliyle açılır; Mac diskiniz bozulmaz.
-  Son birkaç saniyenin değişiklikleri kaybolabilir. (Bazı USB kutuları "diske boşalt" komutuna uymaz; o durumda kaybolan süre
-  biraz uzayabilir, disk yine bir önceki sağlam hâliyle açılır.)
-- Hangi diskler yazmaya açılır: tek birimli APFS bölümleri, **şifresiz** ya da Mac'te **parolayla şifrelenmiş** (Disk İzlencesi'nde
-  "APFS (Şifreli)"; 1.2.0). Şifreli birimde önce **Kilidi aç**, sonra **Yazmaya izin ver**: dosyalar diske yine şifreli yazılır.
-  Parola yazmaya açarken yeniden sorulmaz, "Salt okunura dön"de de sorulmaz (anahtar yalnızca bellekte tutulur; disk çıkarılınca
-  ya da hizmet durunca silinir, hiçbir yere kaydedilmez).
-- Birden çok APFS bölümü olan bir diskte (ör. Mac'te bölümlenmiş bir bellek) her bölümün kendi **«ad»: Yazmaya izin ver**
-  düğmesi vardır; bir bölümü yazmaya açmak öbürlerine dokunmaz.
-- Şunlar salt okunur kalır ve nedeni kartta yazar: macOS'un şifreleme işlemi bitmemiş ya da şifrelemesi sonradan değiştirilmiş
-  birimler, donanımla (T2/Apple Silicon) veya dosya başına anahtarla şifrelenmiş birimler, anlık görüntüsü olan (ör. Time Machine)
-  diskler, macOS sistem/yedek birimleri, Fusion Drive, aynı bölümde birden çok birim ve iç yapısında tutarsızlık görülen diskler.
-- Bu sürümde içeriği değiştirilemeyenler: Mac'te "Çoğalt" ile oluşturulmuş (klon) dosyalar ve macOS'un sıkıştırarak sakladığı
-  dosyalar (çoğunlukla uygulama ve sistem dosyaları; Finder ile kopyalanan belgeler ve fotoğraflar değil). Bunlar açılabilir,
-  kopyalanabilir, silinip taşınabilir; üzerine kaydedilmek istendiğinde Windows "erişim engellendi" der (kopyasını düzenleyin).
-- Gezgin'de silinen dosyalar Geri Dönüşüm Kutusu'na gitmez; Windows "kalıcı olarak silinsin mi?" diye sorar (USB bellekteki gibi).
-- Windows'tan oluşturulan dosyalar Mac'te "bilinmeyen" sahipli (her kullanıcı açabilir), dosyalar 0644, klasörler 0755 izinlidir.
-  Windows erişim listeleri (ACL) ve ek veri akışları saklanmaz.
+The translations other than English and Turkish have not been reviewed by native speakers. If you see a wrong or unclear
+translation, please report it in [Issues](https://github.com/ErsinZorba/APFS-for-Windows/issues) (language, the text on screen and
+the correct wording).
 
-## Diski çıkarma
-Ana pencerede veya tepsi panelinde diskin kartındaki **Güvenle çıkar**'a tıklayın. Birimler ayrılır, Windows diski çıkarır ve
-"Kabloyu şimdi çekebilirsiniz" bildirimi gelir. O anda diskten bir dosya açıksa veya kopyalanıyorsa program önce sorar:
-"Kopyalama sürüyor gibi görünüyor" → **Vazgeç** (kopyalama sürer) veya **Yine de çıkar** (kopyalama yarıda kalır).
-Gezgin'de sürücünün sağ tık menüsünde "Çıkar" görünmez (WinFsp sürücüleri Windows'a sanal sürücü olarak görünür). Salt okunur
-bir diski doğrudan çekmek diske zarar vermez; yalnızca o anda süren bir kopyalama yarıda kalır. Yazılabilir bir diski de doğrudan
-çekmek diski bozmaz (bir önceki kayıtlı hâliyle açılır), ama son değişiklikler kaybolabilir: önce Güvenle çıkar.
+## Writing (experimental)
+Click **Allow writing** on the disk's card and confirm the warning. The program first checks the whole disk; if everything is in
+order, the drive is mounted again as **writable** (orange dot on the card, "writable (experimental)"). You can now copy files, create
+folders, rename, delete, and edit and save files in File Explorer. **Back to read-only** saves the changes and mounts the disk
+read-only again.
 
-Disk takılıyken başka bir programla (Rufus, Disk Yönetimi…) biçimlendirilirse APFS sürücüsü en geç 15 saniye içinde kaldırılır.
-Disk yazmaya açıksa kaydedilmemiş son değişiklikler, yeni içeriği bozmamak için diske yazılmaz.
+- **Make a backup first.** Writing is new; keep a copy of your important files.
+- **Always use "Safely eject" before unplugging the disk or connecting it to a Mac.** Changes are saved every few seconds;
+  Safely eject saves the latest changes too and marks the disk as "cleanly unmounted".
+- If writing is interrupted (cable pulled, power cut), the disk opens in its previously saved state; your Mac disk is not damaged.
+  The changes of the last few seconds may be lost. (Some USB enclosures ignore the "flush to disk" command; then the lost period
+  can be a little longer, and the disk still opens in its previous intact state.)
+- Which disks can be opened for writing: single-volume APFS partitions, **unencrypted** or **password-encrypted** on the Mac
+  ("APFS (Encrypted)" in Disk Utility; 1.2.0). On an encrypted volume first **Unlock**, then **Allow writing**: files are written to
+  the disk encrypted. The password is not asked again when allowing writing or on "Back to read-only" (the key is kept only in
+  memory; it is erased when the disk is removed or the service stops, and is never saved anywhere).
+- On a disk with more than one APFS partition (e.g. a USB stick partitioned on a Mac) each partition has its own
+  **«name»: Allow writing** button; allowing writing on one partition does not touch the others.
+- These stay read-only, and the card says why: volumes whose macOS encryption has not finished or was changed later, volumes encrypted
+  by hardware (T2/Apple Silicon) or with per-file keys, disks with snapshots (e.g. Time Machine), macOS system/backup volumes, Fusion
+  Drive, several volumes in the same partition, and disks whose internal structure shows an inconsistency.
+- Files whose content cannot be changed in this version: files created with "Duplicate" on the Mac (clones) and files macOS stores
+  compressed (mostly application and system files; not documents and photos copied with Finder). They can be opened, copied,
+  deleted and moved; when you try to save over them, Windows says "access denied" (edit a copy).
+- Files deleted in File Explorer do not go to the Recycle Bin; Windows asks "permanently delete?" (as on a USB stick).
+- Files created from Windows have an "unknown" owner on the Mac (every user can open them); files are 0644, folders 0755.
+  Windows access lists (ACLs) and alternate data streams are not stored.
 
-## Nasıl çalışır
-- **WinFsp** üzerinde çalışan kullanıcı modu bir dosya sistemi. Çekirdek sürücüsü yazılmadı; bir hata olsa bile sistem çökmez.
-- APFS okuyucusu, Apple'ın *Apple File System Reference* belgesi temel alınarak C# ile sıfırdan yazıldı.
-- Salt okunur bağlamada disk işletim sistemi seviyesinde **yalnızca okuma izniyle** açılır; ayrıca birim Windows'a salt okunur
-  olarak bildirilir ve değiştiren her işlem reddedilir. Diske yazabilen kod yalnızca yazma kapısının (tam denetim) verdiği izinle
-  çalışabilir.
-- Yazma, APFS'in kendi güvenlik düzenine uyar: hiçbir kayıtlı yapı yerinde değiştirilmez; değişiklikler yeni bloklara yazılır ve en
-  sonda tek bir "kontrol noktası" işareti ilerletilir (iki ayrı "diske boşalt" adımıyla). Yazma yarıda kesilirse disk bir önceki
-  kontrol noktasıyla açılır.
-- Diskteki her yapı sağlama toplamıyla doğrulanır. Bozuk bir yapı bulunduğunda program çökmez; ne olduğunu Türkçe söyler.
-- Bileşenler: `apfs-service` (LocalSystem hizmeti: diskleri bulur ve bağlar), `apfs-tray` (ana pencere, tepsi simgesi ve paneli,
-  parola penceresi, bildirimler), `apfs` (komut satırı aracı).
-- WinFsp - Windows File System Proxy, Copyright (C) Bill Zissimopoulos — <https://github.com/winfsp/winfsp>. Kurulum sihirbazı
-  WinFsp'in değiştirilmemiş resmi kurulum paketini içerir (GPLv3 + FLOSS istisnası; bkz. `THIRD_PARTY_NOTICES.md`).
+## Ejecting a disk
+Click **Safely eject** on the disk's card in the main window or the tray panel. The volumes are unmounted, Windows ejects the disk and
+the notification "You can unplug the cable now" appears. If a file on the disk is open or being copied at that moment, the program asks
+first: "A copy seems to be in progress" → **Cancel** (the copy goes on) or **Eject anyway** (the copy is cut short).
+File Explorer does not show "Eject" in the drive's right-click menu (WinFsp drives appear to Windows as virtual drives). Unplugging a
+read-only disk directly does not harm it; only a copy in progress is cut short. Unplugging a writable disk directly does not corrupt
+it either (it opens in its previously saved state), but the latest changes may be lost: use Safely eject first.
 
-## Komut satırı
+If the disk is reformatted by another program (Rufus, Disk Management…) while it is attached, the APFS drive is removed within
+15 seconds at most. If the disk was open for writing, the latest unsaved changes are not written, so as not to damage the new content.
+
+## How it works
+- A user-mode file system running on **WinFsp**. No kernel driver was written; even if something goes wrong, the system does not crash.
+- The APFS reader was written from scratch in C#, based on Apple's *Apple File System Reference*.
+- When mounted read-only, the disk is opened at the operating system level **with read permission only**; in addition the volume is
+  reported to Windows as read-only and every modifying operation is refused. Code that can write to a disk can only run with the
+  permission granted by the write gate (a full check).
+- Writing follows APFS's own safety scheme: no saved structure is changed in place; changes are written to new blocks and at the
+  very end a single "checkpoint" marker is advanced (with two separate "flush to disk" steps). If writing is interrupted, the disk
+  opens with the previous checkpoint.
+- Every structure on the disk is verified with its checksum. When a damaged structure is found, the program does not crash; it tells
+  you what happened in plain words.
+- Components: `apfs-service` (LocalSystem service: finds and mounts disks), `apfs-tray` (main window, tray icon and panel, password
+  window, notifications), `apfs` (command-line tool).
+- WinFsp - Windows File System Proxy, Copyright (C) Bill Zissimopoulos — <https://github.com/winfsp/winfsp>. The setup wizard
+  contains WinFsp's unmodified official installer package (GPLv3 + FLOSS exception; see `THIRD_PARTY_NOTICES.md`).
+
+## Command line
 ```
-apfs info <kaynak> [--fingerprint]     Disk ve birim bilgisi
-apfs ls <kaynak> [yol] [-r] [--hash]   Klasör içeriği
-apfs extract <kaynak> <yol> <hedef>    Bir dosyayı Windows'a kopyala
-apfs check <kaynak>                    Salt okunur öz denetim: tüm ağacı gezer, her dosyanın başını ve sonunu okur, sayaçları karşılaştırır
-apfs check <kaynak> --full [--gizle]   Yapısal tam denetim: her bloğun sahibi, boş alan kayıtları, başvuru sayıları (salt okunur)
-apfs check <kaynak> --gate             Yazma kapısının bu disk için kararı ve nedenleri (salt okunur)
-apfs dump <kaynak> [yol]               Geliştirme: iç yapı dökümü (yol verilirse o dosyanın ham kayıtları)
-apfs mount <kaynak> [X:]               Elle bağlama (Ctrl+C ile ayır); iç birimler için --all
+apfs info <source> [--fingerprint]     Disk and volume information
+apfs ls <source> [path] [-r] [--hash]  Folder contents
+apfs extract <source> <path> <target>  Copy a file to Windows
+apfs check <source>                    Read-only self-check: walks the whole tree, reads the start and end of every file, compares counters
+apfs check <source> --full [--gizle]   Full structural check: owner of every block, free-space records, reference counts (read-only); --gizle hides names
+apfs check <source> --gate             The write gate's decision for this disk and its reasons (read-only)
+apfs dump <source> [path]              Development: internal structure dump (with a path, that file's raw records)
+apfs mount <source> [X:]               Manual mount (Ctrl+C unmounts); --all for internal volumes
 ```
-`<kaynak>`: disk görüntüsü dosyası veya `\\.\PhysicalDriveN` (yönetici gerekir). Şifreli birimler için `--password-prompt`.
-Kurulumdan sonra araç PATH'e eklenmez; tam yoluyla çalıştırın: `& "C:\Program Files\APFS for Windows\apfs.exe" info \\.\PhysicalDrive2`
+`<source>`: a disk image file or `\\.\PhysicalDriveN` (requires administrator). For encrypted volumes `--password-prompt`.
+After installation the tool is not added to PATH; run it with its full path: `& "C:\Program Files\APFS for Windows\apfs.exe" info \\.\PhysicalDrive2`
 
-## Dosya adları
-- Türkçe karakterler dahil tüm Unicode adlar desteklenir. Mac'in adları farklı Unicode biçiminde (NFD) saklaması sorun değildir.
-- Mac'te büyük/küçük harf duyarsız birimlerde (varsayılan) Windows'taki gibi davranılır. "ı" ile "i" Mac'teki gibi farklı harflerdir.
-- Mac'te geçerli olup Windows'ta yasak olan karakterler (`: * ? " < > | \`, sondaki nokta ve boşluk) Windows'un ve macOS'un
-  dosya paylaşımında kullandığı standart eşlemeyle (SFM) özel karakterlere çevrilir. Gezgin'de görünür, açılır ve kopyalanabilir.
-- Bilinen sınırlama: `CON`, `NUL`, `AUX`, `COM1` gibi Windows'a ayrılmış adlarla başlayan dosyalar bazı programlarda açılmayabilir.
+## File names
+- All Unicode names are supported. The Mac storing names in a different Unicode form (NFD) is not a problem.
+- On case-insensitive Mac volumes (the default) behaviour is the same as on Windows. Turkish "ı" and "i" are different letters, as on the Mac.
+- Characters valid on the Mac but forbidden on Windows (`: * ? " < > | \`, trailing dot and space) are mapped to special characters
+  with the standard mapping (SFM) used by Windows and macOS file sharing. They appear in File Explorer, open and can be copied.
+- Known limitation: files whose names start with names reserved by Windows, such as `CON`, `NUL`, `AUX`, `COM1`, may not open in some programs.
 
-## Sıkıştırılmış dosyalar
-macOS birçok dosyayı şeffaf biçimde sıkıştırarak saklar. Bu dosyalar Windows'ta da normal görünür ve açılır; boyutları açılmış
-halleriyle gösterilir. Desteklenmeyen bir yöntemle (ör. LZBITMAP) sıkıştırılmış bir dosya listede görünür, açılmak istendiğinde
-"İstek desteklenmiyor" hatası verir ve nedeni günlüğe yazılır.
+## Compressed files
+macOS stores many files transparently compressed. These files look and open normally on Windows too; their sizes are shown
+uncompressed. A file compressed with an unsupported method (e.g. LZBITMAP) appears in the list, gives a "The request is not
+supported" error when opened, and the reason is written to the log.
 
-## Desteklenmeyenler
-Aynı bölümde birden çok birim olan disklere yazma; şifreli birimin parolasını değiştirme, şifreleme/şifre çözme; onarım, biçimlendirme; anlık görüntüler (snapshot) ve Time Machine yapısı;
-Fusion Drive; mühürlü macOS sistem birimi; DMG/sparsebundle dosyaları; HFS+; Apple Silicon/T2 dahili disk donanım şifrelemesi.
+## Not supported
+Writing to disks with several volumes in the same partition; changing the password of an encrypted volume, encrypting/decrypting;
+repair, formatting; snapshots and the Time Machine structure; Fusion Drive; the sealed macOS system volume; DMG/sparsebundle files;
+HFS+; hardware encryption of Apple Silicon/T2 internal disks.
 
-## Geliştirme
+## Development
 ```
 dotnet build
 dotnet test
-powershell -File tools\build-installer.ps1   # kurulum sihirbazı: publish\APFS-for-Windows-Setup-<sürüm>.exe
+powershell -File tools\build-installer.ps1   # setup wizard: publish\APFS-for-Windows-Setup-<version>.exe
 ```
-`build-installer.ps1` için Inno Setup 6 (`winget install --id JRSoftware.InnoSetup -e`) ve `installer\redist\` altında WinFsp'in
-resmi `winfsp-2.1.25156.msi` paketi gerekir (git'e eklenmez; betik imzasını denetler). Yalnızca program klasörü için
-`tools\build-release.ps1` (`publish\APFS for Windows\`); onu sihirbazsız kurmak için yönetici PowerShell'de `install.ps1`.
-`install.ps1` ile kurulan sürüm "Yüklü uygulamalar"da görünmez (kaldırmak için `uninstall.ps1`); sihirbazla kurduysanız
-oradan kaldırın, `uninstall.ps1` kullanılırsa listede sahipsiz bir kayıt kalır.
-Test görüntüleri `tests/Apfs.ImageBuilder` ile üretilir ve bağımsız bir okuyucu olan 7-Zip ile karşılaştırılır
-(`tools/compare_with_7z.ps1`). Yazma desteği bağımsız hakemlerle sınanır: Linux'un APFS araçları (apfsprogs: `mkapfs`, `apfsck`;
-linux-apfs-rw sürücüsü) WSL içinde çalışır (`tools/make-linux-fixtures.sh`, `tools/make-linux-populated.sh`); macOS'un kendi
-denetleyicisi için `tools/mac/` (Mac kiti). Gerçek disk yolunu sanal diskte sınamak için `tools/vhd-write-test.ps1` (yönetici).
-Uzun testler: `APFS_LONG=1 dotnet test`.
+`build-installer.ps1` needs Inno Setup 6 (`winget install --id JRSoftware.InnoSetup -e`) and WinFsp's official
+`winfsp-2.1.25156.msi` package under `installer\redist\` (not added to git; the script checks its signature). For the program folder
+only, `tools\build-release.ps1` (`publish\APFS for Windows\`); to install that without the wizard, `install.ps1` in an
+administrator PowerShell. A version installed with `install.ps1` does not appear in "Installed apps" (remove it with
+`uninstall.ps1`); if you installed with the wizard, uninstall from there — using `uninstall.ps1` leaves an orphaned entry in the list.
+Test images are produced with `tests/Apfs.ImageBuilder` and compared with an independent reader, 7-Zip
+(`tools/compare_with_7z.ps1`). Writing is tested against independent referees: Linux's APFS tools (apfsprogs: `mkapfs`, `apfsck`;
+the linux-apfs-rw driver) run inside WSL (`tools/make-linux-fixtures.sh`, `tools/make-linux-populated.sh`); for macOS's own checker,
+`tools/mac/` (Mac kit). To test the real disk path on a virtual disk, `tools/vhd-write-test.ps1` (administrator).
+Interface texts: `src/Apfs.Core/Resources` and `src/Apfs.Windows/Resources` (`User.<language>.resx`; technical texts `Tech.resx`
+in English and Turkish only). Long tests: `APFS_LONG=1 dotnet test`.
 
-## Lisans
-Copyright (C) 2026 Ersin Zorba. GNU Genel Kamu Lisansı sürüm 3 (yalnız sürüm 3; `GPL-3.0-only`), metni [LICENSE](LICENSE).
-Üçüncü taraf bileşenler için [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+## License
+Copyright (C) 2026 Ersin Zorba. GNU General Public License version 3 (version 3 only; `GPL-3.0-only`), text in [LICENSE](LICENSE).
+For third-party components see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
-Proje tek geliştiricilidir; dış katkı (pull request) kabul edilmiyor. Hata bildirimleri için Issues kullanılabilir.
+This is a single-developer project; outside contributions (pull requests) are not accepted. Issues can be used for bug reports.

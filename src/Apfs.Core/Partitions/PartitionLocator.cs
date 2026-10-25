@@ -19,7 +19,7 @@ public static class PartitionLocator
     {
         // Doğrudan bir APFS kapsayıcısı mı (bölüm tablosu olmayan görüntü)?
         if (LooksLikeContainer(device, 0))
-            return [new ApfsPartition(0, device.Length, 0, "bölümsüz APFS kapsayıcısı")];
+            return [new ApfsPartition(0, device.Length, 0, CoreText.U("Partition.Unpartitioned"))];
 
         // GPT başlığı 1. LBA'dadır; sektör boyutu 512 veya 4096 olabilir.
         foreach (int sector in new[] { device.SectorSize, 512, 4096 }.Distinct())
@@ -66,12 +66,12 @@ public static class PartitionLocator
         uint count = Bin.U32(header, 80);
         uint entrySize = Bin.U32(header, 84);
         if (entrySize < 128 || entrySize > 4096 || count == 0 || count > MaxPartitionEntries)
-            throw ApfsException.Corrupt("GPT bölüm tablosu başlığı geçersiz");
+            throw ApfsException.Corrupt(CoreText.T("Partition.GptHeaderInvalid"));
 
         long tableOffset = checked((long)entriesLba * sector);
         long tableLength = (long)count * entrySize;
         if (tableOffset < 0 || tableOffset > device.Length - tableLength)
-            throw ApfsException.Corrupt("GPT bölüm tablosu diskin dışında");
+            throw ApfsException.Corrupt(CoreText.T("Partition.GptOutsideDisk"));
 
         var table = new byte[tableLength];
         device.Read(tableOffset, table);
@@ -89,7 +89,7 @@ public static class PartitionLocator
             long length = ((long)(last - first) + 1) * sector;
             if (offset < 0 || offset > device.Length - length) continue; // diskin dışına taşan bölüm: atla
             string name = System.Text.Encoding.Unicode.GetString(entry.Slice(56, 72)).TrimEnd('\0');
-            result.Add(new ApfsPartition(offset, length, i + 1, string.IsNullOrEmpty(name) ? $"bölüm {i + 1}" : name));
+            result.Add(new ApfsPartition(offset, length, i + 1, string.IsNullOrEmpty(name) ? CoreText.U("Partition.Numbered", i + 1) : name));
         }
         return result;
     }

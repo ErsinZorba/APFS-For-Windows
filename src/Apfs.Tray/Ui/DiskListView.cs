@@ -36,8 +36,11 @@ internal sealed class DiskListView : Panel
     [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
     public IWin32Window? DialogOwner { get; set; }
 
-    /// <summary>İçeriğin kaydırmasız yüksekliği (panel boyunu buna göre ayarlar).</summary>
-    public int ContentHeight => _stack.GetPreferredSize(new Size(ClientSize.Width, 0)).Height;
+    /// <summary>
+    /// İçeriğin kaydırmasız yüksekliği (panel boyunu buna göre ayarlar). Kartlar dolgunun içinde dizilir: ölçüm o genişlikte
+    /// yapılmazsa uzun metinlerin (ör. Almanca) satır kaydırması sayılmaz ve panel kısa kalır.
+    /// </summary>
+    public int ContentHeight => _stack.GetPreferredSize(new Size(Math.Max(0, ClientSize.Width - Padding.Horizontal), 0)).Height;
 
     public void Rebuild()
     {
@@ -50,13 +53,13 @@ internal sealed class DiskListView : Panel
 
         var s = _app.Status;
         if (_app.ServiceDown)
-            AddRow(Message(false, "Arka plan hizmeti çalışmıyor",
-                "Diskleri bağlayan hizmete ulaşılamıyor. Bilgisayarı yeniden başlatmayı veya programı yeniden kurmayı deneyin."));
+            AddRow(Message(false, WinText.U("List.ServiceDownHeading"),
+                WinText.U("List.ServiceDownBody")));
         else if (s is null)
-            AddRow(Message(true, "Bağlanıyor…", ""));
+            AddRow(Message(true, WinText.U("List.Connecting"), ""));
         else if (s.Disks.Count == 0)
-            AddRow(Message(true, "Henüz bir Mac diski yok",
-                "Mac diskinizi takın; birkaç saniye içinde burada görünür. Diskiniz önce salt okunur açılır; yazmak isterseniz kartındaki düğmeyle ayrıca izin verirsiniz."));
+            AddRow(Message(true, WinText.U("List.NoDiskHeading"),
+                WinText.U("List.NoDiskBody")));
         else
             foreach (var d in s.Disks) AddRow(DiskCard(d));
 
@@ -96,7 +99,7 @@ internal sealed class DiskListView : Panel
         if (visible.Count == 0)
         {
             // Yazma durumu değişirken bölümün birimleri kısa süre listede olmaz (denetlenip yeniden bağlanır)
-            var none = Label(_app.IsSwitching(d.Id) ? "Disk denetleniyor…" : "Bu diskte gösterilecek birim yok (yalnızca macOS iç birimleri).",
+            var none = Label(_app.IsSwitching(d.Id) ? WinText.U("Card.Checking") : WinText.U("Card.NoVolumes"),
                 Theme.Small, Theme.Muted);
             card.Controls.Add(none, 0, row);
             card.SetColumnSpan(none, 3);
@@ -113,10 +116,10 @@ internal sealed class DiskListView : Panel
                 var (color, status, button) = v.State switch
                 {
                     VolumeStatus.Mounted => (v.Writable ? Theme.Amber : Theme.Green,
-                        $"{v.MountPoint} sürücüsü · {(v.Writable ? "yazılabilir (deneysel)" : "salt okunur")}",
-                        Button("Aç", FriendlyButton.Kind.Primary, () => AppController.OpenDrive(v.MountPoint!))),
-                    VolumeStatus.NeedsPassword => (Theme.Amber, "Şifreli · parola gerekiyor", Button("Kilidi aç", FriendlyButton.Kind.Primary, async () => await _app.UnlockAsync(d, v))),
-                    _ => (Theme.Red, "Açılamadı", Button("Ayrıntı", FriendlyButton.Kind.Secondary, () => AppController.ShowDetails(DialogOwner, v))),
+                        WinText.U("Card.DriveState", v.MountPoint, (v.Writable ? WinText.U("Card.Writable") : WinText.U("Card.ReadOnly"))),
+                        Button(WinText.U("Action.Open"), FriendlyButton.Kind.Primary, () => AppController.OpenDrive(v.MountPoint!))),
+                    VolumeStatus.NeedsPassword => (Theme.Amber, WinText.U("Card.NeedsPassword"), Button(WinText.U("Action.Unlock"), FriendlyButton.Kind.Primary, async () => await _app.UnlockAsync(d, v))),
+                    _ => (Theme.Red, WinText.U("Card.Failed"), Button(WinText.U("Action.Details"), FriendlyButton.Kind.Secondary, () => AppController.ShowDetails(DialogOwner, v))),
                 };
                 var dot = new StatusDot(color) { Margin = new Padding(0, this.S(10), this.S(10), 0), Anchor = AnchorStyles.Top };
                 var text = new FlowLayoutPanel
@@ -161,16 +164,16 @@ internal sealed class DiskListView : Panel
             FlowDirection = FlowDirection.RightToLeft, WrapContents = false, AutoSize = true, Anchor = AnchorStyles.Right,
             BackColor = Theme.Card, Margin = new Padding(this.S(4), this.S(6), 0, 0),
         };
-        var eject = Button("Güvenle çıkar", FriendlyButton.Kind.Quiet, async () => await _app.EjectAsync(d, DialogOwner));
-        eject.BusyText = "Çıkarılıyor…";
+        var eject = Button(WinText.U("Action.SafelyEject"), FriendlyButton.Kind.Quiet, async () => await _app.EjectAsync(d, DialogOwner));
+        eject.BusyText = WinText.U("Action.Ejecting");
         eject.Busy = _app.IsEjecting(d.Id);
         eject.Margin = new Padding(this.S(4), 0, this.S(4), 0);
         actions.Controls.Add(eject);
         // Denetlenen bölümün birimleri o sırada listede olmaz: düğmesi meşgul olarak dursun
         foreach (int c in _app.SwitchingContainers(d.Id).Where(c => containers.All(g => g.Key != c)))
         {
-            var waiting = Button("Denetleniyor…", FriendlyButton.Kind.Quiet, () => { });
-            waiting.BusyText = "Denetleniyor…";
+            var waiting = Button(WinText.U("Action.Checking"), FriendlyButton.Kind.Quiet, () => { });
+            waiting.BusyText = WinText.U("Action.Checking");
             waiting.Busy = true;
             waiting.Margin = new Padding(this.S(4), 0, this.S(4), 0);
             actions.Controls.Add(waiting);
@@ -192,9 +195,9 @@ internal sealed class DiskListView : Panel
         if (!g.Any(v => v.State == VolumeStatus.Mounted)) return null;
         bool writable = g.Any(v => v.Writable);
         string name = g.First().Name;
-        var toggle = Button(writable ? "Salt okunura dön" : "Yazmaya izin ver", FriendlyButton.Kind.Quiet,
+        var toggle = Button(writable ? WinText.U("Action.BackToReadOnly") : WinText.U("Action.AllowWriting"), FriendlyButton.Kind.Quiet,
             async () => await _app.SetWritableAsync(d, g.Key, multi ? $"{d.Description} · \"{name}\"" : d.Description, !writable, DialogOwner));
-        toggle.BusyText = writable ? "Kaydediliyor…" : "Denetleniyor…";
+        toggle.BusyText = writable ? WinText.U("Action.Saving") : WinText.U("Action.Checking");
         toggle.Busy = _app.IsSwitching(d.Id, g.Key);
         toggle.Enabled = !_app.IsEjecting(d.Id);
         return toggle;
@@ -207,7 +210,7 @@ internal sealed class DiskListView : Panel
         // Eski hizmet bölüm başına neden göndermez: tek bölümlüde disk düzeyindeki neden
         string? reason = g.Select(v => v.WriteBlockReason).FirstOrDefault(r => r is { Length: > 0 }) ?? (multi ? null : d.WriteBlockReason);
         if (reason is not { Length: > 0 }) return null;
-        var why = Label($"Yazmaya açılamadı: {reason}", Theme.Small, Theme.Muted);
+        var why = Label(WinText.U("Card.WriteRefused", reason), Theme.Small, Theme.Muted);
         why.MaximumSize = new Size(this.S(Compact ? 300 : 460), 0);
         why.Margin = new Padding(0, this.S(4), 0, this.S(2));
         return why;

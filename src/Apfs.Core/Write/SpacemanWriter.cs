@@ -48,9 +48,9 @@ internal sealed class SpacemanWriter
         _reader = reader;
         _bs = reader.BlockSize;
         var sm = Spaceman.Read(reader, sb, cp);
-        if (sm.Tier2.BlockCount != 0) throw new ApfsException(ApfsErrorCode.Unsupported, "Fusion alan yöneticisi");
-        if (sm.IpBmSizeInBlocks != 1) throw new ApfsException(ApfsErrorCode.Unsupported, "çok bloklu iç havuz bitmap'i");
-        if (sm.Main.CabCount != 0) throw new ApfsException(ApfsErrorCode.Unsupported, "CIB adres blokları (çok büyük disk) henüz desteklenmiyor");
+        if (sm.Tier2.BlockCount != 0) throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("SmWriter.FusionSpaceman"));
+        if (sm.IpBmSizeInBlocks != 1) throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("SmWriter.MultiBlockIpBitmap"));
+        if (sm.Main.CabCount != 0) throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("SmWriter.CibUnsupported"));
         Mapping = sm.Mapping;
         _raw = (byte[])sm.Raw.Clone();
         _blockCount = sm.Main.BlockCount;
@@ -87,14 +87,14 @@ internal sealed class SpacemanWriter
         foreach (var e in _fqMain.Scan(_ => 0, includeGhosts: true).ToList())
         {
             var (fx, paddr, len) = Entry(e);
-            if (fx >= xid) throw ApfsException.Corrupt("boş kuyrukta gelecekteki bir işlemin kaydı");
+            if (fx >= xid) throw ApfsException.Corrupt(CoreText.T("SmWriter.FreeQueueFutureTx"));
             for (ulong b = paddr; b < paddr + len; b++) SetMain(b, used: false);
             _fqMain.Delete(e.Key);
         }
         foreach (var e in _fqIp.Scan(_ => 0, includeGhosts: true).ToList())
         {
             var (fx, paddr, len) = Entry(e);
-            if (fx >= xid) throw ApfsException.Corrupt("iç havuz boş kuyruğunda gelecekteki bir işlemin kaydı");
+            if (fx >= xid) throw ApfsException.Corrupt(CoreText.T("SmWriter.IpFreeQueueFutureTx"));
             for (ulong b = paddr; b < paddr + len; b++) SetIp(b, used: false);
             _fqIp.Delete(e.Key);
         }
@@ -124,13 +124,13 @@ internal sealed class SpacemanWriter
 
     private void SetMain(ulong paddr, bool used)
     {
-        if (paddr >= _blockCount) throw ApfsException.Corrupt($"blok {paddr} kapsayıcının dışında");
+        if (paddr >= _blockCount) throw ApfsException.Corrupt(CoreText.T("SmWriter.BlockOutsideContainer", paddr));
         int c = (int)(paddr / _blocksPerChunk);
         var bm = Bitmap(c);
         ulong bit = paddr - _chunks[c].Addr;
         byte mask = (byte)(1 << (int)(bit & 7));
         bool was = (bm[bit >> 3] & mask) != 0;
-        if (was == used) throw ApfsException.Corrupt($"blok {paddr} zaten {(used ? "dolu" : "boş")} (alan yöneticisi tutarsız)");
+        if (was == used) throw ApfsException.Corrupt(CoreText.T("SmWriter.BlockAlreadyState", paddr, (used ? CoreText.T("SmWriter.StateUsed") : CoreText.T("SmWriter.StateFree"))));
         bm[bit >> 3] = (byte)(used ? bm[bit >> 3] | mask : bm[bit >> 3] & ~mask);
         var ch = _chunks[c];
         _chunks[c] = ch with { FreeCount = used ? ch.FreeCount - 1 : ch.FreeCount + 1 };
@@ -185,9 +185,9 @@ internal sealed class SpacemanWriter
     {
         for (ulong b = paddr; b < paddr + count; b++)
         {
-            if (!IsAllocated(b)) throw ApfsException.Corrupt($"boş blok {b} bırakılmak istendi");
+            if (!IsAllocated(b)) throw ApfsException.Corrupt(CoreText.T("SmWriter.FreeingFreeBlock", b));
             if (_allocatedThisTx.Remove(b)) SetMain(b, used: false);
-            else if (!_quarantineMain.Add(b)) throw ApfsException.Corrupt($"blok {b} aynı işlemde iki kez bırakıldı");
+            else if (!_quarantineMain.Add(b)) throw ApfsException.Corrupt(CoreText.T("SmWriter.BlockFreedTwice", b));
         }
     }
 
@@ -196,11 +196,11 @@ internal sealed class SpacemanWriter
 
     private void SetIp(ulong paddr, bool used)
     {
-        if (paddr < _ipBase || paddr >= _ipBase + _ipBlockCount) throw ApfsException.Corrupt($"blok {paddr} iç havuzun dışında");
+        if (paddr < _ipBase || paddr >= _ipBase + _ipBlockCount) throw ApfsException.Corrupt(CoreText.T("SmWriter.BlockOutsideIp", paddr));
         ulong bit = paddr - _ipBase;
         byte mask = (byte)(1 << (int)(bit & 7));
         bool was = (_ipBitmap[bit >> 3] & mask) != 0;
-        if (was == used) throw ApfsException.Corrupt($"iç havuz bloğu {paddr} zaten {(used ? "dolu" : "boş")}");
+        if (was == used) throw ApfsException.Corrupt(CoreText.T("SmWriter.IpBlockAlreadyState", paddr, (used ? CoreText.T("SmWriter.StateUsed") : CoreText.T("SmWriter.StateFree"))));
         _ipBitmap[bit >> 3] = (byte)(used ? _ipBitmap[bit >> 3] | mask : _ipBitmap[bit >> 3] & ~mask);
         _ipDirty = true;
     }
@@ -214,13 +214,13 @@ internal sealed class SpacemanWriter
                 _allocatedIpThisTx.Add(_ipBase + i);
                 return _ipBase + i;
             }
-        throw ApfsException.Corrupt("iç havuzda yer kalmadı (alan yöneticisi tutarsız)");
+        throw ApfsException.Corrupt(CoreText.T("SmWriter.IpFull"));
     }
 
     private void FreeIp(ulong paddr)
     {
         if (_allocatedIpThisTx.Remove(paddr)) SetIp(paddr, used: false);
-        else if (!_quarantineIp.Add(paddr)) throw ApfsException.Corrupt($"iç havuz bloğu {paddr} aynı işlemde iki kez bırakıldı");
+        else if (!_quarantineIp.Add(paddr)) throw ApfsException.Corrupt(CoreText.T("SmWriter.IpBlockFreedTwice", paddr));
     }
 
     // ---------------------------------------------------------------------------------------------------------------
@@ -294,7 +294,7 @@ internal sealed class SpacemanWriter
         ushort limit = Bin.U16(_raw, o + 24);
         var tree = which == Spaceman.SfqMain ? _fqMain : _fqIp;
         if (tree.NodeCount > limit)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "tek işlemde çok fazla blok bırakıldı (boş kuyruk sınırı)");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("SmWriter.TooManyFreed"));
     }
 
     private byte[] BuildCib(int cibIndex, ulong paddr, ulong xid)
@@ -331,7 +331,7 @@ internal sealed class SpacemanWriter
         ushort slot = head;
         ushort NextOf(ushort i) => Bin.U16(_raw, (int)(nextOff + i * 2));
         void SetNext(ushort i, ushort v) => BinaryPrimitives.WriteUInt16LittleEndian(_raw.AsSpan((int)(nextOff + i * 2)), v);
-        if (slot >= ringLen || slot == tail) throw ApfsException.Corrupt("iç havuz bitmap halkasında boş yuva yok");
+        if (slot >= ringLen || slot == tail) throw ApfsException.Corrupt(CoreText.T("SmWriter.IpRingNoSlot"));
 
         head = NextOf(slot);          // yeni yuva listeden çıkar
         SetNext(slot, 0xFFFF);

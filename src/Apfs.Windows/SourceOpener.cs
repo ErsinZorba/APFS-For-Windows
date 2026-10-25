@@ -41,9 +41,9 @@ public static partial class SourceOpener
     {
         var parts = PartitionLocator.FindApfsPartitions(device);
         if (parts.Count == 0)
-            throw new ApfsException(ApfsErrorCode.NotApfs, "diskte APFS bölümü bulunamadı");
+            throw new ApfsException(ApfsErrorCode.NotApfs, WinText.T("Source.NoApfsPartition"));
         if (partitionIndex < 0 || partitionIndex >= parts.Count)
-            throw new ApfsException(ApfsErrorCode.InvalidArgument, $"bölüm sırası {partitionIndex}; diskte {parts.Count} APFS bölümü var");
+            throw new ApfsException(ApfsErrorCode.InvalidArgument, WinText.T("Source.PartitionIndex", partitionIndex, parts.Count));
         var p = parts[partitionIndex];
         var window = p.Offset == 0 && p.Length == device.Length ? device : new OffsetDevice(device, p.Offset, p.Length, ownsInner: ownsDevice);
         return ApfsContainer.Open(window, ownsDevice: ownsDevice || !ReferenceEquals(window, device));

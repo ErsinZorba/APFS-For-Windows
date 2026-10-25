@@ -22,7 +22,7 @@ public sealed class ObjectMap
         TreeType = Bin.U32(omap, 40);
         ulong treeOid = Bin.U64(omap, 48);
         if ((TreeType & ApfsConstants.ObjectTypeFlagsMask) != ApfsConstants.ObjPhysical)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "fiziksel olmayan nesne haritası ağacı");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Omap.NonPhysicalTree"));
         _tree = new BTree.BTree(reader, treeOid, ApfsConstants.TypeOmap, resolveVirtual: null);
     }
 
@@ -42,7 +42,7 @@ public sealed class ObjectMap
     {
         foreach (var e in _tree.Scan(_ => 0))
         {
-            if (e.Key.Length < 16 || e.Value.Length < 16) throw ApfsException.Corrupt("nesne haritası kaydı çok kısa");
+            if (e.Key.Length < 16 || e.Value.Length < 16) throw ApfsException.Corrupt(CoreText.T("Omap.RecordTooShort"));
             yield return new Record(Bin.U64(e.Key, 0), Bin.U64(e.Key, 8), Bin.U32(e.Value, 0), Bin.U32(e.Value, 4), Bin.U64(e.Value, 8));
         }
     }
@@ -69,5 +69,5 @@ public sealed class ObjectMap
 
     /// <summary>Bulunamazsa bozuk veri hatası veren sürüm.</summary>
     public OmapValue Resolve(ulong oid, ulong maxXid) =>
-        Lookup(oid, maxXid) ?? throw ApfsException.Corrupt($"nesne haritasında bulunamayan nesne {oid}");
+        Lookup(oid, maxXid) ?? throw ApfsException.Corrupt(CoreText.T("Omap.ObjectNotFound", oid));
 }

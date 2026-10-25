@@ -24,9 +24,11 @@ public class ServiceWriteTests(LinuxFixtures fixtures, TestImages images) : ICla
         private readonly Process _p;
         public string Pipe { get; } = "APFStest" + Guid.NewGuid().ToString("N")[..8];
 
-        public DevService(string image, IReadOnlyDictionary<string, string>? environment = null)
+        /// <param name="lang">Hizmetin dili. Hizmet ayrı süreçtir, testlerin Türkçe kültürü ona geçmez; verilmezse makinenin
+        /// Windows dili kullanılırdı ve Türkçe beklentiler makineye bağlı olurdu.</param>
+        public DevService(string image, IReadOnlyDictionary<string, string>? environment = null, string lang = "tr")
         {
-            var psi = new ProcessStartInfo(ServicePath(), $"--console --pipe {Pipe} --image \"{image}\"")
+            var psi = new ProcessStartInfo(ServicePath(), $"--console --pipe {Pipe} --image \"{image}\" --lang {lang}")
             { UseShellExecute = false, RedirectStandardOutput = true, RedirectStandardError = true, CreateNoWindow = true };
             foreach (var (k, v) in environment ?? new Dictionary<string, string>()) psi.Environment[k] = v;
             _p = Process.Start(psi)!;

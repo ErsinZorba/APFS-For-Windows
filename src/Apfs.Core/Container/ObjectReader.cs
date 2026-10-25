@@ -15,7 +15,7 @@ public sealed class ObjectReader
     public ObjectReader(IBlockDevice device, uint blockSize, int cacheBlocks = 4096)
     {
         if (blockSize < ApfsConstants.MinBlockSize || blockSize > ApfsConstants.MaxBlockSize || !uint.IsPow2(blockSize))
-            throw ApfsException.Corrupt($"geçersiz blok boyutu {blockSize}");
+            throw ApfsException.Corrupt(CoreText.T("Object.InvalidBlockSize", blockSize));
         _device = device;
         BlockSize = blockSize;
         BlockCount = (ulong)(device.Length / blockSize);
@@ -30,7 +30,7 @@ public sealed class ObjectReader
     public byte[] ReadBlock(ulong paddr)
     {
         if (paddr >= BlockCount)
-            throw ApfsException.Corrupt($"blok adresi diskin dışında: {paddr}");
+            throw ApfsException.Corrupt(CoreText.T("Object.BlockOutsideDisk", paddr));
         var buf = new byte[BlockSize];
         _device.Read((long)(paddr * BlockSize), buf);
         return buf;
@@ -40,7 +40,7 @@ public sealed class ObjectReader
     public void ReadBlocks(ulong paddr, long byteOffsetInBlock, Span<byte> buffer)
     {
         if (paddr >= BlockCount)
-            throw ApfsException.Corrupt($"blok adresi diskin dışında: {paddr}");
+            throw ApfsException.Corrupt(CoreText.T("Object.BlockOutsideDisk", paddr));
         long start = (long)(paddr * BlockSize) + byteOffsetInBlock;
         _device.Read(start, buffer);
     }
@@ -74,11 +74,11 @@ public sealed class ObjectReader
     private static void Validate(byte[] block, ulong paddr, uint expectedType, ulong expectedOid, bool checksum)
     {
         if (checksum && !Fletcher64.Verify(block))
-            throw new ApfsException(ApfsErrorCode.ChecksumMismatch, $"blok {paddr}");
+            throw new ApfsException(ApfsErrorCode.ChecksumMismatch, CoreText.T("Object.Block", paddr));
         uint type = Bin.U32(block, 24) & ApfsConstants.ObjectTypeMask;
         if (expectedType != 0 && type != expectedType)
-            throw ApfsException.Corrupt($"blok {paddr}: beklenen nesne türü 0x{expectedType:x}, bulunan 0x{type:x}");
+            throw ApfsException.Corrupt(CoreText.T("Object.TypeMismatch", paddr, expectedType, type));
         if (expectedOid != 0 && Bin.U64(block, 8) != expectedOid)
-            throw ApfsException.Corrupt($"blok {paddr}: nesne kimliği eşleşmiyor");
+            throw ApfsException.Corrupt(CoreText.T("Object.OidMismatch", paddr));
     }
 }

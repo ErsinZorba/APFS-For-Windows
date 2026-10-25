@@ -48,26 +48,26 @@ public sealed class ReaperState
         var lists = new List<(CheckpointMapping, byte[])>();
 
         string? problem = null;
-        if (oid != 0) problem = $"reaper meşgul: nesne {oid} siliniyor";
-        else if ((flags & FlagContinue) != 0) problem = "reaper meşgul: yarım kalmış bir silme var";
+        if (oid != 0) problem = CoreText.T("Reaper.DeletingObject", oid);
+        else if ((flags & FlagContinue) != 0) problem = CoreText.T("Reaper.ContinuePending");
         else if (head == 0)
         {
-            if (tail != 0 || count != 0) problem = "reaper meşgul: liste göstergeleri tutarsız";
+            if (tail != 0 || count != 0) problem = CoreText.T("Reaper.ListPointersInconsistent");
         }
-        else if (completed + 1 != next) problem = $"reaper meşgul: bitmemiş silme var (sonraki {next}, tamamlanan {completed})";
-        else if (fsOid != 0) problem = $"reaper meşgul: birim {fsOid} için silme kaydı var";
-        else if (head != tail || count != 1) problem = $"reaper meşgul: birden çok liste (baş {head}, kuyruk {tail}, sayı {count})";
-        else if (cp.Find(head) is not { } m) problem = $"reaper listesi {head} checkpoint haritasında yok";
+        else if (completed + 1 != next) problem = CoreText.T("Reaper.DeletionUnfinished", next, completed);
+        else if (fsOid != 0) problem = CoreText.T("Reaper.VolumeRecord", fsOid);
+        else if (head != tail || count != 1) problem = CoreText.T("Reaper.MultipleLists", head, tail, count);
+        else if (cp.Find(head) is not { } m) problem = CoreText.T("Reaper.ListNotMapped", head);
         else
         {
             var l = cp.ReadEphemeral(m);
             lists.Add((m, l));
-            if (m.ObjectType != ApfsConstants.TypeNxReapList || m.Subtype != 0) problem = $"reaper listesi {head}: tür yanlış";
+            if (m.ObjectType != ApfsConstants.TypeNxReapList || m.Subtype != 0) problem = CoreText.T("Reaper.ListWrongType", head);
             else if (l.Length != sb.BlockSize || Bin.U32(l, 44) != (sb.BlockSize - ListHeader) / ListEntry)
-                problem = $"reaper listesi {head}: en fazla girdi sayısı yanlış";
+                problem = CoreText.T("Reaper.ListWrongMax", head);
             else if (Bin.U64(l, 32) != 0 || Bin.U32(l, 40) != 0 || Bin.U32(l, 48) != 0
                      || Bin.U32(l, 52) != uint.MaxValue || Bin.U32(l, 56) != uint.MaxValue)
-                problem = $"reaper meşgul: liste {head} boş değil";
+                problem = CoreText.T("Reaper.ListNotEmpty", head);
         }
         return new ReaperState(r, lists, problem);
     }

@@ -45,7 +45,7 @@ public sealed class NxSuperblock
     public static NxSuperblock Parse(byte[] b, ulong paddr)
     {
         if (Bin.U32(b, 32) != ApfsConstants.NxMagic)
-            throw new ApfsException(ApfsErrorCode.NotApfs, "NXSB imzası yok");
+            throw new ApfsException(ApfsErrorCode.NotApfs, CoreText.T("Nx.NoSignature"));
         uint maxFs = Bin.U32(b, 180);
         var fsOids = new List<ulong>();
         for (int i = 0; i < Math.Min(maxFs, (uint)ApfsConstants.NxMaxFileSystems); i++)

@@ -17,18 +17,18 @@ internal ref struct Der
     /// <summary>Sıradaki öğeyi okur; etiketi <paramref name="tag"/> değilse bozuk veri hatası.</summary>
     public ReadOnlySpan<byte> Read(byte tag)
     {
-        if (_pos + 2 > _data.Length) throw Corrupt("eksik DER öğesi");
+        if (_pos + 2 > _data.Length) throw Corrupt(CoreText.T("Der.MissingElement"));
         byte t = _data[_pos++];
-        if (t != tag) throw Corrupt($"beklenen DER etiketi 0x{tag:x2}, bulunan 0x{t:x2}");
+        if (t != tag) throw Corrupt(CoreText.T("Der.TagMismatch", tag, t));
         int len = _data[_pos++];
         if (len >= 0x80)
         {
             int bytes = len & 0x7F;
-            if (bytes is 0 or > 3 || _pos + bytes > _data.Length) throw Corrupt("geçersiz DER uzunluğu");
+            if (bytes is 0 or > 3 || _pos + bytes > _data.Length) throw Corrupt(CoreText.T("Der.InvalidLength"));
             len = 0;
             for (int i = 0; i < bytes; i++) len = (len << 8) | _data[_pos++];
         }
-        if (len < 0 || _pos + len > _data.Length) throw Corrupt("DER öğesi sınır dışında");
+        if (len < 0 || _pos + len > _data.Length) throw Corrupt(CoreText.T("Der.ElementOutOfBounds"));
         var value = _data.Slice(_pos, len);
         _pos += len;
         return value;
@@ -49,11 +49,11 @@ internal ref struct Der
     /// <summary>Big-endian işaretsiz tamsayı.</summary>
     public static ulong ToUInt(ReadOnlySpan<byte> v)
     {
-        if (v.Length > 9 || (v.Length == 9 && v[0] != 0)) throw Corrupt("DER tamsayısı çok büyük");
+        if (v.Length > 9 || (v.Length == 9 && v[0] != 0)) throw Corrupt(CoreText.T("Der.IntegerTooLarge"));
         ulong x = 0;
         foreach (byte b in v) x = (x << 8) | b;
         return x;
     }
 
-    private static ApfsException Corrupt(string detail) => new(ApfsErrorCode.Corrupt, $"şifreleme anahtarı kaydı: {detail}");
+    private static ApfsException Corrupt(string detail) => new(ApfsErrorCode.Corrupt, CoreText.T("Der.KeyRecordPrefix", detail));
 }

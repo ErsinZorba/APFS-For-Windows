@@ -39,50 +39,50 @@ public static class WriteGate
         var reasons = new List<string>();
         var sb = c.Superblock;
 
-        if ((sb.IncompatibleFeatures & ApfsConstants.NxIncompatFusion) != 0) reasons.Add("Fusion Drive kapsayıcısına yazma desteklenmiyor.");
+        if ((sb.IncompatibleFeatures & ApfsConstants.NxIncompatFusion) != 0) reasons.Add(CoreText.U("Gate.Fusion"));
         if ((sb.IncompatibleFeatures & ~NxIncompatAllowed & ~ApfsConstants.NxIncompatFusion) != 0
             || (sb.Features & ~NxFeatureDefrag) != 0 || sb.ReadOnlyCompatibleFeatures != 0)
-            reasons.Add("Disk, bu sürümün tanımadığı bir APFS özelliği kullanıyor.");
-        if (sb.BlockSize != 4096) reasons.Add($"Blok boyutu {sb.BlockSize}; yalnızca 4096 baytlık bloklar destekleniyor.");
+            reasons.Add(CoreText.U("Gate.UnknownContainerFeature"));
+        if (sb.BlockSize != 4096) reasons.Add(CoreText.U("Gate.BlockSize", sb.BlockSize));
         if ((sb.XpDescBlocks & ApfsConstants.XpDescBlocksNonContiguous) != 0 || (sb.XpDataBlocks & ApfsConstants.XpDescBlocksNonContiguous) != 0)
-            reasons.Add("Diskin kontrol noktası alanı parçalı; bu düzen desteklenmiyor.");
-        if (c.Warnings.Count > 0) reasons.Add("Disk açılırken sorun görüldü (en yeni kontrol noktası kullanılamıyor olabilir).");
+            reasons.Add(CoreText.U("Gate.CheckpointArea"));
+        if (c.Warnings.Count > 0) reasons.Add(CoreText.U("Gate.OpenWarnings"));
 
         foreach (ulong oid in sb.FsOids)
         {
             byte[] v;
             try { v = c.Reader.ReadObject(c.Omap.Resolve(oid, c.Xid).Paddr, ApfsConstants.TypeFs, oid); }
-            catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { reasons.Add($"Bir birim okunamadı ({e.Detail})."); continue; }
+            catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { reasons.Add(CoreText.U("Gate.VolumeUnreadable", e.Detail)); continue; }
             string name = Bin.Utf8Z(Bin.Slice(v, 704, 256));
             ulong fsFlags = Bin.U64(v, 264);
             ushort role = Bin.U16(v, 964);
             if ((fsFlags & 3) != ApfsConstants.ApfsFsUnencrypted)
             {
                 if (fsFlags != ApfsConstants.ApfsFsOneKey || (sb.Flags & ApfsConstants.NxCryptoSw) == 0)
-                    reasons.Add($"\"{name}\" birimi bu sürümün yazamadığı bir türde şifreli (donanım şifrelemesi ya da dosya başına anahtar).");
+                    reasons.Add(CoreText.U("Gate.UnsupportedEncryption", name));
                 else if (!keyList.Any(k => k.VolumeUuid == Bin.Uuid(v, 240)))
-                    reasons.Add($"\"{name}\" birimi şifreli; yazmaya açmak için önce kilidini açın.");
+                    reasons.Add(CoreText.U("Gate.Locked", name));
                 if ((Bin.U64(v, 56) & ApfsConstants.ApfsIncompatEncRolled) != 0)
-                    reasons.Add($"\"{name}\" biriminin şifrelemesi sonradan değiştirilmiş (ENC_ROLLED); böyle bir diske yazılmaz.");
+                    reasons.Add(CoreText.U("Gate.EncRolled", name));
                 try
                 {
                     uint omFlags = Bin.U32(c.Reader.ReadObject(Bin.U64(v, 128), ApfsConstants.TypeOmap), 32);
                     if ((omFlags & OmapCryptoBusy) != 0)
-                        reasons.Add($"\"{name}\" biriminde macOS'un başlattığı bir şifreleme işlemi henüz bitmemiş; böyle bir diske yazılmaz.");
+                        reasons.Add(CoreText.U("Gate.EncryptionInProgress", name));
                 }
-                catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { reasons.Add($"\"{name}\" biriminin nesne haritası okunamadı."); }
+                catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { reasons.Add(CoreText.U("Gate.OmapUnreadable", name)); }
             }
             else if ((fsFlags & ~ApfsFsFlagsAllowed) != 0)
-                reasons.Add($"\"{name}\" biriminde bu sürümün desteklemediği bir ayar var.");
-            if (Bin.U64(v, 216) != 0) reasons.Add($"\"{name}\" biriminde anlık görüntü (ör. Time Machine) var; böyle disklere yazma desteklenmiyor.");
+                reasons.Add(CoreText.U("Gate.UnsupportedVolumeSetting", name));
+            if (Bin.U64(v, 216) != 0) reasons.Add(CoreText.U("Gate.Snapshots", name));
             if (role is not (ApfsConstants.RoleNone or ApfsConstants.RoleUser))
-                reasons.Add($"\"{name}\" bir macOS sistem, yedek veya iç birimi; bu diske yazılmaz.");
+                reasons.Add(CoreText.U("Gate.SystemVolume", name));
             if (Bin.U64(v, 976) != 0)
-                reasons.Add($"\"{name}\" biriminde macOS'un başlattığı bir şifreleme işlemi henüz bitmemiş; böyle bir diske yazılmaz.");
+                reasons.Add(CoreText.U("Gate.EncryptionInProgress", name));
             ulong incompat = Bin.U64(v, 56);
-            if ((incompat & ApfsConstants.ApfsIncompatSealedVolume) != 0) reasons.Add($"\"{name}\" mühürlü bir sistem birimi.");
+            if ((incompat & ApfsConstants.ApfsIncompatSealedVolume) != 0) reasons.Add(CoreText.U("Gate.Sealed", name));
             else if ((incompat & ~ApfsIncompatAllowed) != 0 || (Bin.U64(v, 40) & ~ApfsFeaturesAllowed) != 0 || Bin.U64(v, 48) != 0)
-                reasons.Add($"\"{name}\" birimi bu sürümün tanımadığı bir APFS özelliği kullanıyor.");
+                reasons.Add(CoreText.U("Gate.UnknownVolumeFeature", name));
         }
 
         if (reasons.Count > 0) return new GateResult(false, Distinct(reasons), null, null);
@@ -90,11 +90,11 @@ public static class WriteGate
         // Yapısal denetim en sonda: pahalıdır ve yukarıdaki kurallar geçmeden anlamsızdır
         var report = FullCheck.Run(c, keys: keyList);
         if (!report.IsClean)
-            return new GateResult(false, ["Diskin iç yapısında tutarsızlık bulundu; güvenlik için yazmaya açılmadı. Diski Mac'te Disk İzlencesi → İlk Yardım ile denetleyin."], null, report);
+            return new GateResult(false, [CoreText.U("Gate.Inconsistent")], null, report);
         if (report.WriteBlockers.Count > 0)
-            return new GateResult(false, [.. report.WriteBlockers.Select(b => $"Diskte bu sürümün güncel tutamadığı bir özellik var ({b}); yazmaya açılmadı.")], null, report);
+            return new GateResult(false, [.. report.WriteBlockers.Select(b => CoreText.U("Gate.WriteBlocker", b))], null, report);
         if (report.OwnershipIncomplete)
-            return new GateResult(false, ["Diskte bu sürümün çözümleyemediği bir yapı var; her bloğun sahibi doğrulanamadığı için yazmaya açılmadı."], null, report);
+            return new GateResult(false, [CoreText.U("Gate.Unresolvable")], null, report);
         return new GateResult(true, [], new WriteGrant(sb.Uuid, sb.Xid), report);
     }
 

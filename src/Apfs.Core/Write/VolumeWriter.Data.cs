@@ -50,10 +50,10 @@ public sealed partial class VolumeWriter
         foreach (var e in _fs.Scan(k => JKey.ComparePrefix(k, streamId, JType.FileExtent)))
         {
             ulong logical = Bin.U64(e.Key, 8), len = Bin.U64(e.Value, 0) & 0x00FFFFFFFFFFFFFF;
-            if (logical % Bs != 0 || len % Bs != 0 || len == 0) throw ApfsException.Corrupt($"veri akışı {streamId}: hizasız extent");
+            if (logical % Bs != 0 || len % Bs != 0 || len == 0) throw ApfsException.Corrupt(CoreText.T("VolWriter.UnalignedExtent", streamId));
             ulong phys = Bin.U64(e.Value, 8), crypto = Bin.U64(e.Value, 16);
-            if (Crypto is null && crypto != 0) throw new ApfsException(ApfsErrorCode.Unsupported, "şifresiz birimde şifreli extent");
-            if (Crypto is not null && phys != 0 && crypto == 0) throw ApfsException.Corrupt($"veri akışı {streamId}: şifreli birimde crypto_id'siz extent");
+            if (Crypto is null && crypto != 0) throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("VolWriter.EncryptedExtentOnPlain"));
+            if (Crypto is not null && phys != 0 && crypto == 0) throw ApfsException.Corrupt(CoreText.T("VolWriter.ExtentWithoutCryptoId", streamId));
             list.Add(new Ext(logical / Bs, len / Bs, phys, phys == 0 ? 0 : crypto, (byte)(Bin.U64(e.Value, 0) >> 56)));
         }
         return list;
@@ -119,7 +119,7 @@ public sealed partial class VolumeWriter
             if (p.Refcnt > 1) PutPhys(p with { Start = a, Blocks = b - a, Refcnt = p.Refcnt - 1 });
             else FreeData(a, b - a);
         }
-        if (covered != n) throw ApfsException.Corrupt($"blok {start}+{n} için fiziksel extent kaydı eksik");
+        if (covered != n) throw ApfsException.Corrupt(CoreText.T("VolWriter.PhysExtentMissing", start, n));
     }
 
     private (ulong Start, ulong Count) AllocData(ulong maxBlocks)
@@ -246,11 +246,11 @@ public sealed partial class VolumeWriter
     private InodeRecord RequireWritableFile(ulong id)
     {
         var ino = GetInode(id) ?? throw new ApfsException(ApfsErrorCode.NotFound, $"inode {id}");
-        if ((ino.Mode & Inode.ModeTypeMask) != Inode.ModeRegular) throw new ApfsException(ApfsErrorCode.InvalidArgument, "dosya değil");
+        if ((ino.Mode & Inode.ModeTypeMask) != Inode.ModeRegular) throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("VolWriter.NotAFile"));
         if ((ino.BsdFlags & Inode.BsdFlagCompressed) != 0)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "macOS'un sıkıştırdığı dosyalar bu sürümde değiştirilemiyor; dosyayı kopyalayıp kopyasını düzenleyin");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("VolWriter.CompressedReadOnly"));
         if (IsCloned(ino))
-            throw new ApfsException(ApfsErrorCode.Unsupported, "Mac'te çoğaltılmış (klon) bir dosya bu sürümde değiştirilemiyor; dosyayı kopyalayıp kopyasını düzenleyin");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("VolWriter.ClonedReadOnly"));
         return ino;
     }
 

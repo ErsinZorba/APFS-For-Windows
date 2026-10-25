@@ -49,9 +49,9 @@ public static class DiskEjector
         string who = new string(veto).TrimEnd('\0');
         return (false, vetoType switch
         {
-            3 or 4 => $"Disk başka bir program tarafından kullanılıyor ({who}). O programı kapatıp tekrar deneyin.",
-            5 or 6 => "Diskte başka bir program açık dosya veya tanıtıcı tutuyor. Açık pencereleri ve programları kapatıp tekrar deneyin.",
-            _ => $"Windows diski şu anda çıkaramadı (kod {cr:X}/{vetoType}{(who.Length > 0 ? ", " + who : "")}). Biraz sonra tekrar deneyin.",
+            3 or 4 => WinText.T("Ejector.InUse", who),
+            5 or 6 => WinText.T("Ejector.OpenHandles"),
+            _ => WinText.T("Ejector.Refused", cr, vetoType, (who.Length > 0 ? ", " + who : "")),
         });
     }
 

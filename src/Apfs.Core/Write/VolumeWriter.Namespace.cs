@@ -24,7 +24,7 @@ public sealed partial class VolumeWriter
     private (byte[] Key, byte[] Val) DrecRecord(ulong parentId, DirEntry de)
     {
         var key = Records.DrecKey(parentId, de.Name, Hashed, CaseInsensitive);
-        if (!_fs.TryGet(key, out var val)) throw ApfsException.Corrupt($"\"{de.Name}\" girdisinin kaydı bulunamadı");
+        if (!_fs.TryGet(key, out var val)) throw ApfsException.Corrupt(CoreText.T("VolWriter.EntryRecordMissing", de.Name));
         return (key, val);
     }
 
@@ -83,7 +83,7 @@ public sealed partial class VolumeWriter
     {
         var parent = RequireDirectory(parentId);
         var de = FindEntry(parentId, name) ?? throw new ApfsException(ApfsErrorCode.NotFound, name);
-        var target = GetInode(de.FileId) ?? throw ApfsException.Corrupt($"\"{de.Name}\" girdisinin inode'u yok");
+        var target = GetInode(de.FileId) ?? throw ApfsException.Corrupt(CoreText.T("VolWriter.EntryInodeMissing", de.Name));
         if (target.IsDirectory && target.ChildrenOrLinks != 0) throw new ApfsException(ApfsErrorCode.DirectoryNotEmpty, de.Name);
 
         var (key, val) = DrecRecord(parentId, de);
@@ -178,11 +178,11 @@ public sealed partial class VolumeWriter
         var srcParent = RequireDirectory(srcParentId);
         RequireDirectory(dstParentId);
         var de = FindEntry(srcParentId, srcName) ?? throw new ApfsException(ApfsErrorCode.NotFound, srcName);
-        var ino = GetInode(de.FileId) ?? throw ApfsException.Corrupt($"\"{de.Name}\" girdisinin inode'u yok");
+        var ino = GetInode(de.FileId) ?? throw ApfsException.Corrupt(CoreText.T("VolWriter.EntryInodeMissing", de.Name));
 
         if (ino.IsDirectory)
             for (ulong p = dstParentId; p != Inode.RootDirParent && p != 0; p = GetInode(p)?.ParentId ?? 0)
-                if (p == de.FileId) throw new ApfsException(ApfsErrorCode.InvalidArgument, "klasör kendi içine taşınamaz");
+                if (p == de.FileId) throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("VolWriter.MoveIntoSelf"));
 
         var existing = FindCollision(dstParentId, dstName);
         bool sameItem = existing is not null && existing.FileId == de.FileId && dstParentId == srcParentId;

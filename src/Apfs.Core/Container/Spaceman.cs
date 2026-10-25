@@ -90,13 +90,13 @@ public sealed class Spaceman
 
     public static Spaceman Read(ObjectReader reader, NxSuperblock sb, Checkpoint checkpoint)
     {
-        var m = checkpoint.Find(sb.SpacemanOid) ?? throw ApfsException.Corrupt("alan yöneticisi checkpoint haritasında yok");
+        var m = checkpoint.Find(sb.SpacemanOid) ?? throw ApfsException.Corrupt(CoreText.T("Sm.NotInCheckpoint"));
         var raw = checkpoint.ReadEphemeral(m);
         if ((Bin.U32(raw, 24) & ApfsConstants.ObjectTypeMask) != ApfsConstants.TypeSpaceman)
-            throw ApfsException.Corrupt("alan yöneticisi nesnesinin türü yanlış");
+            throw ApfsException.Corrupt(CoreText.T("Sm.WrongType"));
         var sm = new Spaceman(reader, checkpoint, m, raw);
         if (sm.BlockSize != reader.BlockSize || sm.BlocksPerChunk != reader.BlockSize * 8)
-            throw ApfsException.Corrupt("alan yöneticisinin blok/parça boyutu tutarsız");
+            throw ApfsException.Corrupt(CoreText.T("Sm.SizeInconsistent"));
         return sm;
     }
 
@@ -128,9 +128,9 @@ public sealed class Spaceman
         {
             ulong cabAddr = ArrayU64(dev.AddrOffset, c);
             var cab = _reader.ReadObject(cabAddr, ApfsConstants.TypeSpacemanCab);
-            if (Bin.U32(cab, 32) != c) throw ApfsException.Corrupt($"CAB {cabAddr}: sıra numarası yanlış");
+            if (Bin.U32(cab, 32) != c) throw ApfsException.Corrupt(CoreText.T("Sm.CabWrongIndex", cabAddr));
             uint n = Bin.U32(cab, 36);
-            if (40 + (long)n * 8 > cab.Length) throw ApfsException.Corrupt($"CAB {cabAddr}: CIB sayısı bloğa sığmıyor");
+            if (40 + (long)n * 8 > cab.Length) throw ApfsException.Corrupt(CoreText.T("Sm.CabCountTooBig", cabAddr));
             for (uint i = 0; i < n; i++) list.Add(Bin.U64(cab, (int)(40 + i * 8)));
         }
         return list;
@@ -146,9 +146,9 @@ public sealed class Spaceman
         for (int c = 0; c < cibs.Count; c++)
         {
             var cib = _reader.ReadObject(cibs[c], ApfsConstants.TypeSpacemanCib);
-            if (Bin.U32(cib, 32) != (uint)c) throw ApfsException.Corrupt($"CIB {cibs[c]}: sıra numarası yanlış");
+            if (Bin.U32(cib, 32) != (uint)c) throw ApfsException.Corrupt(CoreText.T("Sm.CibWrongIndex", cibs[c]));
             uint n = Bin.U32(cib, 36);
-            if (40 + (long)n * 32 > cib.Length) throw ApfsException.Corrupt($"CIB {cibs[c]}: parça sayısı bloğa sığmıyor");
+            if (40 + (long)n * 32 > cib.Length) throw ApfsException.Corrupt(CoreText.T("Sm.CibCountTooBig", cibs[c]));
             for (uint i = 0; i < n; i++)
             {
                 int o = (int)(40 + i * 32);
@@ -186,7 +186,7 @@ public sealed class Spaceman
         for (uint i = 0; i < IpBmSizeInBlocks; i++)
         {
             ushort idx = ArrayU16(IpBitmapOffset, i);
-            if (idx >= IpBmBlockCount) throw ApfsException.Corrupt("iç havuz bitmap indeksi halkanın dışında");
+            if (idx >= IpBmBlockCount) throw ApfsException.Corrupt(CoreText.T("Sm.IpBitmapIndexOutside"));
             _reader.ReadBlock(IpBmBase + idx).CopyTo(bm, (int)(i * BlockSize));
         }
         return bm;
@@ -197,12 +197,12 @@ public sealed class Spaceman
     {
         var q = FreeQueues[which];
         if (q.TreeOid == 0) yield break;
-        var root = _checkpoint.Find(q.TreeOid) ?? throw ApfsException.Corrupt($"boş kuyruk ağacı {q.TreeOid} checkpoint haritasında yok");
+        var root = _checkpoint.Find(q.TreeOid) ?? throw ApfsException.Corrupt(CoreText.T("Sm.FreeQueueTreeNotMapped", q.TreeOid));
         var tree = new BTree.BTree(_reader, root.Paddr, ApfsConstants.TypeSpacemanFreeQueue,
-            oid => (_checkpoint.Find(oid)?.Paddr ?? throw ApfsException.Corrupt($"boş kuyruk düğümü {oid} checkpoint haritasında yok"), false));
+            oid => (_checkpoint.Find(oid)?.Paddr ?? throw ApfsException.Corrupt(CoreText.T("Sm.FreeQueueNodeNotMapped", oid)), false));
         foreach (var e in tree.Scan(_ => 0, includeGhosts: true))
         {
-            if (e.Key.Length < 16) throw ApfsException.Corrupt("boş kuyruk anahtarı çok kısa");
+            if (e.Key.Length < 16) throw ApfsException.Corrupt(CoreText.T("Sm.FreeQueueKeyTooShort"));
             ulong len = e.Value.Length >= 8 ? Bin.U64(e.Value, 0) : 1;
             yield return new FreeQueueEntry(Bin.U64(e.Key, 0), Bin.U64(e.Key, 8), len);
         }
@@ -213,7 +213,7 @@ public sealed class Spaceman
     {
         ulong chunkIndex = paddr / BlocksPerChunk;
         var chunks = MainChunks();
-        if (chunkIndex >= (ulong)chunks.Count) throw ApfsException.Corrupt($"blok {paddr} alan yöneticisinin kapsamı dışında");
+        if (chunkIndex >= (ulong)chunks.Count) throw ApfsException.Corrupt(CoreText.T("Sm.BlockOutOfRange", paddr));
         var ch = chunks[(int)chunkIndex];
         if (ch.BitmapAddr == 0) return false;
         ulong bit = paddr - ch.Addr;

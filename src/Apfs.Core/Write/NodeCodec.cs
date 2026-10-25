@@ -55,15 +55,15 @@ internal static class NodeCodec
         bool root = (flags & ApfsConstants.BtNodeRoot) != 0;
         bool leaf = (flags & ApfsConstants.BtNodeLeaf) != 0;
         bool fixedKv = (flags & ApfsConstants.BtNodeFixedKvSize) != 0;
-        if (root != isRoot) throw ApfsException.Corrupt("B-ağacı kök bayrağı beklenenle uyuşmuyor");
-        if (leaf != (level == 0)) throw ApfsException.Corrupt("B-ağacı yaprak bayrağı ile seviye tutarsız");
-        if (fixedKv != shape.IsFixed) throw ApfsException.Corrupt("B-ağacı sabit boyut bayrağı ağaçla uyuşmuyor");
-        if (level >= BTree.BTree.MaxDepth) throw ApfsException.Corrupt("B-ağacı düğüm seviyesi geçersiz");
+        if (root != isRoot) throw ApfsException.Corrupt(CoreText.T("Codec.RootFlagMismatch"));
+        if (leaf != (level == 0)) throw ApfsException.Corrupt(CoreText.T("Codec.LeafFlagLevelMismatch"));
+        if (fixedKv != shape.IsFixed) throw ApfsException.Corrupt(CoreText.T("Codec.FixedFlagMismatch"));
+        if (level >= BTree.BTree.MaxDepth) throw ApfsException.Corrupt(CoreText.T("Codec.InvalidLevel"));
         int tocStart = TreeShape.HeaderSize + tocOff;
         int keyStart = tocStart + tocLen;
         int valEnd = b.Length - (root ? TreeShape.FooterSize : 0);
         int entry = fixedKv ? 4 : 8;
-        if (keyStart > valEnd || (long)n * entry > tocLen) throw ApfsException.Corrupt("B-ağacı içindekiler tablosu geçersiz");
+        if (keyStart > valEnd || (long)n * entry > tocLen) throw ApfsException.Corrupt(CoreText.T("Codec.InvalidToc"));
 
         var node = new MNode { Oid = Bin.U64(b, 8), Level = level };
         for (int i = 0; i < n; i++)
@@ -79,18 +79,18 @@ internal static class NodeCodec
             {
                 kOff = Bin.U16(b, t); kLen = Bin.U16(b, t + 2); vOff = Bin.U16(b, t + 4); vLen = Bin.U16(b, t + 6);
             }
-            if (keyStart + kOff + kLen > valEnd) throw ApfsException.Corrupt("B-ağacı anahtarı düğüm sınırı dışında");
+            if (keyStart + kOff + kLen > valEnd) throw ApfsException.Corrupt(CoreText.T("Codec.KeyOutOfBounds"));
             node.Keys.Add(b.AsSpan(keyStart + kOff, kLen).ToArray());
             if (vOff == TreeShape.NoOffset)
             {
-                if (!leaf) throw ApfsException.Corrupt("iç düğümde hayalet kayıt");
+                if (!leaf) throw ApfsException.Corrupt(CoreText.T("Codec.GhostInIndex"));
                 node.Vals.Add(null);
             }
             else
             {
                 int vStart = valEnd - vOff;
-                if (vStart < keyStart || vStart + vLen > valEnd) throw ApfsException.Corrupt("B-ağacı değeri düğüm sınırı dışında");
-                if (!leaf && vLen != 8) throw ApfsException.Corrupt("iç düğüm değeri 8 bayt değil");
+                if (vStart < keyStart || vStart + vLen > valEnd) throw ApfsException.Corrupt(CoreText.T("Codec.ValueOutOfBounds"));
+                if (!leaf && vLen != 8) throw ApfsException.Corrupt(CoreText.T("Codec.IndexValueNot8"));
                 node.Vals.Add(b.AsSpan(vStart, vLen).ToArray());
             }
             node.Children.Add(null);
@@ -122,7 +122,7 @@ internal static class NodeCodec
     /// <summary>Düğümü diskteki biçime yazar ve sağlama toplamını hesaplar.</summary>
     public static byte[] Serialize(MNode node, TreeShape shape, bool isRoot, ulong oid, ulong xid)
     {
-        if (!Fits(node, shape, isRoot)) throw new InvalidOperationException("düğüm bloğa sığmıyor");
+        if (!Fits(node, shape, isRoot)) throw new InvalidOperationException(CoreText.T("Codec.NodeTooBig"));
         var b = new byte[shape.BlockSize];
         var s = b.AsSpan();
         BinaryPrimitives.WriteUInt64LittleEndian(s[8..], oid);
@@ -147,7 +147,7 @@ internal static class NodeCodec
         {
             var key = node.Keys[i];
             var val = node.Vals[i];
-            if (shape.IsFixed && key.Length != shape.FixedKeySize) throw new InvalidOperationException("sabit anahtar boyutu uyuşmuyor");
+            if (shape.IsFixed && key.Length != shape.FixedKeySize) throw new InvalidOperationException(CoreText.T("Codec.FixedKeySizeMismatch"));
             key.CopyTo(s[(keyStart + kPos)..]);
             ushort vOffField = TreeShape.NoOffset;
             if (val is not null)
@@ -181,7 +181,7 @@ internal static class NodeCodec
 
         if (isRoot)
         {
-            var footer = node.Footer ?? throw new InvalidOperationException("kök düğümün özeti yok");
+            var footer = node.Footer ?? throw new InvalidOperationException(CoreText.T("Codec.RootNoFooter"));
             footer.CopyTo(s[(shape.BlockSize - TreeShape.FooterSize)..]);
         }
         BinaryPrimitives.WriteUInt64LittleEndian(s, Fletcher64.Compute(b));

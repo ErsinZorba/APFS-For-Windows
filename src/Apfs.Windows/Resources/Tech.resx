@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cli.AdminRequired" xml:space="preserve">
+    <value>this command must be run as administrator</value>
+  </data>
+  <data name="Cli.ArgMissing" xml:space="preserve">
+    <value>&lt;{0}&gt; missing</value>
+  </data>
+  <data name="Cli.ArgPath" xml:space="preserve">
+    <value>path</value>
+  </data>
+  <data name="Cli.ArgSource" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="Cli.ArgTarget" xml:space="preserve">
+    <value>target</value>
+  </data>
+  <data name="Cli.Bytes" xml:space="preserve">
+    <value>{0} bytes</value>
+  </data>
+  <data name="Cli.CaseInsensitive" xml:space="preserve">
+    <value>insensitive</value>
+  </data>
+  <data name="Cli.CaseSensitive" xml:space="preserve">
+    <value>sensitive</value>
+  </data>
+  <data name="Cli.CheckError" xml:space="preserve">
+    <value>  ERROR: {0}</value>
+  </data>
+  <data name="Cli.CheckNoProblems" xml:space="preserve">
+    <value>Result: no problems found.</value>
+  </data>
+  <data name="Cli.CheckProblems" xml:space="preserve">
+    <value>Result: {0} problems found (details above).</value>
+  </data>
+  <data name="Cli.CheckRead" xml:space="preserve">
+    <value>  Read: {0:N0} files, {1:N0} folders, {2:N0} symlinks, {3:N0} other; {4:N1} MB, {5:N1} s</value>
+  </data>
+  <data name="Cli.Compressed" xml:space="preserve">
+    <value>  Compressed: {0}</value>
+  </data>
+  <data name="Cli.Copied" xml:space="preserve">
+    <value>Copied: {0} ({1})</value>
+  </data>
+  <data name="Cli.CountersDiffer" xml:space="preserve">
+    <value>  (differ; hidden system folders and snapshots may not have been counted)</value>
+  </data>
+  <data name="Cli.CountersMatch" xml:space="preserve">
+    <value>  (match)</value>
+  </data>
+  <data name="Cli.Deleted" xml:space="preserve">
+    <value>Deleted: {0}</value>
+  </data>
+  <data name="Cli.DepthExceeded" xml:space="preserve">
+    <value>{0}: folder depth exceeded 256 (possible loop)</value>
+  </data>
+  <data name="Cli.EncryptedUnlocked" xml:space="preserve">
+    <value> (encrypted, unlocked)</value>
+  </data>
+  <data name="Cli.Error" xml:space="preserve">
+    <value>Error: {0}</value>
+  </data>
+  <data name="Cli.FullClean" xml:space="preserve">
+    <value>Result: structure fully consistent ({0:N1} s).</value>
+  </data>
+  <data name="Cli.FullInconsistent" xml:space="preserve">
+    <value>Result: {0} inconsistencies found ({1:N1} s).</value>
+  </data>
+  <data name="Cli.GateCheck" xml:space="preserve">
+    <value>  Check: {0}</value>
+  </data>
+  <data name="Cli.GateClosed" xml:space="preserve">
+    <value>Write gate: CLOSED (the disk stays read-only).</value>
+  </data>
+  <data name="Cli.GateOpen" xml:space="preserve">
+    <value>Write gate: ALLOWED (this disk can be opened for writing).</value>
+  </data>
+  <data name="Cli.GateReason" xml:space="preserve">
+    <value>  Reason: {0}</value>
+  </data>
+  <data name="Cli.HashError" xml:space="preserve">
+    <value>ERROR: {0}</value>
+  </data>
+  <data name="Cli.Help" xml:space="preserve">
+    <value>APFS for Windows: opens Mac APFS disks read-only on Windows.
+
+Usage:
+  apfs info &lt;source&gt;                         Shows container and volume information
+  apfs ls &lt;source&gt; [path] [-r] [--hash]      Lists the contents of a folder
+  apfs extract &lt;source&gt; &lt;path&gt; &lt;target&gt;      Copies a file to Windows
+  apfs check &lt;source&gt; [--full]               Read-only self-check (reads all files, compares counters and name hashes);
+                                             --full: structural consistency (block ownership, space manager, reference counts)
+  apfs dump &lt;source&gt;                         Dumps internal structures (development: checkpoint, space manager, volume superblocks)
+  apfs mount &lt;source&gt; [X:]                   Mounts volumes as drive letters (Ctrl+C unmounts);
+                                             if there are several volumes each gets its own letter; --all for internal volumes
+  apfs register / unregister                 (Administrator) WinFsp registration for physical disks
+
+&lt;source&gt;: disk image file or \\.\PhysicalDriveN (requires administrator rights)
+Options: --volume N (volume index, default 0), --partition N (APFS partition index)
+Encrypted volumes: --password-prompt (asks for the password) or --password-stdin (reads the password from standard input)</value>
+  </data>
+  <data name="Cli.HelpHint" xml:space="preserve">
+    <value>For help: apfs help</value>
+  </data>
+  <data name="Cli.InfoBlockSize" xml:space="preserve">
+    <value>  Block size      {0} bytes</value>
+  </data>
+  <data name="Cli.InfoCaseSensitivity" xml:space="preserve">
+    <value>  Case sensitivity {0}</value>
+  </data>
+  <data name="Cli.InfoCheckpoint" xml:space="preserve">
+    <value>  Checkpoint xid  {0} (block {1})</value>
+  </data>
+  <data name="Cli.InfoContainer" xml:space="preserve">
+    <value>APFS container    {0}</value>
+  </data>
+  <data name="Cli.InfoContents" xml:space="preserve">
+    <value>  Contents        {0:N0} files, {1:N0} folders, {2:N0} symlinks</value>
+  </data>
+  <data name="Cli.InfoFingerprint" xml:space="preserve">
+    <value>  Fingerprint     {0} (block 0 + {1} checkpoint blocks)</value>
+  </data>
+  <data name="Cli.InfoSize" xml:space="preserve">
+    <value>  Size            {0} ({1:N0} blocks)</value>
+  </data>
+  <data name="Cli.InfoUsed" xml:space="preserve">
+    <value>  Used            {0}</value>
+  </data>
+  <data name="Cli.InfoUsedFree" xml:space="preserve">
+    <value>  Used            {0}, free {1} ({2})</value>
+  </data>
+  <data name="Cli.InfoVolumeFailed" xml:space="preserve">
+    <value>Volume {0}: could not be opened: {1}</value>
+  </data>
+  <data name="Cli.InternalVolumeSkipped" xml:space="preserve">
+    <value>Volume {0} "{1}" [{2}] was not mounted because it is an internal macOS volume (use --all to show it).</value>
+  </data>
+  <data name="Cli.InvalidDriveLetter" xml:space="preserve">
+    <value>invalid drive letter: {0} (example: X:)</value>
+  </data>
+  <data name="Cli.KernelFlagNotSet" xml:space="preserve">
+    <value>, kernel flag could not be set</value>
+  </data>
+  <data name="Cli.LauncherMountFailed" xml:space="preserve">
+    <value>{0}: could not mount: {1}</value>
+  </data>
+  <data name="Cli.LauncherMounted" xml:space="preserve">
+    <value>{0}: "{1}" mounted as {2} (read-only).</value>
+  </data>
+  <data name="Cli.LauncherPhysicalOnly" xml:space="preserve">
+    <value>Only physical disks in PhysicalDriveN form can be mounted through the Launcher</value>
+  </data>
+  <data name="Cli.LauncherRejected" xml:space="preserve">
+    <value>{0}: rejected: {1}</value>
+  </data>
+  <data name="Cli.LauncherRejectedLog" xml:space="preserve">
+    <value>Rejected: "{0}" is not a physical disk; only PhysicalDriveN can be mounted in the background.</value>
+  </data>
+  <data name="Cli.LauncherUnmounted" xml:space="preserve">
+    <value>{0}: unmounted.</value>
+  </data>
+  <data name="Cli.MoreErrors" xml:space="preserve">
+    <value>  … and {0} more errors</value>
+  </data>
+  <data name="Cli.MountWarning" xml:space="preserve">
+    <value>Warning: {0}</value>
+  </data>
+  <data name="Cli.Mounted" xml:space="preserve">
+    <value>Mounted: {0}  "{1}"{2}  (read-only{3})</value>
+  </data>
+  <data name="Cli.MultipleVolumesNeedIndex" xml:space="preserve">
+    <value>the disk has several volumes; to give a drive letter, pick one with --volume N</value>
+  </data>
+  <data name="Cli.NameHashExamples" xml:space="preserve">
+    <value> (examples: {0}; lookups are not affected)</value>
+  </data>
+  <data name="Cli.NameHashes" xml:space="preserve">
+    <value>  Name hashes: {0:N0} correct, {1:N0} different</value>
+  </data>
+  <data name="Cli.NoMountableVolume" xml:space="preserve">
+    <value>no volume that can be mounted</value>
+  </data>
+  <data name="Cli.NoSuchVolume" xml:space="preserve">
+    <value>volume {0} does not exist</value>
+  </data>
+  <data name="Cli.NoSuchVolumeCount" xml:space="preserve">
+    <value>volume {0} does not exist; the container has {1} volumes</value>
+  </data>
+  <data name="Cli.NumberExpected" xml:space="preserve">
+    <value>a number was expected for {0}</value>
+  </data>
+  <data name="Cli.PasswordHint" xml:space="preserve">
+    <value> Password hint: {0}</value>
+  </data>
+  <data name="Cli.PasswordPrompt" xml:space="preserve">
+    <value>Password: </value>
+  </data>
+  <data name="Cli.PressCtrlC" xml:space="preserve">
+    <value>Press Ctrl+C to unmount.</value>
+  </data>
+  <data name="Cli.RegisterMountHint" xml:space="preserve">
+    <value>To mount a disk (no administrator needed):</value>
+  </data>
+  <data name="Cli.RegisterUnmountHint" xml:space="preserve">
+    <value>To unmount:</value>
+  </data>
+  <data name="Cli.Registered" xml:space="preserve">
+    <value>Registered. Program: {0}</value>
+  </data>
+  <data name="Cli.SuperblockCounters" xml:space="preserve">
+    <value>  Superblock counters: {0:N0} files, {1:N0} folders, {2:N0} symlinks</value>
+  </data>
+  <data name="Cli.Unexpected" xml:space="preserve">
+    <value>An unexpected error occurred; nothing was written to your disk: {0}</value>
+  </data>
+  <data name="Cli.Unknown" xml:space="preserve">
+    <value>unknown</value>
+  </data>
+  <data name="Cli.Unmounting" xml:space="preserve">
+    <value>Unmounting...</value>
+  </data>
+  <data name="Cli.Unreadable" xml:space="preserve">
+    <value>  Unreadable: {0}</value>
+  </data>
+  <data name="Cli.Unregistered" xml:space="preserve">
+    <value>WinFsp registration removed.</value>
+  </data>
+  <data name="Cli.VolumeEncrypted" xml:space="preserve">
+    <value>Volume "{0}" is encrypted.{1}</value>
+  </data>
+  <data name="Cli.VolumeHeader" xml:space="preserve">
+    <value>Volume {0}: "{1}"{2}</value>
+  </data>
+  <data name="Cli.VolumeNotChecked" xml:space="preserve">
+    <value>Volume {0}: could not be checked: {1}</value>
+  </data>
+  <data name="Cli.VolumeNotMounted" xml:space="preserve">
+    <value>Volume {0} was not mounted: {1}</value>
+  </data>
+  <data name="Cli.Warning" xml:space="preserve">
+    <value>  Warning: {0}</value>
+  </data>
+  <data name="Cli.WinFspMissing" xml:space="preserve">
+    <value>WinFsp is not installed. To install it: winget install WinFsp.WinFsp</value>
+  </data>
+  <data name="Ejector.InUse" xml:space="preserve">
+    <value>The disk is being used by another program ({0}). Close that program and try again.</value>
+  </data>
+  <data name="Ejector.OpenHandles" xml:space="preserve">
+    <value>Another program is holding an open file or handle on the disk. Close open windows and programs and try again.</value>
+  </data>
+  <data name="Ejector.Refused" xml:space="preserve">
+    <value>Windows could not eject the disk right now (code {0:X}/{1}{2}). Try again in a moment.</value>
+  </data>
+  <data name="Ipc.MessageTooLong" xml:space="preserve">
+    <value>message too long</value>
+  </data>
+  <data name="Raw.DiskClosed" xml:space="preserve">
+    <value>disk closed</value>
+  </data>
+  <data name="Raw.LengthQueryFailed" xml:space="preserve">
+    <value>could not get the disk size</value>
+  </data>
+  <data name="Raw.LengthQueryFailedDetail" xml:space="preserve">
+    <value>could not get the disk size: {0}</value>
+  </data>
+  <data name="Raw.ReadAdminRequired" xml:space="preserve">
+    <value>{0}: administrator rights are required to read the raw disk</value>
+  </data>
+  <data name="Raw.ReadOutOfRange" xml:space="preserve">
+    <value>read outside the disk bounds: {0}+{1}</value>
+  </data>
+  <data name="Raw.ShortRead" xml:space="preserve">
+    <value>less data than expected was read from the disk</value>
+  </data>
+  <data name="Raw.Unaligned" xml:space="preserve">
+    <value>raw disk I/O not aligned to sectors: {0}+{1}</value>
+  </data>
+  <data name="Raw.WriteAdminRequired" xml:space="preserve">
+    <value>{0}: administrator rights are required to write to the disk</value>
+  </data>
+  <data name="Raw.WriteDenied" xml:space="preserve">
+    <value>Windows did not allow writing to this partition</value>
+  </data>
+  <data name="Raw.WriteOutOfRange" xml:space="preserve">
+    <value>write outside the disk bounds: {0}+{1}</value>
+  </data>
+  <data name="Service.LanguageSet" xml:space="preserve">
+    <value>Language: {0}</value>
+  </data>
+  <data name="Source.NoApfsPartition" xml:space="preserve">
+    <value>no APFS partition found on the disk</value>
+  </data>
+  <data name="Source.PartitionIndex" xml:space="preserve">
+    <value>partition index {0}; the disk has {1} APFS partitions</value>
+  </data>
+  <data name="Svc.DiskCheckFailed" xml:space="preserve">
+    <value>{0}: could not check the disk: {1}</value>
+  </data>
+  <data name="Svc.DiskRemovedMeanwhile" xml:space="preserve">
+    <value>the disk was removed in the meantime</value>
+  </data>
+  <data name="Svc.EjectDeferred" xml:space="preserve">
+    <value>{0}: eject postponed, in use: {1}</value>
+  </data>
+  <data name="Svc.EjectRefused" xml:space="preserve">
+    <value>{0}: eject refused: {1}</value>
+  </data>
+  <data name="Svc.Mounted" xml:space="preserve">
+    <value>{0}: "{1}" mounted as {2}.</value>
+  </data>
+  <data name="Svc.MountedWritable" xml:space="preserve">
+    <value>{0}: "{1}" mounted writable ({2}).</value>
+  </data>
+  <data name="Svc.PipeError" xml:space="preserve">
+    <value>pipe error: {0}</value>
+  </data>
+  <data name="Svc.RequestFailed" xml:space="preserve">
+    <value>pipe request could not be processed: {0}: {1}</value>
+  </data>
+  <data name="Svc.Rescanned" xml:space="preserve">
+    <value>rescanned</value>
+  </data>
+  <data name="Svc.ScanError" xml:space="preserve">
+    <value>scan error: {0}</value>
+  </data>
+  <data name="Svc.Started" xml:space="preserve">
+    <value>Service started.</value>
+  </data>
+  <data name="Svc.StartedDev" xml:space="preserve">
+    <value>Service started in development mode ({0} images).</value>
+  </data>
+  <data name="Svc.Stopped" xml:space="preserve">
+    <value>Service stopped.</value>
+  </data>
+  <data name="Svc.UnknownRequest" xml:space="preserve">
+    <value>unknown request</value>
+  </data>
+  <data name="Svc.UnlockFailed" xml:space="preserve">
+    <value>{0}: "{1}" unlock failed: {2}</value>
+  </data>
+  <data name="Svc.UnmountError" xml:space="preserve">
+    <value>{0}: unmount error: {1}</value>
+  </data>
+  <data name="Svc.WaitingForPassword" xml:space="preserve">
+    <value>{0}: "{1}" is waiting for a password.</value>
+  </data>
+  <data name="Svc.WritableUnmountError" xml:space="preserve">
+    <value>{0}: writable unmount error: {1}</value>
+  </data>
+  <data name="Svc.WriteCheck" xml:space="preserve">
+    <value>{0}: partition {1} check: {2}</value>
+  </data>
+  <data name="Svc.WriteNotEnabled" xml:space="preserve">
+    <value>{0}: partition {1} was not opened for writing: {2}</value>
+  </data>
+  <data name="Svc.WriteSessionAbandoned" xml:space="preserve">
+    <value>{0}: partition {1} write session abandoned without saving (last commit xid {2}).</value>
+  </data>
+  <data name="Svc.WriteSessionClosed" xml:space="preserve">
+    <value>{0}: partition {1} write session closed (last commit xid {2}).</value>
+  </data>
+</root>

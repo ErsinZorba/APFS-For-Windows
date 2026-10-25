@@ -35,7 +35,7 @@ public sealed class ApfsContainer : IDisposable
     public static ApfsContainer Open(IBlockDevice device, bool ownsDevice = false)
     {
         if (device.Length < ApfsConstants.MinBlockSize)
-            throw new ApfsException(ApfsErrorCode.NotApfs, "aygıt çok küçük");
+            throw new ApfsException(ApfsErrorCode.NotApfs, CoreText.T("Container.DeviceTooSmall"));
 
         var head = new byte[ApfsConstants.MinBlockSize];
         device.Read(0, head);
@@ -48,7 +48,7 @@ public sealed class ApfsContainer : IDisposable
         bool block0Valid = Fletcher64.Verify(block0);
 
         var warnings = new List<string>();
-        if (!block0Valid) warnings.Add("Blok 0'daki süper blok kopyası bozuk; kontrol noktası alanındaki kopyalar kullanılıyor.");
+        if (!block0Valid) warnings.Add(CoreText.T("Container.Block0SuperblockCorrupt"));
 
         // Aday süper blokları topla (en yeni xid önce).
         var candidates = new List<NxSuperblock>();
@@ -71,12 +71,12 @@ public sealed class ApfsContainer : IDisposable
             }
             else
             {
-                warnings.Add("Kontrol noktası alanının konumu geçersiz.");
+                warnings.Add(CoreText.T("Container.CheckpointAreaInvalid"));
             }
         }
         else
         {
-            warnings.Add("Bitişik olmayan kontrol noktası alanı desteklenmiyor; yalnızca blok 0 kullanılıyor.");
+            warnings.Add(CoreText.T("Container.NonContiguousCheckpointArea"));
         }
         if (block0Valid) candidates.Add(sb0);
 
@@ -89,7 +89,7 @@ public sealed class ApfsContainer : IDisposable
                 Validate(sb, reader);
                 var omap = new ObjectMap(reader, sb.OmapOid);
                 if (sb != ordered[0])
-                    warnings.Add($"En yeni kontrol noktası okunamadı; daha eski bir kontrol noktası (xid {sb.Xid}) kullanılıyor. Son değişikliklerin bir kısmı görünmeyebilir.");
+                    warnings.Add(CoreText.T("Container.OlderCheckpointUsed", sb.Xid));
                 return new ApfsContainer(device, reader, sb, omap, ownsDevice, warnings);
             }
             catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError and not ApfsErrorCode.AccessDenied)
@@ -103,11 +103,11 @@ public sealed class ApfsContainer : IDisposable
     private static void Validate(NxSuperblock sb, ObjectReader reader)
     {
         if ((sb.IncompatibleFeatures & ApfsConstants.NxIncompatVersion2) == 0)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "eski APFS sürümü (macOS 10.12 öncesi geliştirici sürümü)");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Container.OldApfsVersion"));
         if ((sb.IncompatibleFeatures & ApfsConstants.NxIncompatFusion) != 0)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "Fusion Drive kapsayıcısı");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Container.FusionDrive"));
         if (sb.BlockCount > reader.BlockCount)
-            throw ApfsException.Corrupt($"kapsayıcı aygıttan büyük ({sb.BlockCount} > {reader.BlockCount} blok)");
+            throw ApfsException.Corrupt(CoreText.T("Container.LargerThanDevice", sb.BlockCount, reader.BlockCount));
     }
 
     /// <summary>
@@ -160,7 +160,7 @@ public sealed class ApfsContainer : IDisposable
         long total = (long)Superblock.BlockCount * BlockSize;
         if (TryReadSpacemanFreeBlocks() is ulong free && free <= Superblock.BlockCount)
         {
-            FreeSpaceSource = "alan yöneticisi";
+            FreeSpaceSource = CoreText.T("Container.FreeSourceSpaceman");
             return (long)free * BlockSize;
         }
         ulong used = 0;
@@ -174,7 +174,7 @@ public sealed class ApfsContainer : IDisposable
             }
             catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { }
         }
-        FreeSpaceSource = "birim sayaçları";
+        FreeSpaceSource = CoreText.T("Container.FreeSourceVolumeCounters");
         return Math.Max(0, total - (long)Math.Min(used, Superblock.BlockCount) * BlockSize);
     }
 

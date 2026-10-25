@@ -66,7 +66,7 @@ public static class FullCheck
         }
         catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError)
         {
-            r.Error($"denetim tamamlanamadı: {e.Detail ?? e.Message}");
+            r.Error(CoreText.T("Check.Incomplete", e.Detail ?? e.Message));
         }
         return r;
     }
@@ -75,7 +75,7 @@ public static class FullCheck
     {
         var sb = c.Superblock;
         var reader = c.Reader;
-        foreach (var w in c.Warnings) r.Error($"kapsayıcı: {w}");
+        foreach (var w in c.Warnings) r.Error(CoreText.T("Check.ContainerWarning", w));
 
         // ---- checkpoint ----
         var cp = Checkpoint.Read(c);
@@ -83,79 +83,79 @@ public static class FullCheck
         if (!cp.IsValid) return;
 
         var block0 = reader.ReadBlock(0);
-        if (!Fletcher64.Verify(block0)) r.Warnings.Add("blok 0'daki süper blok kopyası bozuk");
-        else if (Bin.U64(block0, 16) != sb.Xid) r.Warnings.Add($"blok 0 kopyası eski (xid {Bin.U64(block0, 16)}); disk düzgün kapatılmamış");
+        if (!Fletcher64.Verify(block0)) r.Warnings.Add(CoreText.T("Check.Block0Corrupt"));
+        else if (Bin.U64(block0, 16) != sb.Xid) r.Warnings.Add(CoreText.T("Check.Block0Stale", Bin.U64(block0, 16)));
 
         // ---- alan yöneticisi ----
         var sm = Spaceman.Read(c, cp);
         var chunks = sm.MainChunks();
-        if (sm.Main.BlockCount != sb.BlockCount) r.Error("alan yöneticisi: blok sayısı kapsayıcıdan farklı");
-        if ((ulong)chunks.Count != sm.Main.ChunkCount) r.Error("alan yöneticisi: parça sayısı tutmuyor");
-        if (sm.Tier2.BlockCount != 0) r.Error("alan yöneticisi: ikinci katman (Fusion) desteklenmiyor");
+        if (sm.Main.BlockCount != sb.BlockCount) r.Error(CoreText.T("Check.SpacemanBlockCount"));
+        if ((ulong)chunks.Count != sm.Main.ChunkCount) r.Error(CoreText.T("Check.SpacemanChunkCount"));
+        if (sm.Tier2.BlockCount != 0) r.Error(CoreText.T("Check.SpacemanTier2"));
 
         var used = new BlockSet(sb.BlockCount);
         var ipUsed = new BlockSet(sm.IpBlockCount);
         void Mark(ulong start, ulong count, string what)
         {
             if (count == 0) return;
-            if (start >= sb.BlockCount || count > sb.BlockCount - start) { r.Error($"{what}: blok aralığı {start}+{count} kapsayıcının dışında"); return; }
-            if (used.Mark(start, count) is ulong dup) r.Error($"{what}: blok {dup} iki kez kullanılıyor");
+            if (start >= sb.BlockCount || count > sb.BlockCount - start) { r.Error(CoreText.T("Check.RangeOutside", what, start, count)); return; }
+            if (used.Mark(start, count) is ulong dup) r.Error(CoreText.T("Check.BlockUsedTwice", what, dup));
         }
         void MarkIp(ulong paddr, ulong count, string what)
         {
-            if (paddr < sm.IpBase || paddr - sm.IpBase + count > sm.IpBlockCount) { r.Error($"{what}: blok {paddr} iç havuzun dışında"); return; }
-            if (ipUsed.Mark(paddr - sm.IpBase, count) is ulong dup) r.Error($"{what}: iç havuz bloğu {sm.IpBase + dup} iki kez kullanılıyor");
+            if (paddr < sm.IpBase || paddr - sm.IpBase + count > sm.IpBlockCount) { r.Error(CoreText.T("Check.BlockOutsideIp", what, paddr)); return; }
+            if (ipUsed.Mark(paddr - sm.IpBase, count) is ulong dup) r.Error(CoreText.T("Check.IpBlockUsedTwice", what, sm.IpBase + dup));
         }
 
-        Mark(0, 1, "blok 0");
-        Mark(sb.XpDescBase, sb.XpDescBlocks, "checkpoint tanımlayıcı halkası");
-        Mark(sb.XpDataBase, sb.XpDataBlocks, "checkpoint veri halkası");
-        Mark(sm.IpBmBase, sm.IpBmBlockCount, "iç havuz bitmap halkası");
-        Mark(sm.IpBase, sm.IpBlockCount, "iç havuz");
-        Mark(sb.KeylockerStart, sb.KeylockerBlockCount, "kapsayıcı anahtar deposu");
-        Mark(sb.MkbLockerStart, sb.MkbLockerBlockCount, "ortam anahtar deposu");
+        Mark(0, 1, CoreText.T("Check.LabelBlock0"));
+        Mark(sb.XpDescBase, sb.XpDescBlocks, CoreText.T("Check.LabelXpDesc"));
+        Mark(sb.XpDataBase, sb.XpDataBlocks, CoreText.T("Check.LabelXpData"));
+        Mark(sm.IpBmBase, sm.IpBmBlockCount, CoreText.T("Check.LabelIpBitmapRing"));
+        Mark(sm.IpBase, sm.IpBlockCount, CoreText.T("Check.LabelInternalPool"));
+        Mark(sb.KeylockerStart, sb.KeylockerBlockCount, CoreText.T("Check.LabelContainerKeybag"));
+        Mark(sb.MkbLockerStart, sb.MkbLockerBlockCount, CoreText.T("Check.LabelMediaKeybag"));
         if (sb.KeylockerStart != 0)
         {
             // Birim anahtar depoları ('recs') da kapsayıcının bloklarıdır; yerleri kapsayıcı anahtar deposundaki etiket-3 kayıtlarında
             foreach (var e in Crypto.VolumeKeys.LoadContainerKeybag(c))
                 if (e.Tag == Crypto.VolumeKeys.TagVolumeUnlockRecords)
                 {
-                    if (e.Data.Length < 16) { r.Error("kapsayıcı anahtar deposu: birim anahtar deposu kaydı kısa"); continue; }
-                    Mark(Bin.U64(e.Data, 0), Bin.U64(e.Data, 8), "birim anahtar deposu");
+                    if (e.Data.Length < 16) { r.Error(CoreText.T("Check.VolumeKeybagRecordShort")); continue; }
+                    Mark(Bin.U64(e.Data, 0), Bin.U64(e.Data, 8), CoreText.T("Check.LabelVolumeKeybag"));
                 }
         }
         if (sb.EfiJumpstart != 0) MarkEfi(reader, sb.EfiJumpstart, Mark, r);
-        if (sb.BlockedOutCount != 0) r.Error("kapsayıcı yeniden boyutlandırılıyor (engelli aralık); desteklenmiyor");
-        if (sb.EvictMappingTreeOid != 0) r.Error("kapsayıcıda tahliye eşleme ağacı var; desteklenmiyor");
+        if (sb.BlockedOutCount != 0) r.Error(CoreText.T("Check.BlockedOut"));
+        if (sb.EvictMappingTreeOid != 0) r.Error(CoreText.T("Check.EvictMapping"));
 
-        foreach (var ch in chunks) if (ch.BitmapAddr != 0) MarkIp(ch.BitmapAddr, 1, "parça bitmap'i");
+        foreach (var ch in chunks) if (ch.BitmapAddr != 0) MarkIp(ch.BitmapAddr, 1, CoreText.T("Check.LabelChunkBitmap"));
         foreach (var cib in sm.MainCibAddresses()) MarkIp(cib, 1, "CIB");
         for (uint i = 0; i < sm.Main.CabCount; i++) MarkIp(sm.ArrayU64(sm.Main.AddrOffset, i), 1, "CAB");
 
         CheckFreeQueues(sb, sm, Mark, MarkIp, r);
 
-        if (cp.Find(sb.ReaperOid) is null) r.Error("reaper checkpoint haritasında yok");
+        if (cp.Find(sb.ReaperOid) is null) r.Error(CoreText.T("Check.ReaperMissing"));
         else
         {
             var reaper = ReaperState.Read(cp, sb);
             if (reaper.Problem is { } p) r.Error(p);
             foreach (var m in reaper.NotRewrittenByWriter(cp, sb))
-                r.WriteBlockers.Add($"tanınmayan geçici nesne: oid {m.Oid}, tür 0x{m.Type:x8}/{m.Subtype}");
+                r.WriteBlockers.Add(CoreText.T("Check.UnknownEphemeral", m.Oid, m.Type, m.Subtype));
         }
 
         // ---- kapsayıcı nesne haritası ----
-        var omapRecords = MarkObjectMap(c.Omap, sb.OmapOid, Mark, "kapsayıcı omap", out _);
+        var omapRecords = MarkObjectMap(c.Omap, sb.OmapOid, Mark, CoreText.T("Check.LabelContainerOmap"), out _);
         var fsLatest = new Dictionary<ulong, ObjectMap.Record>();
         foreach (var rec in omapRecords)
         {
-            if (rec.Xid > sb.Xid) { r.Error($"kapsayıcı omap: kayıt {rec.Oid} gelecekteki bir işlemden (xid {rec.Xid})"); continue; }
-            if (rec.Size != sb.BlockSize) r.Error($"kapsayıcı omap: kayıt {rec.Oid} boyutu {rec.Size}");
-            if (!fsLatest.TryAdd(rec.Oid, rec)) r.Error($"kapsayıcı omap: nesne {rec.Oid} için birden çok kayıt (anlık görüntü desteklenmiyor)");
-            Mark(rec.Paddr, 1, $"birim süper bloğu {rec.Oid}");
+            if (rec.Xid > sb.Xid) { r.Error(CoreText.T("Check.OmapFutureXid", rec.Oid, rec.Xid)); continue; }
+            if (rec.Size != sb.BlockSize) r.Error(CoreText.T("Check.OmapRecordSize", rec.Oid, rec.Size));
+            if (!fsLatest.TryAdd(rec.Oid, rec)) r.Error(CoreText.T("Check.OmapMultipleRecords", rec.Oid));
+            Mark(rec.Paddr, 1, CoreText.T("Check.LabelVolumeSuperblock", rec.Oid));
         }
         foreach (ulong oid in sb.FsOids)
-            if (!fsLatest.ContainsKey(oid)) r.Error($"birim {oid} kapsayıcı omap'inde yok");
-        if (fsLatest.Count != sb.FsOids.Count) r.Error("kapsayıcı omap'inde birim olmayan kayıtlar var");
+            if (!fsLatest.ContainsKey(oid)) r.Error(CoreText.T("Check.VolumeNotInOmap", oid));
+        if (fsLatest.Count != sb.FsOids.Count) r.Error(CoreText.T("Check.OmapNonVolumeRecords"));
 
         // ---- birimler ----
         var opened = c.OpenVolumes(passwords, keys);
@@ -165,7 +165,7 @@ public static class FullCheck
             if (!fsLatest.TryGetValue(oid, out var loc)) continue;
             var apsb = reader.ReadObject(loc.Paddr, ApfsConstants.TypeFs, oid);
             var vol = opened.FirstOrDefault(x => x.Index == i)?.Volume;
-            string label = $"birim \"{Bin.Utf8Z(Bin.Slice(apsb, 704, 256))}\"";
+            string label = CoreText.T("Check.LabelVolume", Bin.Utf8Z(Bin.Slice(apsb, 704, 256)));
             CheckVolume(c, apsb, vol, label, Mark, r);
         }
 
@@ -178,47 +178,47 @@ public static class FullCheck
 
     private static void MarkEfi(ObjectReader reader, ulong paddr, Action<ulong, ulong, string> mark, CheckReport r)
     {
-        mark(paddr, 1, "EFI sürücüsü");
+        mark(paddr, 1, CoreText.T("Check.LabelEfiDriver"));
         var efi = reader.ReadObject(paddr, 0x14);
         uint n = Bin.U32(efi, 44);
-        if (176 + (long)n * 16 > efi.Length) { r.Error("EFI sürücüsü: extent sayısı bloğa sığmıyor"); return; }
+        if (176 + (long)n * 16 > efi.Length) { r.Error(CoreText.T("Check.EfiExtentCount")); return; }
         for (uint i = 0; i < n; i++)
-            mark(Bin.U64(efi, (int)(176 + i * 16)), Bin.U64(efi, (int)(184 + i * 16)), "EFI sürücüsü verisi");
+            mark(Bin.U64(efi, (int)(176 + i * 16)), Bin.U64(efi, (int)(184 + i * 16)), CoreText.T("Check.LabelEfiDriverData"));
     }
 
     private static void CheckFreeQueues(NxSuperblock sb, Spaceman sm, Action<ulong, ulong, string> mark,
         Action<ulong, ulong, string> markIp, CheckReport r)
     {
-        string[] names = ["iç havuz", "ana aygıt", "ikinci katman"];
+        string[] names = [CoreText.T("Check.LabelInternalPool"), CoreText.T("Check.LabelMainDevice"), CoreText.T("Check.LabelTier2")];
         for (int q = 0; q < 3; q++)
         {
             var info = sm.FreeQueues[q];
             if (q == Spaceman.SfqTier2)
             {
-                if (info.TreeOid != 0 || info.Count != 0) r.Error("ikinci katman boş kuyruğu dolu (Fusion desteklenmiyor)");
+                if (info.TreeOid != 0 || info.Count != 0) r.Error(CoreText.T("Check.Tier2QueueNotEmpty"));
                 continue;
             }
             ulong total = 0, oldest = 0;
             foreach (var e in sm.ReadFreeQueue(q))
             {
-                if (e.Xid > sb.Xid) r.Error($"boş kuyruk ({names[q]}): kayıt gelecekteki bir işlemden (xid {e.Xid})");
-                if (e.Length == 0) r.Error($"boş kuyruk ({names[q]}): uzunluğu 0 olan kayıt");
+                if (e.Xid > sb.Xid) r.Error(CoreText.T("Check.FreeQueueFutureXid", names[q], e.Xid));
+                if (e.Length == 0) r.Error(CoreText.T("Check.FreeQueueZeroLength", names[q]));
                 if (oldest == 0 || e.Xid < oldest) oldest = e.Xid;
                 total += e.Length;
                 bool inIp = e.Paddr >= sm.IpBase && e.Paddr < sm.IpBase + sm.IpBlockCount;
                 if (q == Spaceman.SfqIp)
                 {
-                    if (!inIp) r.Error($"boş kuyruk (iç havuz): blok {e.Paddr} iç havuzun dışında");
-                    else markIp(e.Paddr, e.Length, "boş kuyruk (iç havuz)");
+                    if (!inIp) r.Error(CoreText.T("Check.FreeQueueIpOutside", e.Paddr));
+                    else markIp(e.Paddr, e.Length, CoreText.T("Check.LabelFreeQueueIp"));
                 }
                 else
                 {
-                    if (inIp) r.Error($"boş kuyruk (ana aygıt): blok {e.Paddr} iç havuzun içinde");
-                    else mark(e.Paddr, e.Length, "boş kuyruk (ana aygıt)");
+                    if (inIp) r.Error(CoreText.T("Check.FreeQueueMainInIp", e.Paddr));
+                    else mark(e.Paddr, e.Length, CoreText.T("Check.LabelFreeQueueMain"));
                 }
             }
-            if (total != info.Count) r.Error($"boş kuyruk ({names[q]}): sayaç {info.Count}, kayıtlar {total}");
-            if (oldest != info.OldestXid) r.Error($"boş kuyruk ({names[q]}): en eski xid {info.OldestXid}, kayıtlarda {oldest}");
+            if (total != info.Count) r.Error(CoreText.T("Check.FreeQueueCount", names[q], info.Count, total));
+            if (oldest != info.OldestXid) r.Error(CoreText.T("Check.FreeQueueOldest", names[q], info.OldestXid, oldest));
         }
     }
 
@@ -230,12 +230,12 @@ public static class FullCheck
         nodeCount = 0;
         foreach (var n in omap.Tree.EnumerateNodes())
         {
-            mark(n.Paddr, 1, $"{what} düğümü");
+            mark(n.Paddr, 1, CoreText.T("Check.LabelNode", what));
             if ((n.ObjType & ApfsConstants.ObjEncrypted) != 0) flagged?.Add(n.Paddr);
             nodeCount++;
         }
         if (Bin.U32(omap.Raw, 36) != 0 || Bin.U64(omap.Raw, 56) != 0)
-            throw new ApfsException(ApfsErrorCode.Unsupported, $"{what}: anlık görüntü var");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Check.OmapHasSnapshots", what));
         return omap.AllRecords().ToList();
     }
 
@@ -248,9 +248,9 @@ public static class FullCheck
         ulong allocCount = Bin.U64(apsb, 88);
         // Bu yapıların blokları çözümlenmiyor: sahiplik denetimi o birim için eksik kalır (yazma kapısı bu birimleri zaten reddeder)
         bool unsupported = false;
-        if (Bin.U64(apsb, 216) != 0) { unsupported = true; r.Warnings.Add($"{label}: anlık görüntüsü var; anlık görüntü blokları denetlenmedi"); }
-        foreach (var (off, name) in new[] { (976, "bitmemiş bir şifreleme işlemi (macOS sürdürüyor)"), (1024, "bütünlük meta verisi"), (1032, "fext ağacı"), (1000, "anlık görüntü uzantısı") })
-            if (Bin.U64(apsb, off) != 0) { unsupported = true; r.Warnings.Add($"{label}: {name} var; bu yapının blokları denetlenmedi"); }
+        if (Bin.U64(apsb, 216) != 0) { unsupported = true; r.Warnings.Add(CoreText.T("Check.VolumeHasSnapshots", label)); }
+        foreach (var (off, name) in new[] { (976, CoreText.T("Check.LabelEncryptionInProgress")), (1024, CoreText.T("Check.LabelIntegrityMeta")), (1032, CoreText.T("Check.LabelFextTree")), (1000, CoreText.T("Check.LabelSnapshotExtension")) })
+            if (Bin.U64(apsb, off) != 0) { unsupported = true; r.Warnings.Add(CoreText.T("Check.UnsupportedStructure", label, name)); }
         if (unsupported) r.OwnershipIncomplete = true;
 
         ulong counted = 0;
@@ -260,22 +260,22 @@ public static class FullCheck
         var omap = vol?.Omap ?? new ObjectMap(reader, volOmapPaddr);
         var flaggedOmap = new List<ulong>();
         var records = MarkObjectMap(omap, volOmapPaddr, MarkVol, "omap", out _, flaggedOmap);
-        FlagErrors(r, label, "OBJ_ENCRYPTED işaretli omap düğümü (blok)", flaggedOmap);
+        FlagErrors(r, label, CoreText.T("Check.FlagOmapNode"), flaggedOmap);
         var recordOids = new HashSet<ulong>();
         bool encrypted = (Bin.U64(apsb, 264) & 3) != ApfsConstants.ApfsFsUnencrypted;
         bool cryptoInProgress = Bin.U64(apsb, 976) != 0; // er_state: macOS düğümleri hâlâ şifreliyor/çözüyor olabilir
         int unflagged = 0;
         foreach (var rec in records)
         {
-            if (rec.Xid > c.Xid) { r.Error($"{label}: omap kaydı {rec.Oid} gelecekteki bir işlemden"); continue; }
-            if (!recordOids.Add(rec.Oid)) r.Error($"{label}: nesne {rec.Oid} için birden çok omap kaydı");
-            if ((rec.Flags & ApfsConstants.OmapValDeleted) != 0) r.Error($"{label}: silinmiş işaretli omap kaydı {rec.Oid}");
-            if (rec.Size != blockSize) r.Error($"{label}: omap kaydı {rec.Oid} boyutu {rec.Size}");
+            if (rec.Xid > c.Xid) { r.Error(CoreText.T("Check.VolOmapFutureXid", label, rec.Oid)); continue; }
+            if (!recordOids.Add(rec.Oid)) r.Error(CoreText.T("Check.VolOmapMultipleRecords", label, rec.Oid));
+            if ((rec.Flags & ApfsConstants.OmapValDeleted) != 0) r.Error(CoreText.T("Check.VolOmapDeleted", label, rec.Oid));
+            if (rec.Size != blockSize) r.Error(CoreText.T("Check.VolOmapRecordSize", label, rec.Oid, rec.Size));
             if (!encrypted && (rec.Flags & ApfsConstants.OmapValEncrypted) != 0)
-                r.Error($"{label}: şifresiz birimde şifreli işaretli düğüm {rec.Oid}");
+                r.Error(CoreText.T("Check.EncryptedFlagOnPlain", label, rec.Oid));
             if (encrypted && !cryptoInProgress && (rec.Flags & ApfsConstants.OmapValEncrypted) == 0 && unflagged++ < 5)
-                r.Error($"{label}: şifreli birimde şifreli işaretlenmemiş düğüm {rec.Oid}");
-            MarkVol(rec.Paddr, 1, $"fs düğümü {rec.Oid}");
+                r.Error(CoreText.T("Check.MissingEncryptedFlag", label, rec.Oid));
+            MarkVol(rec.Paddr, 1, CoreText.T("Check.LabelFsNode", rec.Oid));
         }
 
         // Fiziksel ağaçlar
@@ -286,20 +286,20 @@ public static class FullCheck
             var flagged = new List<ulong>();
             foreach (var n in tree.EnumerateNodes())
             {
-                MarkVol(n.Paddr, 1, "extentref düğümü");
+                MarkVol(n.Paddr, 1, CoreText.T("Check.LabelExtentrefNode"));
                 if ((n.ObjType & ApfsConstants.ObjEncrypted) != 0) flagged.Add(n.Paddr);
             }
-            FlagErrors(r, label, "OBJ_ENCRYPTED işaretli extentref düğümü (blok)", flagged);
+            FlagErrors(r, label, CoreText.T("Check.FlagExtentrefNode"), flagged);
             foreach (var e in tree.Scan(_ => 0))
             {
-                if (e.Key.Length < 8 || e.Value.Length < 20) { r.Error($"{label}: extentref kaydı kısa"); continue; }
+                if (e.Key.Length < 8 || e.Value.Length < 20) { r.Error(CoreText.T("Check.ExtentrefRecordShort", label)); continue; }
                 ulong paddr = Bin.U64(e.Key, 0) & 0x0FFFFFFFFFFFFFFF;
                 ulong len = Bin.U64(e.Value, 0) & 0x0FFFFFFFFFFFFFFF;
                 int refcnt = Bin.I32(e.Value, 16);
-                if (len == 0) r.Error($"{label}: uzunluğu 0 olan fiziksel extent {paddr}");
-                if (refcnt <= 0) r.Error($"{label}: fiziksel extent {paddr} başvuru sayısı {refcnt}");
+                if (len == 0) r.Error(CoreText.T("Check.PhysExtentZeroLength", label, paddr));
+                if (refcnt <= 0) r.Error(CoreText.T("Check.PhysExtentRefcnt", label, paddr, refcnt));
                 phys.Add((paddr, len, refcnt));
-                MarkVol(paddr, len, $"dosya verisi (blok {paddr})");
+                MarkVol(paddr, len, CoreText.T("Check.LabelFileData", paddr));
             }
         }
         if (snapMetaOid != 0)
@@ -308,22 +308,22 @@ public static class FullCheck
             var flagged = new List<ulong>();
             foreach (var n in tree.EnumerateNodes())
             {
-                MarkVol(n.Paddr, 1, "snap_meta düğümü");
+                MarkVol(n.Paddr, 1, CoreText.T("Check.LabelSnapMetaNode"));
                 if ((n.ObjType & ApfsConstants.ObjEncrypted) != 0) flagged.Add(n.Paddr);
             }
-            FlagErrors(r, label, "OBJ_ENCRYPTED işaretli snap_meta düğümü (blok)", flagged);
+            FlagErrors(r, label, CoreText.T("Check.FlagSnapMetaNode"), flagged);
         }
 
         if (counted != allocCount)
         {
-            string msg = $"{label}: ayrılan blok sayacı {allocCount}, sayılan {counted}";
-            if (unsupported) r.Warnings.Add(msg + " (fark denetlenmeyen yapılardan olabilir)"); else r.Error(msg);
+            string msg = CoreText.T("Check.AllocCount", label, allocCount, counted);
+            if (unsupported) r.Warnings.Add(CoreText.T("Check.AllocCountMaybeUnchecked", msg)); else r.Error(msg);
         }
 
         if (vol is null)
         {
-            r.Warnings.Add($"{label}: açılamadı (şifreli olabilir); dosya sistemi ağacı denetlenmedi, blok sahipliği denetlendi");
-            r.Info.Add($"{label}: fs düğümlerinin OBJ_ENCRYPTED işareti denetlenmedi (birim açılmadı)");
+            r.Warnings.Add(CoreText.T("Check.VolumeNotOpened", label));
+            r.Info.Add(CoreText.T("Check.FsFlagNotChecked", label));
             return;
         }
 
@@ -333,17 +333,17 @@ public static class FullCheck
         int fsNodes = 0, fsFlagged = 0;
         foreach (var n in vol.FsTree.EnumerateNodes())
         {
-            if (!nodeOids.Add(n.Oid)) r.Error($"{label}: fs ağacı düğümü {n.Oid} iki kez kullanılıyor");
+            if (!nodeOids.Add(n.Oid)) r.Error(CoreText.T("Check.FsNodeUsedTwice", label, n.Oid));
             fsNodes++;
             bool flag = (n.ObjType & ApfsConstants.ObjEncrypted) != 0;
             if (flag) fsFlagged++;
             if (flag != encrypted) wrongFlag.Add(n.Oid);
         }
-        r.Info.Add($"{label}: fs düğümleri {fsNodes}, OBJ_ENCRYPTED işaretli {fsFlagged}");
+        r.Info.Add(CoreText.T("Check.FsNodeStats", label, fsNodes, fsFlagged));
         if (!cryptoInProgress)
-            FlagErrors(r, label, encrypted ? "şifreli birimde OBJ_ENCRYPTED işaretsiz fs düğümü" : "şifresiz birimde OBJ_ENCRYPTED işaretli fs düğümü", wrongFlag);
+            FlagErrors(r, label, encrypted ? CoreText.T("Check.FsNodeMissingFlag") : CoreText.T("Check.FsNodeWrongFlag"), wrongFlag);
         foreach (ulong oid in recordOids)
-            if (!nodeOids.Contains(oid)) r.Error($"{label}: omap kaydı {oid} hiçbir düğüm tarafından kullanılmıyor");
+            if (!nodeOids.Contains(oid)) r.Error(CoreText.T("Check.OmapRecordUnused", label, oid));
 
         CheckFsTree(c, vol, label, phys, r);
     }
@@ -352,7 +352,7 @@ public static class FullCheck
     private static void FlagErrors(CheckReport r, string label, string what, List<ulong> ids)
     {
         foreach (ulong id in ids.Take(5)) r.Error($"{label}: {what} {id}");
-        if (ids.Count > 5) r.Error($"{label}: {what}: toplam {ids.Count}");
+        if (ids.Count > 5) r.Error(CoreText.T("Check.FlagTotal", label, what, ids.Count));
     }
 
     private sealed class InodeFacts(Inode ino)
@@ -384,24 +384,24 @@ public static class FullCheck
             {
                 case JType.Inode:
                     inodes[id] = new InodeFacts(Inode.Parse(id, e.Value));
-                    if ((inodes[id].Inode.InternalFlags & 0x2) != 0) blockers.Add("klasör boyut istatistikleri");
+                    if ((inodes[id].Inode.InternalFlags & 0x2) != 0) blockers.Add(CoreText.T("Check.LabelDirStats"));
                     break;
                 case JType.DirStats:
-                    blockers.Add("klasör boyut istatistikleri");
+                    blockers.Add(CoreText.T("Check.LabelDirStats"));
                     break;
                 case JType.FileInfo:
-                    blockers.Add("dosya özeti kayıtları");
+                    blockers.Add(CoreText.T("Check.LabelFileInfo"));
                     break;
                 case JType.DirRec:
                     var de = ApfsVolume.ParseDirRec(e.Key, e.Value);
-                    if (de is null) { r.Error($"{label}: adsız dizin girdisi (klasör {id})"); break; }
+                    if (de is null) { r.Error(CoreText.T("Check.UnnamedDirEntry", label, id)); break; }
                     drecs.Add((id, de));
                     int hashedLen = (int)(Bin.U32(e.Key, 8) & 0x3FF);
                     if (12 + hashedLen == e.Key.Length && ApfsNames.Hash(de.Name, v.IsCaseInsensitive) != Bin.U32(e.Key, 8) >> 10)
-                        r.Error($"{label}: \"{de.Name}\" ad karması yanlış");
+                        r.Error(CoreText.T("Check.NameHashWrong", label, de.Name));
                     break;
                 case JType.DstreamId:
-                    if (e.Value.Length < 4) { r.Error($"{label}: dstream kaydı {id} kısa"); break; }
+                    if (e.Value.Length < 4) { r.Error(CoreText.T("Check.DstreamRecordShort", label, id)); break; }
                     dstreamRefs[id] = Bin.U32(e.Value, 0);
                     break;
                 case JType.CryptoState:
@@ -409,23 +409,23 @@ public static class FullCheck
                     if (id != CryptoSwId || e.Value.Length < 24 || Bin.U16(e.Value, 22) != 0) cryptoStates++;
                     break;
                 case JType.FileExtent:
-                    if (e.Key.Length < 16 || e.Value.Length < 24) { r.Error($"{label}: extent kaydı kısa ({id})"); break; }
+                    if (e.Key.Length < 16 || e.Value.Length < 24) { r.Error(CoreText.T("Check.ExtentRecordShort", label, id)); break; }
                     ulong len = Bin.U64(e.Value, 0) & 0x00FFFFFFFFFFFFFF;
                     if (tweakRules && Bin.U64(e.Value, 8) != 0)
                     {
                         if (Bin.U64(e.Value, 16) is 0 or CryptoSwId && badCrypto++ < 5)
-                            r.Error($"{label}: veri akışı {id}: şifreli birimde extent'in crypto_id'si {Bin.U64(e.Value, 16)}");
+                            r.Error(CoreText.T("Check.ExtentCryptoId", label, id, Bin.U64(e.Value, 16)));
                         if ((Bin.U64(e.Value, 0) >> 56 & FextCryptoIdIsTweak) == 0 && badCrypto++ < 5)
-                            r.Error($"{label}: veri akışı {id}: şifreli birimde extent'te FEXT_CRYPTO_ID_IS_TWEAK bayrağı yok");
+                            r.Error(CoreText.T("Check.ExtentNoTweakFlag", label, id));
                     }
-                    if (len == 0 || len % blockSize != 0) r.Error($"{label}: veri akışı {id}: extent uzunluğu {len}");
+                    if (len == 0 || len % blockSize != 0) r.Error(CoreText.T("Check.ExtentLength", label, id, len));
                     if (!extents.TryGetValue(id, out var list)) extents[id] = list = [];
                     list.Add((Bin.U64(e.Key, 8), len, Bin.U64(e.Value, 8)));
                     break;
                 case JType.Xattr:
                     if (e.Value.Length >= 4 && (Bin.U16(e.Value, 0) & ApfsVolume.XattrDataStream) != 0)
                     {
-                        if (e.Value.Length < 4 + 24) { r.Error($"{label}: öznitelik akışı kaydı kısa ({id})"); break; }
+                        if (e.Value.Length < 4 + 24) { r.Error(CoreText.T("Check.XattrStreamRecordShort", label, id)); break; }
                         xattrStreams.Add((id, Bin.U64(e.Value, 4), Bin.U64(e.Value, 12), Bin.U64(e.Value, 20)));
                     }
                     break;
@@ -433,9 +433,9 @@ public static class FullCheck
         }
 
         if (cryptoStates > 0 && (v.FsFlags & ApfsConstants.ApfsFsOneKey) != 0)
-            r.Error($"{label}: tek anahtarlı şifreli birimde {cryptoStates} dosya başına anahtar (crypto_state) kaydı");
+            r.Error(CoreText.T("Check.PerFileKeysOnOneKey", label, cryptoStates));
         foreach (var b in blockers) r.WriteBlockers.Add($"{label}: {b}");
-        if (!inodes.ContainsKey(Inode.RootDirId)) r.Error($"{label}: kök klasör yok");
+        if (!inodes.ContainsKey(Inode.RootDirId)) r.Error(CoreText.T("Check.RootDirMissing", label));
 
         // Dizin girdileri → inode
         foreach (var (parent, de) in drecs)
@@ -443,14 +443,14 @@ public static class FullCheck
             // Kök klasör ve özel klasörün girdileri, inode'u olmayan sanal üstte (1) durur
             if (parent != Inode.RootDirParent)
             {
-                if (!inodes.TryGetValue(parent, out var p)) { r.Error($"{label}: \"{de.Name}\" girdisinin klasörü ({parent}) yok"); continue; }
-                if (!p.Inode.IsDirectory) r.Error($"{label}: \"{de.Name}\" girdisinin üstü klasör değil");
+                if (!inodes.TryGetValue(parent, out var p)) { r.Error(CoreText.T("Check.EntryParentMissing", label, de.Name, parent)); continue; }
+                if (!p.Inode.IsDirectory) r.Error(CoreText.T("Check.EntryParentNotDir", label, de.Name));
                 p.Children++;
             }
-            else if (de.FileId is not (Inode.RootDirId or PrivateDirId)) r.Error($"{label}: \"{de.Name}\" sanal üst klasörde ama kök değil");
-            if (!inodes.TryGetValue(de.FileId, out var t)) { r.Error($"{label}: \"{de.Name}\" girdisinin inode'u ({de.FileId}) yok"); continue; }
+            else if (de.FileId is not (Inode.RootDirId or PrivateDirId)) r.Error(CoreText.T("Check.EntryVirtualParentNotRoot", label, de.Name));
+            if (!inodes.TryGetValue(de.FileId, out var t)) { r.Error(CoreText.T("Check.EntryInodeMissing", label, de.Name, de.FileId)); continue; }
             t.Drecs++;
-            if (ExpectedType(t.Inode) != de.Type) r.Error($"{label}: \"{de.Name}\" girdi türü inode ile uyuşmuyor");
+            if (ExpectedType(t.Inode) != de.Type) r.Error(CoreText.T("Check.EntryTypeMismatch", label, de.Name));
         }
 
         long files = 0, dirs = 0, symlinks = 0, others = 0;
@@ -461,19 +461,19 @@ public static class FullCheck
             if (ino.IsDirectory)
             {
                 if (id != Inode.RootDirId && id != PrivateDirId) dirs++;
-                if (ino.ChildrenOrLinks != f.Children) r.Error($"{label}: klasör {id} çocuk sayısı {ino.ChildrenOrLinks}, girdiler {f.Children}");
-                if (id != Inode.RootDirId && id != PrivateDirId && f.Drecs != 1) r.Error($"{label}: klasör {id} {f.Drecs} yerden gösteriliyor");
+                if (ino.ChildrenOrLinks != f.Children) r.Error(CoreText.T("Check.DirChildCount", label, id, ino.ChildrenOrLinks, f.Children));
+                if (id != Inode.RootDirId && id != PrivateDirId && f.Drecs != 1) r.Error(CoreText.T("Check.DirMultiplyReferenced", label, id, f.Drecs));
             }
             else
             {
                 if (ino.IsRegularFile) files++;
                 else if (ino.IsSymlink) symlinks++;
                 else others++;
-                if (ino.ChildrenOrLinks != f.Drecs) r.Error($"{label}: inode {id} bağlantı sayısı {ino.ChildrenOrLinks}, girdiler {f.Drecs}");
+                if (ino.ChildrenOrLinks != f.Drecs) r.Error(CoreText.T("Check.InodeLinkCount", label, id, ino.ChildrenOrLinks, f.Drecs));
             }
             if (ino.HasDataStream)
             {
-                if (!ino.IsRegularFile) r.Error($"{label}: inode {id} dosya değil ama veri akışı var");
+                if (!ino.IsRegularFile) r.Error(CoreText.T("Check.InodeNotFileHasStream", label, id));
                 owners[ino.PrivateId] = owners.GetValueOrDefault(ino.PrivateId) + 1;
                 CheckStream(label, $"inode {id}", extents.GetValueOrDefault(ino.PrivateId), ino.DataSize, ino.AllocatedSize, r);
             }
@@ -481,32 +481,31 @@ public static class FullCheck
         // Başvuru sayıları: dosya veri akışlarının dstream_id kaydı vardır ve sayısı sahiplerle aynıdır (klonlarda 2+).
         foreach (var (sid, n) in owners)
         {
-            if (dstreamRefs.TryGetValue(sid, out uint refcnt)) { if (refcnt != n) r.Error($"{label}: veri akışı {sid} başvuru sayısı {refcnt}, sahip {n}"); }
-            else if (extents.ContainsKey(sid)) r.Error($"{label}: veri akışı {sid} için başvuru kaydı yok");
+            if (dstreamRefs.TryGetValue(sid, out uint refcnt)) { if (refcnt != n) r.Error(CoreText.T("Check.DstreamRefcnt", label, sid, refcnt, n)); }
+            else if (extents.ContainsKey(sid)) r.Error(CoreText.T("Check.DstreamNoRefRecord", label, sid));
         }
         // Öznitelik veri akışları paylaşılamaz ve dstream_id kaydı taşımaz (apfsck: "xattrs can't be cloned")
         var xattrOwners = new Dictionary<ulong, int>();
         foreach (var (owner, sid, size, alloc) in xattrStreams)
         {
             xattrOwners[sid] = xattrOwners.GetValueOrDefault(sid) + 1;
-            if (owners.ContainsKey(sid)) r.Error($"{label}: veri akışı {sid} hem dosyaya hem özniteliğe ait");
-            if (dstreamRefs.ContainsKey(sid)) r.Error($"{label}: öznitelik akışı {sid} için başvuru kaydı olmamalı");
-            CheckStream(label, $"öznitelik akışı {sid} (inode {owner})", extents.GetValueOrDefault(sid), size, alloc, r);
+            if (owners.ContainsKey(sid)) r.Error(CoreText.T("Check.StreamFileAndXattr", label, sid));
+            if (dstreamRefs.ContainsKey(sid)) r.Error(CoreText.T("Check.XattrStreamHasRefRecord", label, sid));
+            CheckStream(label, CoreText.T("Check.LabelXattrStream", sid, owner), extents.GetValueOrDefault(sid), size, alloc, r);
         }
         foreach (var (sid, n) in xattrOwners)
-            if (n != 1) r.Error($"{label}: öznitelik akışı {sid} {n} yerden kullanılıyor");
+            if (n != 1) r.Error(CoreText.T("Check.XattrStreamShared", label, sid, n));
         foreach (var sid in dstreamRefs.Keys)
-            if (!owners.ContainsKey(sid)) r.Error($"{label}: sahipsiz veri akışı kaydı {sid}");
+            if (!owners.ContainsKey(sid)) r.Error(CoreText.T("Check.OrphanDstreamRecord", label, sid));
         foreach (var sid in extents.Keys)
-            if (!owners.ContainsKey(sid) && !xattrOwners.ContainsKey(sid)) r.Error($"{label}: sahipsiz extent'ler (veri akışı {sid})");
+            if (!owners.ContainsKey(sid) && !xattrOwners.ContainsKey(sid)) r.Error(CoreText.T("Check.OrphanExtents", label, sid));
 
         CheckPhysicalExtents(label, extents, phys, blockSize, r);
 
         if (files != (long)v.NumFiles || dirs != (long)v.NumDirectories || symlinks != (long)v.NumSymlinks || others != (long)v.NumOtherFsObjects)
-            r.Error($"{label}: sayaçlar dosya/klasör/sembolik/diğer {v.NumFiles}/{v.NumDirectories}/{v.NumSymlinks}/{v.NumOtherFsObjects}, " +
-                $"sayılan {files}/{dirs}/{symlinks}/{others}");
-        if (v.NextObjId <= maxId) r.Error($"{label}: sonraki nesne kimliği {v.NextObjId}, kullanılan en büyük {maxId}");
-        r.Info.Add($"{label}: {files} dosya, {dirs} klasör, {symlinks} sembolik bağ, {extents.Count} veri akışı, {phys.Count} fiziksel extent");
+            r.Error(CoreText.T("Check.Counters", label, v.NumFiles, v.NumDirectories, v.NumSymlinks, v.NumOtherFsObjects, files, dirs, symlinks, others));
+        if (v.NextObjId <= maxId) r.Error(CoreText.T("Check.NextObjId", label, v.NextObjId, maxId));
+        r.Info.Add(CoreText.T("Check.FsSummary", label, files, dirs, symlinks, extents.Count, phys.Count));
     }
 
     /// <summary>CRYPTO_SW_ID: yazılım şifrelemeli birimin VEK'ine ayrılmış kimlik; veri extent'inin tweak'i olamaz.</summary>
@@ -538,12 +537,12 @@ public static class FullCheck
             list.Sort((a, b) => a.Logical.CompareTo(b.Logical));
             foreach (var x in list)
             {
-                if (x.Logical != next) { r.Error($"{label}: {what}: extent'ler boşluklu ya da üst üste (ofset {x.Logical}, beklenen {next})"); break; }
+                if (x.Logical != next) { r.Error(CoreText.T("Check.StreamGapOrOverlap", label, what, x.Logical, next)); break; }
                 next += x.Len;
             }
         }
-        if (next != alloc) r.Error($"{label}: {what}: ayrılan boyut {alloc}, extent'ler {next}");
-        if (size > alloc) r.Error($"{label}: {what}: boyut {size} ayrılandan ({alloc}) büyük");
+        if (next != alloc) r.Error(CoreText.T("Check.StreamAllocSize", label, what, alloc, next));
+        if (size > alloc) r.Error(CoreText.T("Check.StreamSizeTooLarge", label, what, size, alloc));
     }
 
     /// <summary>
@@ -575,7 +574,7 @@ public static class FullCheck
 
         phys.Sort((a, b) => a.Paddr.CompareTo(b.Paddr));
         for (int i = 1; i < phys.Count; i++)
-            if (phys[i].Paddr < phys[i - 1].Paddr + phys[i - 1].Len) r.Error($"{label}: fiziksel extent'ler üst üste ({phys[i].Paddr})");
+            if (phys[i].Paddr < phys[i - 1].Paddr + phys[i - 1].Len) r.Error(CoreText.T("Check.PhysExtentsOverlap", label, phys[i].Paddr));
 
         // Her fiziksel kaydın her bloğu, başvuru sayısı kadar dosya extent'iyle kapsanmalı. Bir dosya extent'i birden çok bitişik
         // fiziksel kayda yayılabilir (apfsck de böyle sayar); bu yüzden kapsama parçaları kayıt sınırlarında bölünür.
@@ -591,13 +590,13 @@ public static class FullCheck
                 var seg = segments[k];
                 ulong a = Math.Max(seg.Start, p.Paddr), b = Math.Min(seg.End, pEnd);
                 if (a >= b) continue;
-                if (seg.Count != p.Refcnt && errors++ < 5) r.Error($"{label}: fiziksel extent {p.Paddr} başvuru sayısı {p.Refcnt}, gösteren {seg.Count}");
+                if (seg.Count != p.Refcnt && errors++ < 5) r.Error(CoreText.T("Check.PhysExtentCoverage", label, p.Paddr, p.Refcnt, seg.Count));
                 covered += b - a;
             }
             matched += covered;
-            if (covered != p.Len && errors++ < 5) r.Error($"{label}: fiziksel extent {p.Paddr}+{p.Len} bloklarının bir kısmını hiçbir dosya göstermiyor");
+            if (covered != p.Len && errors++ < 5) r.Error(CoreText.T("Check.PhysExtentUncovered", label, p.Paddr, p.Len));
         }
-        if (matched != segTotal && errors++ < 5) r.Error($"{label}: {segTotal - matched} blok dosya verisi ama fiziksel extent kaydı yok");
+        if (matched != segTotal && errors++ < 5) r.Error(CoreText.T("Check.FileDataNoPhysExtent", label, segTotal - matched));
     }
 
     // ---- bitmap karşılaştırması ----
@@ -611,27 +610,27 @@ public static class FullCheck
             var bm = sm.ReadChunkBitmap(ch);
             uint free = Spaceman.CountFree(bm, ch.BlockCount);
             sumFree += free;
-            if (free != ch.FreeCount) r.Error($"alan yöneticisi: parça {ch.Addr} boş sayısı {ch.FreeCount}, bitmap {free}");
+            if (free != ch.FreeCount) r.Error(CoreText.T("Check.ChunkFreeCount", ch.Addr, ch.FreeCount, free));
             for (uint i = 0; i < ch.BlockCount; i++)
             {
                 bool onDisk = (bm[i >> 3] & (1 << (int)(i & 7))) != 0;
                 bool expected = used.Get(ch.Addr + i);
                 if (onDisk == expected) continue;
                 if (onDisk) leaked++; else freeButUsed++;
-                if (examples.Count < 5) examples.Add($"blok {ch.Addr + i} {(onDisk ? "dolu işaretli ama kullanılmıyor" : "kullanılıyor ama boş işaretli")}");
+                if (examples.Count < 5) examples.Add(CoreText.T("Check.BitmapExample", ch.Addr + i, (onDisk ? CoreText.T("Check.MarkedUsedNotUsed") : CoreText.T("Check.UsedMarkedFree"))));
             }
         }
-        if (sumFree != sm.Main.FreeCount) r.Error($"alan yöneticisi: aygıt boş sayacı {sm.Main.FreeCount}, bitmap'ler {sumFree}");
-        if (freeButUsed > 0) r.Error($"alan yöneticisi: {freeButUsed} blok kullanılıyor ama boş işaretli (TEHLİKELİ)");
+        if (sumFree != sm.Main.FreeCount) r.Error(CoreText.T("Check.DeviceFreeCount", sm.Main.FreeCount, sumFree));
+        if (freeButUsed > 0) r.Error(CoreText.T("Check.UsedButFree", freeButUsed));
         if (leaked > 0)
         {
             // Denetlenmeyen yapılar varsa dolu ama sahipsiz görünen bloklar onlarındır; sızıntı denemez
-            if (r.OwnershipIncomplete) r.Warnings.Add($"alan yöneticisi: {leaked} blok denetlenmeyen yapılara ait görünüyor (dolu işaretli, sahibi çözümlenmedi)");
-            else r.Error($"alan yöneticisi: {leaked} blok dolu işaretli ama hiçbir yapı kullanmıyor (sızıntı)");
+            if (r.OwnershipIncomplete) r.Warnings.Add(CoreText.T("Check.LeakedUnchecked", leaked));
+            else r.Error(CoreText.T("Check.Leaked", leaked));
         }
-        if (freeButUsed > 0 || (leaked > 0 && !r.OwnershipIncomplete)) r.Error($"alan yöneticisi: örnekler: {string.Join("; ", examples)}");
-        r.Info.Add($"alan yöneticisi: {sm.Main.BlockCount} blok, {sm.Main.FreeCount} boş; bitmap ile sahiplik " +
-            (freeButUsed + leaked == 0 ? "birebir" : freeButUsed == 0 && r.OwnershipIncomplete ? $"denetlenen yapılarda birebir ({leaked} blok denetlenmeyen yapılarda)" : "FARKLI"));
+        if (freeButUsed > 0 || (leaked > 0 && !r.OwnershipIncomplete)) r.Error(CoreText.T("Check.BitmapExamples", string.Join("; ", examples)));
+        string match = freeButUsed + leaked == 0 ? CoreText.T("Check.OwnershipIdentical") : freeButUsed == 0 && r.OwnershipIncomplete ? CoreText.T("Check.OwnershipIdenticalChecked", leaked) : CoreText.T("Check.OwnershipDifferent");
+        r.Info.Add(CoreText.T("Check.SpacemanSummary", sm.Main.BlockCount, sm.Main.FreeCount, match));
     }
 
     private static void CompareIp(Spaceman sm, BlockSet ipUsed, CheckReport r)
@@ -643,7 +642,7 @@ public static class FullCheck
             bool onDisk = (ip[i >> 3] & (1 << (int)(i & 7))) != 0;
             if (onDisk != ipUsed.Get(i)) diff++;
         }
-        if (diff > 0) r.Error($"iç havuz: {diff} blokta bitmap ile kullanım farklı");
+        if (diff > 0) r.Error(CoreText.T("Check.IpBitmapDiff", diff));
     }
 
     /// <summary>Bellek içi blok kümesi (1 bit = 1 blok).</summary>

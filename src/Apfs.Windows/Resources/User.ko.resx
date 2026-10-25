@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About.Text" xml:space="preserve">
+    <value>Mac에서 포맷한 APFS 디스크를 Windows에서 엽니다. 기본적으로 읽기 전용이며, 쓰기는 선택 사항입니다(실험적 기능). 오픈 소스, GPLv3 라이선스.</value>
+  </data>
+  <data name="Action.AllowWriting" xml:space="preserve">
+    <value>쓰기 허용</value>
+  </data>
+  <data name="Action.BackToReadOnly" xml:space="preserve">
+    <value>읽기 전용으로 전환</value>
+  </data>
+  <data name="Action.Cancel" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Action.CancelDialog" xml:space="preserve">
+    <value>취소</value>
+  </data>
+  <data name="Action.Checking" xml:space="preserve">
+    <value>검사 중…</value>
+  </data>
+  <data name="Action.ContinueAnyway" xml:space="preserve">
+    <value>그래도 계속</value>
+  </data>
+  <data name="Action.Details" xml:space="preserve">
+    <value>자세히</value>
+  </data>
+  <data name="Action.EjectAnyway" xml:space="preserve">
+    <value>그래도 꺼내기</value>
+  </data>
+  <data name="Action.Ejecting" xml:space="preserve">
+    <value>꺼내는 중…</value>
+  </data>
+  <data name="Action.Exit" xml:space="preserve">
+    <value>끝내기</value>
+  </data>
+  <data name="Action.Open" xml:space="preserve">
+    <value>열기</value>
+  </data>
+  <data name="Action.OpenLog" xml:space="preserve">
+    <value>로그 열기</value>
+  </data>
+  <data name="Action.OpenMain" xml:space="preserve">
+    <value>기본 창 열기</value>
+  </data>
+  <data name="Action.Rescan" xml:space="preserve">
+    <value>다시 검색</value>
+  </data>
+  <data name="Action.Rescanning" xml:space="preserve">
+    <value>검색 중…</value>
+  </data>
+  <data name="Action.SafelyEject" xml:space="preserve">
+    <value>안전하게 꺼내기</value>
+  </data>
+  <data name="Action.Saving" xml:space="preserve">
+    <value>저장 중…</value>
+  </data>
+  <data name="Action.Unlock" xml:space="preserve">
+    <value>잠금 해제</value>
+  </data>
+  <data name="Card.Checking" xml:space="preserve">
+    <value>디스크 검사 중…</value>
+  </data>
+  <data name="Card.DriveState" xml:space="preserve">
+    <value>드라이브 {0} · {1}</value>
+  </data>
+  <data name="Card.Failed" xml:space="preserve">
+    <value>열 수 없음</value>
+  </data>
+  <data name="Card.NeedsPassword" xml:space="preserve">
+    <value>암호화됨 · 암호 필요</value>
+  </data>
+  <data name="Card.NoVolumes" xml:space="preserve">
+    <value>이 디스크에는 표시할 볼륨이 없습니다(macOS 내부 볼륨만 있음).</value>
+  </data>
+  <data name="Card.ReadOnly" xml:space="preserve">
+    <value>읽기 전용</value>
+  </data>
+  <data name="Card.Writable" xml:space="preserve">
+    <value>쓰기 가능(실험적)</value>
+  </data>
+  <data name="Card.WriteRefused" xml:space="preserve">
+    <value>쓰기를 사용하도록 설정할 수 없습니다: {0}</value>
+  </data>
+  <data name="Disk.Gone" xml:space="preserve">
+    <value>이 디스크는 더 이상 연결되어 있지 않습니다.</value>
+  </data>
+  <data name="Disk.PhysicalName" xml:space="preserve">
+    <value>디스크 {0} ({1})</value>
+  </data>
+  <data name="Eject.Busy" xml:space="preserve">
+    <value>{0}에 있는 파일이 지금 열려 있거나 복사되고 있습니다({1}). 지금 꺼내면 복사가 중간에 끊기지만 Mac 디스크는 손상되지 않습니다.</value>
+  </data>
+  <data name="Eject.BusyHeading" xml:space="preserve">
+    <value>복사가 진행 중인 것 같습니다</value>
+  </data>
+  <data name="Eject.Detached" xml:space="preserve">
+    <value>볼륨이 탑재 해제되었습니다.</value>
+  </data>
+  <data name="Eject.Ejected" xml:space="preserve">
+    <value>디스크를 안전하게 꺼냈습니다.</value>
+  </data>
+  <data name="Eject.Failed" xml:space="preserve">
+    <value>디스크를 꺼낼 수 없습니다.</value>
+  </data>
+  <data name="Eject.Remounting" xml:space="preserve">
+    <value>{0} 디스크를 다시 탑재하는 중입니다.</value>
+  </data>
+  <data name="Error.OperationFailed" xml:space="preserve">
+    <value>작업을 완료할 수 없습니다.</value>
+  </data>
+  <data name="Error.ServiceUnreachable" xml:space="preserve">
+    <value>서비스에 연결할 수 없습니다.</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>알 수 없는 오류입니다.</value>
+  </data>
+  <data name="Language.Windows" xml:space="preserve">
+    <value>Windows 표시 언어</value>
+  </data>
+  <data name="List.Connecting" xml:space="preserve">
+    <value>연결 중…</value>
+  </data>
+  <data name="List.NoDiskBody" xml:space="preserve">
+    <value>Mac 디스크를 연결하세요. 몇 초 안에 여기에 표시됩니다. 디스크는 처음에 읽기 전용으로 열리며, 디스크에 쓰려면 디스크 카드의 버튼으로 따로 허용하면 됩니다.</value>
+  </data>
+  <data name="List.NoDiskHeading" xml:space="preserve">
+    <value>아직 Mac 디스크가 없습니다</value>
+  </data>
+  <data name="List.ServiceDownBody" xml:space="preserve">
+    <value>디스크를 탑재하는 서비스에 연결할 수 없습니다. 컴퓨터를 다시 시작하거나 프로그램을 다시 설치해 보세요.</value>
+  </data>
+  <data name="List.ServiceDownHeading" xml:space="preserve">
+    <value>백그라운드 서비스가 실행되고 있지 않습니다</value>
+  </data>
+  <data name="Log.NoneYet" xml:space="preserve">
+    <value>아직 로그가 없습니다.</value>
+  </data>
+  <data name="Main.Subtitle" xml:space="preserve">
+    <value>Mac 디스크는 안전합니다. 처음에는 읽기 전용으로 열리고, 원하면 쓰기도 할 수 있습니다.</value>
+  </data>
+  <data name="Main.Version" xml:space="preserve">
+    <value>버전 {0}</value>
+  </data>
+  <data name="Notice.CloseWriteFailed" xml:space="preserve">
+    <value>{0}: 최근 변경 내용 중 일부를 디스크에 기록하지 못했습니다(디스크가 분리되었을 수 있습니다). 디스크는 이전에 저장된 상태로 열립니다. 자세한 정보: {1}</value>
+  </data>
+  <data name="Notice.ContainerOpenFailed" xml:space="preserve">
+    <value>{0}: APFS 컨테이너를 열 수 없습니다. {1}</value>
+  </data>
+  <data name="Notice.Detached" xml:space="preserve">
+    <value>{0}의 볼륨이 탑재 해제되었습니다. 이 디스크는 이동식 장치로 표시되지 않으므로, 다시 탑재하려면 "다시 검색"을 사용하세요.</value>
+  </data>
+  <data name="Notice.DiskUnreadable" xml:space="preserve">
+    <value>{0}을(를) 읽을 수 없습니다: {1}</value>
+  </data>
+  <data name="Notice.Ejected" xml:space="preserve">
+    <value>{0}을(를) 안전하게 꺼냈습니다. 이제 케이블을 분리해도 됩니다.</value>
+  </data>
+  <data name="Notice.MountFailed" xml:space="preserve">
+    <value>"{0}"을(를) 탑재할 수 없습니다. {1}</value>
+  </data>
+  <data name="Notice.Mounted" xml:space="preserve">
+    <value>"{0}"을(를) 드라이브 {1}에 탑재했습니다(읽기 전용).</value>
+  </data>
+  <data name="Notice.MountedWritable" xml:space="preserve">
+    <value>"{0}"을(를) 드라이브 {1}에 【쓰기 가능】 상태로 탑재했습니다(실험적). 디스크를 분리하기 전에 "안전하게 꺼내기"를 사용하세요.</value>
+  </data>
+  <data name="Notice.NeedsPassword" xml:space="preserve">
+    <value>"{0}" 볼륨은 암호화되어 있습니다. 열려면 알림 영역의 APFS 아이콘에서 암호를 입력하세요.</value>
+  </data>
+  <data name="Notice.RemountedReadOnly" xml:space="preserve">
+    <value>{0}을(를) 읽기 전용으로 다시 탑재했습니다. 변경 내용은 저장되었습니다.</value>
+  </data>
+  <data name="Notice.VolumeOpenFailed" xml:space="preserve">
+    <value>{0}: 볼륨 {1}을(를) 열 수 없습니다. {2}</value>
+  </data>
+  <data name="Notice.WriteRefused" xml:space="preserve">
+    <value>{0}에서 쓰기를 사용하도록 설정하지 않았습니다. {1}</value>
+  </data>
+  <data name="Password.Hint" xml:space="preserve">
+    <value>힌트: {0}</value>
+  </data>
+  <data name="Password.Locked" xml:space="preserve">
+    <value>"{0}"이(가) 잠겨 있습니다</value>
+  </data>
+  <data name="Password.Prompt" xml:space="preserve">
+    <value>이 볼륨은 암호화되어 있습니다. 열려면 Mac에서 사용하는 암호를 입력하세요.</value>
+  </data>
+  <data name="Password.Reassurance" xml:space="preserve">
+    <value>이 프로그램은 디스크를 읽기만 하며, 암호는 어디에도 저장되지 않습니다.</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>APFS for Windows: 암호화된 볼륨</value>
+  </data>
+  <data name="Release.Changed" xml:space="preserve">
+    <value>은(는) 다른 프로그램에 의해 내용이 바뀌어(예: 다시 포맷되어) APFS 드라이브가 제거되었습니다</value>
+  </data>
+  <data name="Release.Removed" xml:space="preserve">
+    <value>은(는) 분리되었습니다</value>
+  </data>
+  <data name="Release.SafeToRemove" xml:space="preserve">
+    <value>은(는) 안전하게 제거할 수 있도록 탑재 해제되었습니다. 이제 디스크를 분리해도 됩니다</value>
+  </data>
+  <data name="Release.ServiceStopped" xml:space="preserve">
+    <value>은(는) 서비스가 중지되어 탑재 해제되었습니다</value>
+  </data>
+  <data name="Release.UnsavedLost" xml:space="preserve">
+    <value>저장되지 않은 최근 변경 내용을 기록하지 못했습니다. 디스크는 이전에 저장된 상태로 열립니다.</value>
+  </data>
+  <data name="Release.UnsavedNotWrittenChanged" xml:space="preserve">
+    <value>디스크의 새 내용이 손상되지 않도록 저장되지 않은 최근 변경 내용은 기록하지 않았습니다.</value>
+  </data>
+  <data name="Tray.MenuEject" xml:space="preserve">
+    <value>{0}{1}: 안전하게 꺼내기</value>
+  </data>
+  <data name="Tray.MenuNoDisk" xml:space="preserve">
+    <value>연결된 Mac 디스크 없음</value>
+  </data>
+  <data name="Tray.MenuServiceDown" xml:space="preserve">
+    <value>서비스가 실행되고 있지 않음(설치 상태를 확인하세요)</value>
+  </data>
+  <data name="Tray.StillRunning" xml:space="preserve">
+    <value>프로그램은 알림 영역에서 계속 실행됩니다. 여기에서 디스크에 액세스할 수 있습니다.</value>
+  </data>
+  <data name="Tray.TipMounted" xml:space="preserve">
+    <value>APFS for Windows: 볼륨 {0}개 탑재됨</value>
+  </data>
+  <data name="Tray.TipNoVolumes" xml:space="preserve">
+    <value>APFS for Windows: 탑재된 볼륨 없음</value>
+  </data>
+  <data name="Tray.TipServiceDown" xml:space="preserve">
+    <value>APFS for Windows: 서비스가 실행되고 있지 않음</value>
+  </data>
+  <data name="Unlock.Failed" xml:space="preserve">
+    <value>잠금을 해제할 수 없습니다.</value>
+  </data>
+  <data name="Unlock.MountFailed" xml:space="preserve">
+    <value>탑재할 수 없습니다.</value>
+  </data>
+  <data name="Unlock.Mounted" xml:space="preserve">
+    <value>"{0}"을(를) {1}에 탑재했습니다.</value>
+  </data>
+  <data name="Unlock.NotWaiting" xml:space="preserve">
+    <value>이 볼륨은 더 이상 암호를 기다리지 않습니다.</value>
+  </data>
+  <data name="Volume.DefaultName" xml:space="preserve">
+    <value>볼륨 {0}</value>
+  </data>
+  <data name="Volume.InternalRole" xml:space="preserve">
+    <value>macOS 내부 볼륨({0})</value>
+  </data>
+  <data name="Write.AlreadyReadOnly" xml:space="preserve">
+    <value>이 파티션은 이미 읽기 전용입니다.</value>
+  </data>
+  <data name="Write.AlreadyWritable" xml:space="preserve">
+    <value>이 파티션은 이미 쓰기가 허용되어 있습니다.</value>
+  </data>
+  <data name="Write.Busy" xml:space="preserve">
+    <value>{0}에 있는 파일이 지금 열려 있거나 복사되고 있습니다({1}). 계속하면 드라이브가 잠시 탑재 해제되었다가 다시 탑재되며, 열려 있는 파일은 닫힙니다.</value>
+  </data>
+  <data name="Write.BusyHeading" xml:space="preserve">
+    <value>디스크가 사용 중입니다</value>
+  </data>
+  <data name="Write.CheckFailed" xml:space="preserve">
+    <value>디스크를 검사할 수 없습니다: {0}</value>
+  </data>
+  <data name="Write.ConfirmHeading" xml:space="preserve">
+    <value>이 디스크에 쓰기를 허용하시겠습니까?</value>
+  </data>
+  <data name="Write.ConfirmText" xml:space="preserve">
+    <value>{0}
+
+쓰기는 【실험적】 기능입니다. 중요한 파일은 반드시 백업해 두세요.
+
+• 먼저 디스크를 검사하며, 문제가 발견되면 쓰기를 사용하도록 설정하지 않습니다.
+• 디스크를 분리하거나 Mac에 연결하기 전에 항상 "안전하게 꺼내기"를 사용하세요.
+• 이 디스크에서 삭제한 파일은 휴지통으로 이동하지 않고 영구적으로 삭제됩니다.
+• 언제든지 "읽기 전용으로 전환"을 선택할 수 있으며, 변경 내용은 저장됩니다.</value>
+  </data>
+  <data name="Write.EnableFailed" xml:space="preserve">
+    <value>쓰기를 사용하도록 설정할 수 없습니다: {0}</value>
+  </data>
+  <data name="Write.EnableFailedTitle" xml:space="preserve">
+    <value>쓰기를 사용하도록 설정할 수 없음</value>
+  </data>
+  <data name="Write.Enabled" xml:space="preserve">
+    <value>이제 "{0}"({1})에 쓸 수 있습니다.</value>
+  </data>
+  <data name="Write.MultipleVolumes" xml:space="preserve">
+    <value>이 파티션에는 볼륨이 두 개 이상 있습니다. 이 버전에서는 볼륨이 하나뿐인 파티션에서만 쓰기를 허용할 수 있습니다.</value>
+  </data>
+  <data name="Write.NoSuchPartition" xml:space="preserve">
+    <value>이 디스크에는 해당 APFS 파티션이 없습니다.</value>
+  </data>
+  <data name="Write.PreviousRequestPending" xml:space="preserve">
+    <value>이 파티션에 대한 이전 요청이 아직 끝나지 않았습니다.</value>
+  </data>
+  <data name="Write.RemountedReadOnly" xml:space="preserve">
+    <value>디스크를 읽기 전용으로 다시 탑재했습니다.</value>
+  </data>
+</root>

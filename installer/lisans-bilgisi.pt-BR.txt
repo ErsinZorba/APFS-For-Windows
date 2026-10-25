@@ -1,0 +1,12 @@
+﻿APFS for Windows
+Copyright (C) 2026 Ersin Zorba
+
+Este programa é software livre e de código aberto, distribuído sob a Licença Pública Geral GNU versão 3 (GPLv3): você pode usá-lo, copiá-lo e compartilhá-lo sem custo. Se você modificá-lo e distribuir a sua versão, deverá compartilhar o código-fonte dela sob a mesma licença.
+
+O programa é fornecido sem nenhuma garantia. Recomendamos fazer backup dos seus discos do Mac antes de permitir que ele grave neles.
+
+Código-fonte: https://github.com/ErsinZorba/APFS-for-Windows
+
+O texto completo da licença está no arquivo LICENSE, na pasta do programa, após a instalação.
+
+É usado o driver de sistema de arquivos WinFsp: WinFsp - Windows File System Proxy, Copyright (C) Bill Zissimopoulos, https://github.com/winfsp/winfsp (GPLv3).

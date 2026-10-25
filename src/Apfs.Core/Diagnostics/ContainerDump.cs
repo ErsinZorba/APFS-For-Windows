@@ -13,27 +13,27 @@ public static class ContainerDump
     public static IEnumerable<string> Lines(ApfsContainer c)
     {
         var sb = c.Superblock;
-        yield return $"[kapsayıcı] xid {sb.Xid} (blok {sb.Paddr}), sonraki xid {sb.NextXid}, sonraki oid {sb.NextOid}";
-        yield return $"  blok {sb.BlockSize} × {sb.BlockCount}, uuid {sb.Uuid}";
-        yield return $"  özellikler 0x{sb.Features:x}, ro-uyumlu 0x{sb.ReadOnlyCompatibleFeatures:x}, uyumsuz 0x{sb.IncompatibleFeatures:x}, bayraklar 0x{sb.Flags:x}";
-        yield return $"  tanımlayıcı halkası: taban {sb.XpDescBase}, {sb.XpDescBlocks} blok, index {sb.XpDescIndex}, len {sb.XpDescLen}, next {sb.XpDescNext}";
-        yield return $"  veri halkası:        taban {sb.XpDataBase}, {sb.XpDataBlocks} blok, index {sb.XpDataIndex}, len {sb.XpDataLen}, next {sb.XpDataNext}";
+        yield return CoreText.T("Dump.ContainerHeader", sb.Xid, sb.Paddr, sb.NextXid, sb.NextOid);
+        yield return CoreText.T("Dump.ContainerBlocks", sb.BlockSize, sb.BlockCount, sb.Uuid);
+        yield return CoreText.T("Dump.ContainerFeatures", sb.Features, sb.ReadOnlyCompatibleFeatures, sb.IncompatibleFeatures, sb.Flags);
+        yield return CoreText.T("Dump.DescRing", sb.XpDescBase, sb.XpDescBlocks, sb.XpDescIndex, sb.XpDescLen, sb.XpDescNext);
+        yield return CoreText.T("Dump.DataRing", sb.XpDataBase, sb.XpDataBlocks, sb.XpDataIndex, sb.XpDataLen, sb.XpDataNext);
         yield return $"  spaceman oid {sb.SpacemanOid}, omap {sb.OmapOid}, reaper oid {sb.ReaperOid}, efi {sb.EfiJumpstart}, keylocker {sb.KeylockerStart}+{sb.KeylockerBlockCount}";
-        yield return $"  birimler: {string.Join(", ", sb.FsOids)} (en fazla {sb.MaxFileSystems}); engelli aralık {sb.BlockedOutStart}+{sb.BlockedOutCount}";
-        foreach (var w in c.Warnings) yield return $"  UYARI: {w}";
+        yield return CoreText.T("Dump.ContainerVolumes", string.Join(", ", sb.FsOids), sb.MaxFileSystems, sb.BlockedOutStart, sb.BlockedOutCount);
+        foreach (var w in c.Warnings) yield return CoreText.T("Dump.Warning", w);
 
         var block0 = c.Reader.ReadBlock(0);
         bool b0Valid = Fletcher64.Verify(block0);
         ulong b0Xid = Bin.U64(block0, 16);
-        yield return $"  blok 0 kopyası: xid {b0Xid}, sağlama {(b0Valid ? "doğru" : "BOZUK")}" +
-            (b0Xid == sb.Xid ? " (son checkpoint ile aynı)" : " (son checkpoint'ten eski: düzgün kapatılmamış)");
+        yield return CoreText.T("Dump.Block0Copy", b0Xid, (b0Valid ? CoreText.T("Dump.ChecksumOk") : CoreText.T("Dump.ChecksumBad"))) +
+            (b0Xid == sb.Xid ? CoreText.T("Dump.Block0SameAsLatest") : CoreText.T("Dump.Block0Older"));
 
         // ---- Checkpoint ----
         var cp = Checkpoint.Read(c);
-        yield return $"[checkpoint] eşleme blokları: {string.Join(", ", cp.MapBlocks)}; {cp.Mappings.Count} geçici nesne";
+        yield return CoreText.T("Dump.CheckpointHeader", string.Join(", ", cp.MapBlocks), cp.Mappings.Count);
         foreach (var m in cp.Mappings)
-            yield return $"  oid {m.Oid}: tür 0x{m.Type:x8}/{m.Subtype:x}, {m.Size} bayt, blok {m.Paddr}{(m.FsOid != 0 ? $", birim {m.FsOid}" : "")}";
-        foreach (var p in cp.Problems) yield return $"  SORUN: {p}";
+            yield return CoreText.T("Dump.CheckpointMapping", m.Oid, m.Type, m.Subtype, m.Size, m.Paddr, (m.FsOid != 0 ? CoreText.T("Dump.CheckpointMappingVolume", m.FsOid) : ""));
+        foreach (var p in cp.Problems) yield return CoreText.T("Dump.Problem", p);
 
         // ---- Alan yöneticisi ----
         Spaceman? sm = null;
@@ -42,7 +42,7 @@ public static class ContainerDump
         catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { smError = e.Message; }
         if (sm is null)
         {
-            yield return $"[alan yöneticisi] SORUN: okunamadı: {smError}";
+            yield return CoreText.T("Dump.SpacemanUnreadable", smError);
         }
         else
         {
@@ -55,25 +55,23 @@ public static class ContainerDump
             byte[]? r = null;
             string? rError = null;
             try { r = cp.ReadEphemeral(rm); } catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { rError = e.Message; }
-            if (r is null) yield return $"[reaper] SORUN: {rError}";
+            if (r is null) yield return CoreText.T("Dump.ReaperProblem", rError);
             else
             {
-                yield return $"[reaper] sonraki {Bin.U64(r, 32)}, tamamlanan {Bin.U64(r, 40)}, baş {Bin.U64(r, 48)}, kuyruk {Bin.U64(r, 56)}, " +
-                    $"bayrak 0x{Bin.U32(r, 64):x}, liste {Bin.U32(r, 68)}, tür 0x{Bin.U32(r, 72):x}, birim {Bin.U64(r, 80)}, nesne {Bin.U64(r, 88)}, xid {Bin.U64(r, 96)}";
+                yield return CoreText.T("Dump.ReaperHeader", Bin.U64(r, 32), Bin.U64(r, 40), Bin.U64(r, 48), Bin.U64(r, 56), Bin.U32(r, 64), Bin.U32(r, 68), Bin.U32(r, 72), Bin.U64(r, 80), Bin.U64(r, 88), Bin.U64(r, 96));
                 ReaperState? st = null;
                 try { st = ReaperState.Read(cp, sb); } catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { rError = e.Message; }
                 foreach (var (m, l) in st?.Lists ?? [])
-                    yield return $"  liste {m.Oid} (blok {m.Paddr}): next {Bin.U64(l, 32)}, bayrak 0x{Bin.U32(l, 40):x}, en fazla {Bin.U32(l, 44)}, " +
-                        $"sayı {Bin.U32(l, 48)}, ilk 0x{Bin.U32(l, 52):x8}, son 0x{Bin.U32(l, 56):x8}, boş 0x{Bin.U32(l, 60):x8}";
-                yield return st is null ? $"  durum: SORUN: {rError}"
-                    : st.IsIdle ? "  durum: boşta" : $"  durum: {st.Problem}";
+                    yield return CoreText.T("Dump.ReapList", m.Oid, m.Paddr, Bin.U64(l, 32), Bin.U32(l, 40), Bin.U32(l, 44), Bin.U32(l, 48), Bin.U32(l, 52), Bin.U32(l, 56), Bin.U32(l, 60));
+                yield return st is null ? CoreText.T("Dump.ReaperStatusProblem", rError)
+                    : st.IsIdle ? CoreText.T("Dump.ReaperStatusIdle") : CoreText.T("Dump.ReaperStatus", st.Problem);
             }
         }
-        else yield return "[reaper] SORUN: checkpoint haritasında yok";
+        else yield return CoreText.T("Dump.ReaperNotInCheckpoint");
 
         // ---- Nesne haritası ----
         var omap = c.Reader.ReadObject(sb.OmapOid, ApfsConstants.TypeOmap);
-        yield return OmapLine("[kapsayıcı omap]", sb.OmapOid, omap);
+        yield return OmapLine(CoreText.T("Dump.ContainerOmapTitle"), sb.OmapOid, omap);
 
         // ---- Birimler ----
         foreach (ulong oid in sb.FsOids)
@@ -88,7 +86,7 @@ public static class ContainerDump
                 v = c.Reader.ReadObject(paddr, ApfsConstants.TypeFs, oid);
             }
             catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { err = e.Message; v = []; paddr = 0; }
-            if (err is not null) { yield return $"[birim {oid}] SORUN: {err}"; continue; }
+            if (err is not null) { yield return CoreText.T("Dump.VolumeProblem", oid, err); continue; }
             foreach (var l in VolumeLines(c, oid, paddr, v)) yield return l;
         }
     }
@@ -96,19 +94,18 @@ public static class ContainerDump
     private static IEnumerable<string> SpacemanLines(ApfsContainer c, Spaceman sm)
     {
         var d = sm.Main;
-        yield return $"[alan yöneticisi] xid {sm.Xid}, {sm.Mapping.Size} bayt, sürüm {sm.Version}, yapı {sm.StructSize}, bayrak 0x{sm.Flags:x}";
-        yield return $"  parça başına blok {sm.BlocksPerChunk}, CIB başına parça {sm.ChunksPerCib}, CAB başına CIB {sm.CibsPerCab}";
-        yield return $"  ana aygıt: {d.BlockCount} blok, {d.ChunkCount} parça, {d.CibCount} CIB, {d.CabCount} CAB, boş {d.FreeCount}, adres ofseti {d.AddrOffset}";
-        if (sm.Tier2.BlockCount != 0) yield return $"  ikinci katman: {sm.Tier2.BlockCount} blok (Fusion)";
-        yield return $"  iç havuz: taban {sm.IpBase}, {sm.IpBlockCount} blok; bitmap halkası taban {sm.IpBmBase}, {sm.IpBmBlockCount} blok, " +
-            $"bitmap {sm.IpBmSizeInBlocks} blok, çarpan {sm.IpBmTxMultiplier}, boş liste {sm.IpBmFreeHead}→{sm.IpBmFreeTail}";
-        yield return $"  birim rezervi: {sm.FsReserveBlockCount} blok, ayrılan {sm.FsReserveAllocCount}";
+        yield return CoreText.T("Dump.SpacemanHeader", sm.Xid, sm.Mapping.Size, sm.Version, sm.StructSize, sm.Flags);
+        yield return CoreText.T("Dump.SpacemanGeometry", sm.BlocksPerChunk, sm.ChunksPerCib, sm.CibsPerCab);
+        yield return CoreText.T("Dump.SpacemanMainDevice", d.BlockCount, d.ChunkCount, d.CibCount, d.CabCount, d.FreeCount, d.AddrOffset);
+        if (sm.Tier2.BlockCount != 0) yield return CoreText.T("Dump.SpacemanTier2", sm.Tier2.BlockCount);
+        yield return CoreText.T("Dump.SpacemanInternalPool", sm.IpBase, sm.IpBlockCount, sm.IpBmBase, sm.IpBmBlockCount, sm.IpBmSizeInBlocks, sm.IpBmTxMultiplier, sm.IpBmFreeHead, sm.IpBmFreeTail);
+        yield return CoreText.T("Dump.SpacemanReserve", sm.FsReserveBlockCount, sm.FsReserveAllocCount);
 
         // Parçalar: bitmap'ten sayılan boş = parça bilgisindeki boş = aygıt sayacı
         IReadOnlyList<ChunkInfo>? chunks = null;
         string? err = null;
         try { chunks = sm.MainChunks(); } catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { err = e.Message; }
-        if (chunks is null) { yield return $"  SORUN: parça bilgileri okunamadı: {err}"; yield break; }
+        if (chunks is null) { yield return CoreText.T("Dump.ChunkInfoUnreadable", err); yield break; }
         ulong sumInfo = 0, sumBitmap = 0, blocks = 0, expect = 0;
         int mismatched = 0, notConsecutive = 0;
         foreach (var ch in chunks)
@@ -121,12 +118,12 @@ public static class ContainerDump
             if (ch.Addr != expect) notConsecutive++;
             expect = ch.Addr + ch.BlockCount;
         }
-        yield return $"  parçalar: {chunks.Count}, toplam {blocks} blok; boş: aygıt sayacı {d.FreeCount}, parça bilgileri {sumInfo}, bitmap'ler {sumBitmap}";
-        if (sumInfo != d.FreeCount || sumBitmap != d.FreeCount) yield return "  SORUN: boş blok sayaçları birbirini tutmuyor";
-        if (mismatched > 0) yield return $"  SORUN: {mismatched} parçada bitmap ile parça bilgisi farklı";
-        if (notConsecutive > 0) yield return $"  SORUN: {notConsecutive} parça ardışık değil";
-        if (blocks != d.BlockCount || (ulong)chunks.Count != d.ChunkCount) yield return "  SORUN: parça/blok sayıları aygıtla tutmuyor";
-        if (d.BlockCount != c.Superblock.BlockCount) yield return "  SORUN: alan yöneticisinin blok sayısı kapsayıcıdan farklı";
+        yield return CoreText.T("Dump.ChunksSummary", chunks.Count, blocks, d.FreeCount, sumInfo, sumBitmap);
+        if (sumInfo != d.FreeCount || sumBitmap != d.FreeCount) yield return CoreText.T("Dump.FreeCountersDisagree");
+        if (mismatched > 0) yield return CoreText.T("Dump.ChunkBitmapMismatch", mismatched);
+        if (notConsecutive > 0) yield return CoreText.T("Dump.ChunksNotConsecutive", notConsecutive);
+        if (blocks != d.BlockCount || (ulong)chunks.Count != d.ChunkCount) yield return CoreText.T("Dump.ChunkCountsMismatch");
+        if (d.BlockCount != c.Superblock.BlockCount) yield return CoreText.T("Dump.SpacemanBlockCountMismatch");
 
         // İç havuz bitmap'i
         string ipLine;
@@ -135,12 +132,12 @@ public static class ContainerDump
             var ip = sm.ReadIpBitmap();
             ulong used = 0;
             for (ulong i = 0; i < sm.IpBlockCount; i++) if ((ip[i >> 3] & (1 << (int)(i & 7))) != 0) used++;
-            ipLine = $"  iç havuz bitmap'i: {used} / {sm.IpBlockCount} blok kullanımda";
+            ipLine = CoreText.T("Dump.IpBitmapUsage", used, sm.IpBlockCount);
         }
-        catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { ipLine = $"  SORUN: iç havuz bitmap'i okunamadı: {e.Message}"; }
+        catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { ipLine = CoreText.T("Dump.IpBitmapUnreadable", e.Message); }
         yield return ipLine;
 
-        string[] names = ["iç havuz", "ana aygıt", "ikinci katman"];
+        string[] names = [CoreText.T("Dump.QueueInternalPool"), CoreText.T("Dump.QueueMainDevice"), CoreText.T("Dump.QueueTier2")];
         for (int q = 0; q < 3; q++)
         {
             var fq = sm.FreeQueues[q];
@@ -150,45 +147,41 @@ public static class ContainerDump
             {
                 ulong entries = 0, total = 0, oldest = ulong.MaxValue;
                 foreach (var e in sm.ReadFreeQueue(q)) { entries++; total += e.Length; oldest = Math.Min(oldest, e.Xid); }
-                line = $"  boş kuyruk ({names[q]}): sayaç {fq.Count}, ağaç {fq.TreeOid}, en eski xid {fq.OldestXid}, düğüm sınırı {fq.NodeLimit}; " +
-                    $"{entries} kayıt, {total} blok" + (total != fq.Count ? "  SORUN: sayaç tutmuyor" : "") +
-                    (entries > 0 && oldest != fq.OldestXid ? "  SORUN: en eski xid tutmuyor" : "");
+                line = CoreText.T("Dump.FreeQueue", names[q], fq.Count, fq.TreeOid, fq.OldestXid, fq.NodeLimit, entries, total) + (total != fq.Count ? CoreText.T("Dump.FreeQueueCountMismatch") : "") +
+                    (entries > 0 && oldest != fq.OldestXid ? CoreText.T("Dump.FreeQueueOldestMismatch") : "");
             }
-            catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { line = $"  SORUN: boş kuyruk ({names[q]}) okunamadı: {e.Message}"; }
+            catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError) { line = CoreText.T("Dump.FreeQueueUnreadable", names[q], e.Message); }
             yield return line;
         }
     }
 
     private static string OmapLine(string title, ulong paddr, byte[] om) =>
-        $"{title} blok {paddr}: bayrak 0x{Bin.U32(om, 32):x}, anlık görüntü {Bin.U32(om, 36)}, ağaç türü 0x{Bin.U32(om, 40):x8}, ağaç {Bin.U64(om, 48)}, " +
-        $"anlık görüntü ağacı {Bin.U64(om, 56)}, en yeni anlık {Bin.U64(om, 64)}";
+        CoreText.T("Dump.OmapLine", title, paddr, Bin.U32(om, 32), Bin.U32(om, 36), Bin.U32(om, 40), Bin.U64(om, 48), Bin.U64(om, 56), Bin.U64(om, 64));
 
     private static IEnumerable<string> VolumeLines(ApfsContainer c, ulong oid, ulong paddr, byte[] v)
     {
         string name = Bin.Utf8Z(Bin.Slice(v, 704, 256));
-        yield return $"[birim {oid}] \"{name}\" blok {paddr}, xid {Bin.U64(v, 16)}, sıra {Bin.U32(v, 36)}, rol 0x{Bin.U16(v, 964):x}";
-        yield return $"  özellikler 0x{Bin.U64(v, 40):x}, ro-uyumlu 0x{Bin.U64(v, 48):x}, uyumsuz 0x{Bin.U64(v, 56):x}, fs bayrakları 0x{Bin.U64(v, 264):x}";
-        yield return $"  ağaçlar: omap {Bin.U64(v, 128)}, kök {Bin.U64(v, 136)} (tür 0x{Bin.U32(v, 116):x8}), extentref {Bin.U64(v, 144)} (tür 0x{Bin.U32(v, 120):x8}), " +
-            $"snap_meta {Bin.U64(v, 152)} (tür 0x{Bin.U32(v, 124):x8})";
-        yield return $"  sayaçlar: dosya {Bin.U64(v, 184)}, klasör {Bin.U64(v, 192)}, sembolik {Bin.U64(v, 200)}, diğer {Bin.U64(v, 208)}, anlık görüntü {Bin.U64(v, 216)}";
-        yield return $"  bloklar: ayrılan {Bin.U64(v, 88)}, toplam ayrılmış {Bin.U64(v, 224)}, toplam bırakılmış {Bin.U64(v, 232)}; rezerv {Bin.U64(v, 72)}, kota {Bin.U64(v, 80)}";
-        yield return $"  sonraki nesne kimliği {Bin.U64(v, 176)}, sonraki belge kimliği {Bin.U32(v, 960)}, son değişiklik {Bin.U64(v, 256)}, ayırma zamanı {Bin.U64(v, 64)}";
-        yield return $"  meta_crypto: {Bin.U16(v, 96)}.{Bin.U16(v, 98)} bayrak 0x{Bin.U32(v, 100):x} sınıf {Bin.U32(v, 104)}";
-        yield return $"  biçimlendiren: {ModifiedBy(v, 272)}";
+        yield return CoreText.T("Dump.VolumeHeader", oid, name, paddr, Bin.U64(v, 16), Bin.U32(v, 36), Bin.U16(v, 964));
+        yield return CoreText.T("Dump.VolumeFeatures", Bin.U64(v, 40), Bin.U64(v, 48), Bin.U64(v, 56), Bin.U64(v, 264));
+        yield return CoreText.T("Dump.VolumeTrees", Bin.U64(v, 128), Bin.U64(v, 136), Bin.U32(v, 116), Bin.U64(v, 144), Bin.U32(v, 120), Bin.U64(v, 152), Bin.U32(v, 124));
+        yield return CoreText.T("Dump.VolumeCounts", Bin.U64(v, 184), Bin.U64(v, 192), Bin.U64(v, 200), Bin.U64(v, 208), Bin.U64(v, 216));
+        yield return CoreText.T("Dump.VolumeBlocks", Bin.U64(v, 88), Bin.U64(v, 224), Bin.U64(v, 232), Bin.U64(v, 72), Bin.U64(v, 80));
+        yield return CoreText.T("Dump.VolumeIds", Bin.U64(v, 176), Bin.U32(v, 960), Bin.U64(v, 256), Bin.U64(v, 64));
+        yield return CoreText.T("Dump.VolumeMetaCrypto", Bin.U16(v, 96), Bin.U16(v, 98), Bin.U32(v, 100), Bin.U32(v, 104));
+        yield return CoreText.T("Dump.VolumeFormattedBy", ModifiedBy(v, 272));
         for (int i = 0; i < 8; i++)
         {
             int o = 320 + i * 48;
             if (v[o] == 0) continue;
-            yield return $"  değiştiren[{i}]: {ModifiedBy(v, o)}";
+            yield return CoreText.T("Dump.VolumeModifiedBy", i, ModifiedBy(v, o));
         }
-        yield return $"  geri dönüş xid {Bin.U64(v, 160)}, er_state {Bin.U64(v, 976)}, cloneinfo {Bin.U64(v, 984)}/{Bin.U64(v, 992)}, " +
-            $"integrity {Bin.U64(v, 1024)}, fext {Bin.U64(v, 1032)}";
+        yield return CoreText.T("Dump.VolumeMisc", Bin.U64(v, 160), Bin.U64(v, 976), Bin.U64(v, 984), Bin.U64(v, 992), Bin.U64(v, 1024), Bin.U64(v, 1032));
 
         // Birimin nesne haritası
         var om = c.Reader.ReadObject(Bin.U64(v, 128), ApfsConstants.TypeOmap);
-        yield return OmapLine("  [birim omap]", Bin.U64(v, 128), om);
+        yield return OmapLine(CoreText.T("Dump.VolumeOmapTitle"), Bin.U64(v, 128), om);
     }
 
     private static string ModifiedBy(byte[] v, int o) =>
-        $"\"{Bin.Utf8Z(Bin.Slice(v, o, 32))}\" zaman {Bin.U64(v, o + 32)} son xid {Bin.U64(v, o + 40)}";
+        CoreText.T("Dump.ModifiedByEntry", Bin.Utf8Z(Bin.Slice(v, o, 32)), Bin.U64(v, o + 32), Bin.U64(v, o + 40));
 }

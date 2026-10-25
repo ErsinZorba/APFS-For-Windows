@@ -77,7 +77,7 @@ public sealed class ApfsWritableFileSystem : FileSystemBase, IDisposable
         {
             if (_disposed || !_vol.IsDirty) return;
             try { _session.Commit(); }
-            catch (Exception e) { Error?.Invoke($"Değişiklikler diske yazılamadı: {e.Message}"); }
+            catch (Exception e) { Error?.Invoke(CoreText.T("Fs.WriteBackFailed", e.Message)); }
         }
     }
 
@@ -143,7 +143,7 @@ public sealed class ApfsWritableFileSystem : FileSystemBase, IDisposable
     private (Inode Parent, string Name) ResolveParent(string fileName)
     {
         var parts = Components(fileName);
-        if (parts.Count == 0) throw new ApfsException(ApfsErrorCode.InvalidArgument, "kök klasör");
+        if (parts.Count == 0) throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("Fs.RootDirectory"));
         var parent = _view.LookupComponents(parts[..^1], out _);
         if (!parent.IsDirectory) throw new ApfsException(ApfsErrorCode.NotFound, fileName);
         return (parent, parts[^1]);
@@ -254,7 +254,7 @@ public sealed class ApfsWritableFileSystem : FileSystemBase, IDisposable
             }
             catch (ApfsException e) when (e.Code is not ApfsErrorCode.IoError)
             {
-                Error?.Invoke($"\"{fileName}\" silinemedi: {e.Message}");
+                Error?.Invoke(CoreText.T("Fs.DeleteFailed", fileName, e.Message));
             }
         }
     }
@@ -342,7 +342,7 @@ public sealed class ApfsWritableFileSystem : FileSystemBase, IDisposable
         foreach (var e in _view.ListDirectory(dirId))
         {
             try { list.Add((WindowsNames.ToWindows(e.Name), InfoOf(_view.GetInode(e.FileId), e.Name))); }
-            catch (ApfsException ex) when (ex.Code is not ApfsErrorCode.IoError) { Error?.Invoke($"\"{e.Name}\" okunamadı: {ex.Message}"); }
+            catch (ApfsException ex) when (ex.Code is not ApfsErrorCode.IoError) { Error?.Invoke(CoreText.T("Fs.EntryUnreadable", e.Name, ex.Message)); }
         }
         list.Sort((a, b) => DirOrder.Compare(a.Name, b.Name));
         return list;
@@ -452,7 +452,7 @@ public sealed class ApfsWritableFileSystem : FileSystemBase, IDisposable
             if (ae.Code is not ApfsErrorCode.NotFound and not ApfsErrorCode.AlreadyExists) Error?.Invoke(ae.Message);
             return ToNtStatus(ae.Code);
         }
-        Error?.Invoke($"Beklenmeyen hata: {ex.Message}");
+        Error?.Invoke(CoreText.T("Fs.UnexpectedError", ex.Message));
         return ApfsFileSystem.StatusUnexpectedIoError;
     }
 

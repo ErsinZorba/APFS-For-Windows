@@ -13,7 +13,7 @@ public sealed class FileImageDevice : IBlockDevice
     public FileImageDevice(string path)
     {
         if (Directory.Exists(path))
-            throw new ApfsException(ApfsErrorCode.InvalidArgument, $"\"{path}\" bir klasör; disk görüntüsü dosyası veya \\\\.\\PhysicalDriveN bekleniyor");
+            throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("Io.PathIsDirectory", path));
         try
         {
             _handle = File.OpenHandle(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
@@ -31,19 +31,19 @@ public sealed class FileImageDevice : IBlockDevice
     public void Read(long offset, Span<byte> buffer)
     {
         if (offset < 0 || offset > Length - buffer.Length)
-            throw ApfsException.Corrupt($"aygıt sınırı dışında okuma: {offset}+{buffer.Length}");
+            throw ApfsException.Corrupt(CoreText.T("Io.ReadOutsideDevice", offset, buffer.Length));
         int done = 0;
         try
         {
             while (done < buffer.Length)
             {
                 int n = RandomAccess.Read(_handle, buffer[done..], offset + done);
-                if (n <= 0) throw new ApfsException(ApfsErrorCode.IoError, "beklenmeyen dosya sonu");
+                if (n <= 0) throw new ApfsException(ApfsErrorCode.IoError, CoreText.T("Io.UnexpectedEof"));
                 done += n;
             }
         }
         catch (IOException e) { throw new ApfsException(ApfsErrorCode.IoError, e.Message, e); }
-        catch (ObjectDisposedException e) { throw new ApfsException(ApfsErrorCode.IoError, "aygıt kapatıldı", e); }
+        catch (ObjectDisposedException e) { throw new ApfsException(ApfsErrorCode.IoError, CoreText.T("Io.DeviceClosed"), e); }
     }
 
     public void Dispose() => _handle.Dispose();

@@ -24,8 +24,8 @@ internal static class Passwords
 
     private static string? Prompt(VolumeLockInfo info)
     {
-        Console.Error.WriteLine($"\"{info.Name}\" birimi şifreli.{(info.Hint is null ? "" : $" Parola ipucu: {info.Hint}")}");
-        Console.Error.Write("Parola: ");
+        Console.Error.WriteLine(WinText.T("Cli.VolumeEncrypted", info.Name, (info.Hint is null ? "" : WinText.T("Cli.PasswordHint", info.Hint))));
+        Console.Error.Write(WinText.T("Cli.PasswordPrompt"));
         var chars = new List<char>();
         while (true)
         {

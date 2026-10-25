@@ -52,7 +52,7 @@ public sealed class Inode
 
     internal static Inode Parse(ulong id, byte[] v)
     {
-        if (v.Length < 92) throw ApfsException.Corrupt($"inode {id} kaydı çok kısa");
+        if (v.Length < 92) throw ApfsException.Corrupt(CoreText.T("Volume.InodeRecordShort", id));
         string? name = null;
         ulong size = 0, alloc = 0;
         bool hasDs = false;

@@ -37,18 +37,18 @@ public sealed class ApfsMount : IDisposable
         catch (DllNotFoundException e)
         {
             host.Dispose();
-            throw new ApfsException(ApfsErrorCode.Unsupported, "WinFsp kurulu değil. Kurmak için: winget install WinFsp.WinFsp", e);
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.U("Mount.WinFspMissing"), e);
         }
         catch (TypeInitializationException e)
         {
             host.Dispose();
             throw new ApfsException(ApfsErrorCode.Unsupported,
-                $"WinFsp kurulu değil veya yüklenemedi ({e.InnerException?.Message ?? e.Message}). Kurmak için: winget install WinFsp.WinFsp", e);
+                CoreText.U("Mount.WinFspNotLoaded", e.InnerException?.Message ?? e.Message), e);
         }
         if (status != 0)
         {
             host.Dispose();
-            throw new ApfsException(ApfsErrorCode.IoError, $"sürücü bağlanamadı (NTSTATUS 0x{status:X8}); harf kullanımda olabilir");
+            throw new ApfsException(ApfsErrorCode.IoError, CoreText.T("Fs.MountFailed", status));
         }
         return new ApfsMount(host, fs, host.MountPoint());
     }

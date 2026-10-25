@@ -1,0 +1,1416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="BTree.InvalidFixedKvSize" xml:space="preserve">
+    <value>B-ağacı sabit anahtar/değer boyutu geçersiz (blok {0})</value>
+  </data>
+  <data name="BTree.InvalidIndexValue" xml:space="preserve">
+    <value>B-ağacı iç düğüm değeri geçersiz (blok {0})</value>
+  </data>
+  <data name="BTree.InvalidLevel" xml:space="preserve">
+    <value>B-ağacı düğüm seviyesi geçersiz (blok {0})</value>
+  </data>
+  <data name="BTree.InvalidToc" xml:space="preserve">
+    <value>B-ağacı düğümünün içindekiler tablosu geçersiz (blok {0})</value>
+  </data>
+  <data name="BTree.KeyOutOfNode" xml:space="preserve">
+    <value>B-ağacı anahtarı düğüm sınırı dışında</value>
+  </data>
+  <data name="BTree.LeafFlagLevelMismatch" xml:space="preserve">
+    <value>B-ağacı yaprak bayrağı ile seviye tutarsız (blok {0})</value>
+  </data>
+  <data name="BTree.LevelInconsistent" xml:space="preserve">
+    <value>B-ağacı düğüm seviyesi tutarsız (blok {0})</value>
+  </data>
+  <data name="BTree.NoKeyForEncryptedNode" xml:space="preserve">
+    <value>şifreli düğüm için anahtar yok</value>
+  </data>
+  <data name="BTree.NodeSizeMismatch" xml:space="preserve">
+    <value>blok boyutundan farklı B-ağacı düğüm boyutu ({0})</value>
+  </data>
+  <data name="BTree.RootNotMarked" xml:space="preserve">
+    <value>B-ağacı kökü kök olarak işaretlenmemiş (blok {0})</value>
+  </data>
+  <data name="BTree.TooDeep" xml:space="preserve">
+    <value>B-ağacı çok derin (döngü olabilir)</value>
+  </data>
+  <data name="BTree.UnexpectedSubtype" xml:space="preserve">
+    <value>B-ağacı düğümü beklenmeyen alt türde (blok {0})</value>
+  </data>
+  <data name="BTree.ValueOutOfNode" xml:space="preserve">
+    <value>B-ağacı değeri düğüm sınırı dışında</value>
+  </data>
+  <data name="Bin.RecordBoundsExceeded" xml:space="preserve">
+    <value>kayıt sınırı aşıldı ({0}+{1} &gt; {2})</value>
+  </data>
+  <data name="Check.AllocCount" xml:space="preserve">
+    <value>{0}: ayrılan blok sayacı {1}, sayılan {2}</value>
+  </data>
+  <data name="Check.AllocCountMaybeUnchecked" xml:space="preserve">
+    <value>{0} (fark denetlenmeyen yapılardan olabilir)</value>
+  </data>
+  <data name="Check.BitmapExample" xml:space="preserve">
+    <value>blok {0} {1}</value>
+  </data>
+  <data name="Check.BitmapExamples" xml:space="preserve">
+    <value>alan yöneticisi: örnekler: {0}</value>
+  </data>
+  <data name="Check.Block0Corrupt" xml:space="preserve">
+    <value>blok 0'daki süper blok kopyası bozuk</value>
+  </data>
+  <data name="Check.Block0Stale" xml:space="preserve">
+    <value>blok 0 kopyası eski (xid {0}); disk düzgün kapatılmamış</value>
+  </data>
+  <data name="Check.BlockOutsideIp" xml:space="preserve">
+    <value>{0}: blok {1} iç havuzun dışında</value>
+  </data>
+  <data name="Check.BlockUsedTwice" xml:space="preserve">
+    <value>{0}: blok {1} iki kez kullanılıyor</value>
+  </data>
+  <data name="Check.BlockedOut" xml:space="preserve">
+    <value>kapsayıcı yeniden boyutlandırılıyor (engelli aralık); desteklenmiyor</value>
+  </data>
+  <data name="Check.ChunkFreeCount" xml:space="preserve">
+    <value>alan yöneticisi: parça {0} boş sayısı {1}, bitmap {2}</value>
+  </data>
+  <data name="Check.ContainerWarning" xml:space="preserve">
+    <value>kapsayıcı: {0}</value>
+  </data>
+  <data name="Check.Counters" xml:space="preserve">
+    <value>{0}: sayaçlar dosya/klasör/sembolik/diğer {1}/{2}/{3}/{4}, sayılan {5}/{6}/{7}/{8}</value>
+  </data>
+  <data name="Check.DeviceFreeCount" xml:space="preserve">
+    <value>alan yöneticisi: aygıt boş sayacı {0}, bitmap'ler {1}</value>
+  </data>
+  <data name="Check.DirChildCount" xml:space="preserve">
+    <value>{0}: klasör {1} çocuk sayısı {2}, girdiler {3}</value>
+  </data>
+  <data name="Check.DirMultiplyReferenced" xml:space="preserve">
+    <value>{0}: klasör {1} {2} yerden gösteriliyor</value>
+  </data>
+  <data name="Check.DstreamNoRefRecord" xml:space="preserve">
+    <value>{0}: veri akışı {1} için başvuru kaydı yok</value>
+  </data>
+  <data name="Check.DstreamRecordShort" xml:space="preserve">
+    <value>{0}: dstream kaydı {1} kısa</value>
+  </data>
+  <data name="Check.DstreamRefcnt" xml:space="preserve">
+    <value>{0}: veri akışı {1} başvuru sayısı {2}, sahip {3}</value>
+  </data>
+  <data name="Check.EfiExtentCount" xml:space="preserve">
+    <value>EFI sürücüsü: extent sayısı bloğa sığmıyor</value>
+  </data>
+  <data name="Check.EncryptedFlagOnPlain" xml:space="preserve">
+    <value>{0}: şifresiz birimde şifreli işaretli düğüm {1}</value>
+  </data>
+  <data name="Check.EntryInodeMissing" xml:space="preserve">
+    <value>{0}: "{1}" girdisinin inode'u ({2}) yok</value>
+  </data>
+  <data name="Check.EntryParentMissing" xml:space="preserve">
+    <value>{0}: "{1}" girdisinin klasörü ({2}) yok</value>
+  </data>
+  <data name="Check.EntryParentNotDir" xml:space="preserve">
+    <value>{0}: "{1}" girdisinin üstü klasör değil</value>
+  </data>
+  <data name="Check.EntryTypeMismatch" xml:space="preserve">
+    <value>{0}: "{1}" girdi türü inode ile uyuşmuyor</value>
+  </data>
+  <data name="Check.EntryVirtualParentNotRoot" xml:space="preserve">
+    <value>{0}: "{1}" sanal üst klasörde ama kök değil</value>
+  </data>
+  <data name="Check.EvictMapping" xml:space="preserve">
+    <value>kapsayıcıda tahliye eşleme ağacı var; desteklenmiyor</value>
+  </data>
+  <data name="Check.ExtentCryptoId" xml:space="preserve">
+    <value>{0}: veri akışı {1}: şifreli birimde extent'in crypto_id'si {2}</value>
+  </data>
+  <data name="Check.ExtentLength" xml:space="preserve">
+    <value>{0}: veri akışı {1}: extent uzunluğu {2}</value>
+  </data>
+  <data name="Check.ExtentNoTweakFlag" xml:space="preserve">
+    <value>{0}: veri akışı {1}: şifreli birimde extent'te FEXT_CRYPTO_ID_IS_TWEAK bayrağı yok</value>
+  </data>
+  <data name="Check.ExtentRecordShort" xml:space="preserve">
+    <value>{0}: extent kaydı kısa ({1})</value>
+  </data>
+  <data name="Check.ExtentrefRecordShort" xml:space="preserve">
+    <value>{0}: extentref kaydı kısa</value>
+  </data>
+  <data name="Check.FileDataNoPhysExtent" xml:space="preserve">
+    <value>{0}: {1} blok dosya verisi ama fiziksel extent kaydı yok</value>
+  </data>
+  <data name="Check.FlagExtentrefNode" xml:space="preserve">
+    <value>OBJ_ENCRYPTED işaretli extentref düğümü (blok)</value>
+  </data>
+  <data name="Check.FlagOmapNode" xml:space="preserve">
+    <value>OBJ_ENCRYPTED işaretli omap düğümü (blok)</value>
+  </data>
+  <data name="Check.FlagSnapMetaNode" xml:space="preserve">
+    <value>OBJ_ENCRYPTED işaretli snap_meta düğümü (blok)</value>
+  </data>
+  <data name="Check.FlagTotal" xml:space="preserve">
+    <value>{0}: {1}: toplam {2}</value>
+  </data>
+  <data name="Check.FreeQueueCount" xml:space="preserve">
+    <value>boş kuyruk ({0}): sayaç {1}, kayıtlar {2}</value>
+  </data>
+  <data name="Check.FreeQueueFutureXid" xml:space="preserve">
+    <value>boş kuyruk ({0}): kayıt gelecekteki bir işlemden (xid {1})</value>
+  </data>
+  <data name="Check.FreeQueueIpOutside" xml:space="preserve">
+    <value>boş kuyruk (iç havuz): blok {0} iç havuzun dışında</value>
+  </data>
+  <data name="Check.FreeQueueMainInIp" xml:space="preserve">
+    <value>boş kuyruk (ana aygıt): blok {0} iç havuzun içinde</value>
+  </data>
+  <data name="Check.FreeQueueOldest" xml:space="preserve">
+    <value>boş kuyruk ({0}): en eski xid {1}, kayıtlarda {2}</value>
+  </data>
+  <data name="Check.FreeQueueZeroLength" xml:space="preserve">
+    <value>boş kuyruk ({0}): uzunluğu 0 olan kayıt</value>
+  </data>
+  <data name="Check.FsFlagNotChecked" xml:space="preserve">
+    <value>{0}: fs düğümlerinin OBJ_ENCRYPTED işareti denetlenmedi (birim açılmadı)</value>
+  </data>
+  <data name="Check.FsNodeMissingFlag" xml:space="preserve">
+    <value>şifreli birimde OBJ_ENCRYPTED işaretsiz fs düğümü</value>
+  </data>
+  <data name="Check.FsNodeStats" xml:space="preserve">
+    <value>{0}: fs düğümleri {1}, OBJ_ENCRYPTED işaretli {2}</value>
+  </data>
+  <data name="Check.FsNodeUsedTwice" xml:space="preserve">
+    <value>{0}: fs ağacı düğümü {1} iki kez kullanılıyor</value>
+  </data>
+  <data name="Check.FsNodeWrongFlag" xml:space="preserve">
+    <value>şifresiz birimde OBJ_ENCRYPTED işaretli fs düğümü</value>
+  </data>
+  <data name="Check.FsSummary" xml:space="preserve">
+    <value>{0}: {1} dosya, {2} klasör, {3} sembolik bağ, {4} veri akışı, {5} fiziksel extent</value>
+  </data>
+  <data name="Check.Incomplete" xml:space="preserve">
+    <value>denetim tamamlanamadı: {0}</value>
+  </data>
+  <data name="Check.InodeLinkCount" xml:space="preserve">
+    <value>{0}: inode {1} bağlantı sayısı {2}, girdiler {3}</value>
+  </data>
+  <data name="Check.InodeNotFileHasStream" xml:space="preserve">
+    <value>{0}: inode {1} dosya değil ama veri akışı var</value>
+  </data>
+  <data name="Check.IpBitmapDiff" xml:space="preserve">
+    <value>iç havuz: {0} blokta bitmap ile kullanım farklı</value>
+  </data>
+  <data name="Check.IpBlockUsedTwice" xml:space="preserve">
+    <value>{0}: iç havuz bloğu {1} iki kez kullanılıyor</value>
+  </data>
+  <data name="Check.LabelBlock0" xml:space="preserve">
+    <value>blok 0</value>
+  </data>
+  <data name="Check.LabelChunkBitmap" xml:space="preserve">
+    <value>parça bitmap'i</value>
+  </data>
+  <data name="Check.LabelContainerKeybag" xml:space="preserve">
+    <value>kapsayıcı anahtar deposu</value>
+  </data>
+  <data name="Check.LabelContainerOmap" xml:space="preserve">
+    <value>kapsayıcı omap</value>
+  </data>
+  <data name="Check.LabelDirStats" xml:space="preserve">
+    <value>klasör boyut istatistikleri</value>
+  </data>
+  <data name="Check.LabelEfiDriver" xml:space="preserve">
+    <value>EFI sürücüsü</value>
+  </data>
+  <data name="Check.LabelEfiDriverData" xml:space="preserve">
+    <value>EFI sürücüsü verisi</value>
+  </data>
+  <data name="Check.LabelEncryptionInProgress" xml:space="preserve">
+    <value>bitmemiş bir şifreleme işlemi (macOS sürdürüyor)</value>
+  </data>
+  <data name="Check.LabelExtentrefNode" xml:space="preserve">
+    <value>extentref düğümü</value>
+  </data>
+  <data name="Check.LabelFextTree" xml:space="preserve">
+    <value>fext ağacı</value>
+  </data>
+  <data name="Check.LabelFileData" xml:space="preserve">
+    <value>dosya verisi (blok {0})</value>
+  </data>
+  <data name="Check.LabelFileInfo" xml:space="preserve">
+    <value>dosya özeti kayıtları</value>
+  </data>
+  <data name="Check.LabelFreeQueueIp" xml:space="preserve">
+    <value>boş kuyruk (iç havuz)</value>
+  </data>
+  <data name="Check.LabelFreeQueueMain" xml:space="preserve">
+    <value>boş kuyruk (ana aygıt)</value>
+  </data>
+  <data name="Check.LabelFsNode" xml:space="preserve">
+    <value>fs düğümü {0}</value>
+  </data>
+  <data name="Check.LabelIntegrityMeta" xml:space="preserve">
+    <value>bütünlük meta verisi</value>
+  </data>
+  <data name="Check.LabelInternalPool" xml:space="preserve">
+    <value>iç havuz</value>
+  </data>
+  <data name="Check.LabelIpBitmapRing" xml:space="preserve">
+    <value>iç havuz bitmap halkası</value>
+  </data>
+  <data name="Check.LabelMainDevice" xml:space="preserve">
+    <value>ana aygıt</value>
+  </data>
+  <data name="Check.LabelMediaKeybag" xml:space="preserve">
+    <value>ortam anahtar deposu</value>
+  </data>
+  <data name="Check.LabelNode" xml:space="preserve">
+    <value>{0} düğümü</value>
+  </data>
+  <data name="Check.LabelSnapMetaNode" xml:space="preserve">
+    <value>snap_meta düğümü</value>
+  </data>
+  <data name="Check.LabelSnapshotExtension" xml:space="preserve">
+    <value>anlık görüntü uzantısı</value>
+  </data>
+  <data name="Check.LabelTier2" xml:space="preserve">
+    <value>ikinci katman</value>
+  </data>
+  <data name="Check.LabelVolume" xml:space="preserve">
+    <value>birim "{0}"</value>
+  </data>
+  <data name="Check.LabelVolumeKeybag" xml:space="preserve">
+    <value>birim anahtar deposu</value>
+  </data>
+  <data name="Check.LabelVolumeSuperblock" xml:space="preserve">
+    <value>birim süper bloğu {0}</value>
+  </data>
+  <data name="Check.LabelXattrStream" xml:space="preserve">
+    <value>öznitelik akışı {0} (inode {1})</value>
+  </data>
+  <data name="Check.LabelXpData" xml:space="preserve">
+    <value>checkpoint veri halkası</value>
+  </data>
+  <data name="Check.LabelXpDesc" xml:space="preserve">
+    <value>checkpoint tanımlayıcı halkası</value>
+  </data>
+  <data name="Check.Leaked" xml:space="preserve">
+    <value>alan yöneticisi: {0} blok dolu işaretli ama hiçbir yapı kullanmıyor (sızıntı)</value>
+  </data>
+  <data name="Check.LeakedUnchecked" xml:space="preserve">
+    <value>alan yöneticisi: {0} blok denetlenmeyen yapılara ait görünüyor (dolu işaretli, sahibi çözümlenmedi)</value>
+  </data>
+  <data name="Check.MarkedUsedNotUsed" xml:space="preserve">
+    <value>dolu işaretli ama kullanılmıyor</value>
+  </data>
+  <data name="Check.MissingEncryptedFlag" xml:space="preserve">
+    <value>{0}: şifreli birimde şifreli işaretlenmemiş düğüm {1}</value>
+  </data>
+  <data name="Check.NameHashWrong" xml:space="preserve">
+    <value>{0}: "{1}" ad karması yanlış</value>
+  </data>
+  <data name="Check.NextObjId" xml:space="preserve">
+    <value>{0}: sonraki nesne kimliği {1}, kullanılan en büyük {2}</value>
+  </data>
+  <data name="Check.OmapFutureXid" xml:space="preserve">
+    <value>kapsayıcı omap: kayıt {0} gelecekteki bir işlemden (xid {1})</value>
+  </data>
+  <data name="Check.OmapHasSnapshots" xml:space="preserve">
+    <value>{0}: anlık görüntü var</value>
+  </data>
+  <data name="Check.OmapMultipleRecords" xml:space="preserve">
+    <value>kapsayıcı omap: nesne {0} için birden çok kayıt (anlık görüntü desteklenmiyor)</value>
+  </data>
+  <data name="Check.OmapNonVolumeRecords" xml:space="preserve">
+    <value>kapsayıcı omap'inde birim olmayan kayıtlar var</value>
+  </data>
+  <data name="Check.OmapRecordSize" xml:space="preserve">
+    <value>kapsayıcı omap: kayıt {0} boyutu {1}</value>
+  </data>
+  <data name="Check.OmapRecordUnused" xml:space="preserve">
+    <value>{0}: omap kaydı {1} hiçbir düğüm tarafından kullanılmıyor</value>
+  </data>
+  <data name="Check.OrphanDstreamRecord" xml:space="preserve">
+    <value>{0}: sahipsiz veri akışı kaydı {1}</value>
+  </data>
+  <data name="Check.OrphanExtents" xml:space="preserve">
+    <value>{0}: sahipsiz extent'ler (veri akışı {1})</value>
+  </data>
+  <data name="Check.OwnershipDifferent" xml:space="preserve">
+    <value>FARKLI</value>
+  </data>
+  <data name="Check.OwnershipIdentical" xml:space="preserve">
+    <value>birebir</value>
+  </data>
+  <data name="Check.OwnershipIdenticalChecked" xml:space="preserve">
+    <value>denetlenen yapılarda birebir ({0} blok denetlenmeyen yapılarda)</value>
+  </data>
+  <data name="Check.PerFileKeysOnOneKey" xml:space="preserve">
+    <value>{0}: tek anahtarlı şifreli birimde {1} dosya başına anahtar (crypto_state) kaydı</value>
+  </data>
+  <data name="Check.PhysExtentCoverage" xml:space="preserve">
+    <value>{0}: fiziksel extent {1} başvuru sayısı {2}, gösteren {3}</value>
+  </data>
+  <data name="Check.PhysExtentRefcnt" xml:space="preserve">
+    <value>{0}: fiziksel extent {1} başvuru sayısı {2}</value>
+  </data>
+  <data name="Check.PhysExtentUncovered" xml:space="preserve">
+    <value>{0}: fiziksel extent {1}+{2} bloklarının bir kısmını hiçbir dosya göstermiyor</value>
+  </data>
+  <data name="Check.PhysExtentZeroLength" xml:space="preserve">
+    <value>{0}: uzunluğu 0 olan fiziksel extent {1}</value>
+  </data>
+  <data name="Check.PhysExtentsOverlap" xml:space="preserve">
+    <value>{0}: fiziksel extent'ler üst üste ({1})</value>
+  </data>
+  <data name="Check.RangeOutside" xml:space="preserve">
+    <value>{0}: blok aralığı {1}+{2} kapsayıcının dışında</value>
+  </data>
+  <data name="Check.ReaperMissing" xml:space="preserve">
+    <value>reaper checkpoint haritasında yok</value>
+  </data>
+  <data name="Check.RootDirMissing" xml:space="preserve">
+    <value>{0}: kök klasör yok</value>
+  </data>
+  <data name="Check.SpacemanBlockCount" xml:space="preserve">
+    <value>alan yöneticisi: blok sayısı kapsayıcıdan farklı</value>
+  </data>
+  <data name="Check.SpacemanChunkCount" xml:space="preserve">
+    <value>alan yöneticisi: parça sayısı tutmuyor</value>
+  </data>
+  <data name="Check.SpacemanSummary" xml:space="preserve">
+    <value>alan yöneticisi: {0} blok, {1} boş; bitmap ile sahiplik {2}</value>
+  </data>
+  <data name="Check.SpacemanTier2" xml:space="preserve">
+    <value>alan yöneticisi: ikinci katman (Fusion) desteklenmiyor</value>
+  </data>
+  <data name="Check.StreamAllocSize" xml:space="preserve">
+    <value>{0}: {1}: ayrılan boyut {2}, extent'ler {3}</value>
+  </data>
+  <data name="Check.StreamFileAndXattr" xml:space="preserve">
+    <value>{0}: veri akışı {1} hem dosyaya hem özniteliğe ait</value>
+  </data>
+  <data name="Check.StreamGapOrOverlap" xml:space="preserve">
+    <value>{0}: {1}: extent'ler boşluklu ya da üst üste (ofset {2}, beklenen {3})</value>
+  </data>
+  <data name="Check.StreamSizeTooLarge" xml:space="preserve">
+    <value>{0}: {1}: boyut {2} ayrılandan ({3}) büyük</value>
+  </data>
+  <data name="Check.Tier2QueueNotEmpty" xml:space="preserve">
+    <value>ikinci katman boş kuyruğu dolu (Fusion desteklenmiyor)</value>
+  </data>
+  <data name="Check.UnknownEphemeral" xml:space="preserve">
+    <value>tanınmayan geçici nesne: oid {0}, tür 0x{1:x8}/{2}</value>
+  </data>
+  <data name="Check.UnnamedDirEntry" xml:space="preserve">
+    <value>{0}: adsız dizin girdisi (klasör {1})</value>
+  </data>
+  <data name="Check.UnsupportedStructure" xml:space="preserve">
+    <value>{0}: {1} var; bu yapının blokları denetlenmedi</value>
+  </data>
+  <data name="Check.UsedButFree" xml:space="preserve">
+    <value>alan yöneticisi: {0} blok kullanılıyor ama boş işaretli (TEHLİKELİ)</value>
+  </data>
+  <data name="Check.UsedMarkedFree" xml:space="preserve">
+    <value>kullanılıyor ama boş işaretli</value>
+  </data>
+  <data name="Check.VolOmapDeleted" xml:space="preserve">
+    <value>{0}: silinmiş işaretli omap kaydı {1}</value>
+  </data>
+  <data name="Check.VolOmapFutureXid" xml:space="preserve">
+    <value>{0}: omap kaydı {1} gelecekteki bir işlemden</value>
+  </data>
+  <data name="Check.VolOmapMultipleRecords" xml:space="preserve">
+    <value>{0}: nesne {1} için birden çok omap kaydı</value>
+  </data>
+  <data name="Check.VolOmapRecordSize" xml:space="preserve">
+    <value>{0}: omap kaydı {1} boyutu {2}</value>
+  </data>
+  <data name="Check.VolumeHasSnapshots" xml:space="preserve">
+    <value>{0}: anlık görüntüsü var; anlık görüntü blokları denetlenmedi</value>
+  </data>
+  <data name="Check.VolumeKeybagRecordShort" xml:space="preserve">
+    <value>kapsayıcı anahtar deposu: birim anahtar deposu kaydı kısa</value>
+  </data>
+  <data name="Check.VolumeNotInOmap" xml:space="preserve">
+    <value>birim {0} kapsayıcı omap'inde yok</value>
+  </data>
+  <data name="Check.VolumeNotOpened" xml:space="preserve">
+    <value>{0}: açılamadı (şifreli olabilir); dosya sistemi ağacı denetlenmedi, blok sahipliği denetlendi</value>
+  </data>
+  <data name="Check.XattrStreamHasRefRecord" xml:space="preserve">
+    <value>{0}: öznitelik akışı {1} için başvuru kaydı olmamalı</value>
+  </data>
+  <data name="Check.XattrStreamRecordShort" xml:space="preserve">
+    <value>{0}: öznitelik akışı kaydı kısa ({1})</value>
+  </data>
+  <data name="Check.XattrStreamShared" xml:space="preserve">
+    <value>{0}: öznitelik akışı {1} {2} yerden kullanılıyor</value>
+  </data>
+  <data name="Codec.FixedFlagMismatch" xml:space="preserve">
+    <value>B-ağacı sabit boyut bayrağı ağaçla uyuşmuyor</value>
+  </data>
+  <data name="Codec.FixedKeySizeMismatch" xml:space="preserve">
+    <value>sabit anahtar boyutu uyuşmuyor</value>
+  </data>
+  <data name="Codec.GhostInIndex" xml:space="preserve">
+    <value>iç düğümde hayalet kayıt</value>
+  </data>
+  <data name="Codec.IndexValueNot8" xml:space="preserve">
+    <value>iç düğüm değeri 8 bayt değil</value>
+  </data>
+  <data name="Codec.InvalidLevel" xml:space="preserve">
+    <value>B-ağacı düğüm seviyesi geçersiz</value>
+  </data>
+  <data name="Codec.InvalidToc" xml:space="preserve">
+    <value>B-ağacı içindekiler tablosu geçersiz</value>
+  </data>
+  <data name="Codec.KeyOutOfBounds" xml:space="preserve">
+    <value>B-ağacı anahtarı düğüm sınırı dışında</value>
+  </data>
+  <data name="Codec.LeafFlagLevelMismatch" xml:space="preserve">
+    <value>B-ağacı yaprak bayrağı ile seviye tutarsız</value>
+  </data>
+  <data name="Codec.NodeTooBig" xml:space="preserve">
+    <value>düğüm bloğa sığmıyor</value>
+  </data>
+  <data name="Codec.RootFlagMismatch" xml:space="preserve">
+    <value>B-ağacı kök bayrağı beklenenle uyuşmuyor</value>
+  </data>
+  <data name="Codec.RootNoFooter" xml:space="preserve">
+    <value>kök düğümün özeti yok</value>
+  </data>
+  <data name="Codec.ValueOutOfBounds" xml:space="preserve">
+    <value>B-ağacı değeri düğüm sınırı dışında</value>
+  </data>
+  <data name="Container.Block0SuperblockCorrupt" xml:space="preserve">
+    <value>Blok 0'daki süper blok kopyası bozuk; kontrol noktası alanındaki kopyalar kullanılıyor.</value>
+  </data>
+  <data name="Container.CheckpointAreaInvalid" xml:space="preserve">
+    <value>Kontrol noktası alanının konumu geçersiz.</value>
+  </data>
+  <data name="Container.DeviceTooSmall" xml:space="preserve">
+    <value>aygıt çok küçük</value>
+  </data>
+  <data name="Container.FreeSourceSpaceman" xml:space="preserve">
+    <value>alan yöneticisi</value>
+  </data>
+  <data name="Container.FreeSourceVolumeCounters" xml:space="preserve">
+    <value>birim sayaçları</value>
+  </data>
+  <data name="Container.FusionDrive" xml:space="preserve">
+    <value>Fusion Drive kapsayıcısı</value>
+  </data>
+  <data name="Container.LargerThanDevice" xml:space="preserve">
+    <value>kapsayıcı aygıttan büyük ({0} &gt; {1} blok)</value>
+  </data>
+  <data name="Container.NonContiguousCheckpointArea" xml:space="preserve">
+    <value>Bitişik olmayan kontrol noktası alanı desteklenmiyor; yalnızca blok 0 kullanılıyor.</value>
+  </data>
+  <data name="Container.OldApfsVersion" xml:space="preserve">
+    <value>eski APFS sürümü (macOS 10.12 öncesi geliştirici sürümü)</value>
+  </data>
+  <data name="Container.OlderCheckpointUsed" xml:space="preserve">
+    <value>En yeni kontrol noktası okunamadı; daha eski bir kontrol noktası (xid {0}) kullanılıyor. Son değişikliklerin bir kısmı görünmeyebilir.</value>
+  </data>
+  <data name="Cp.EphemeralChecksum" xml:space="preserve">
+    <value>geçici nesne {0} (blok {1})</value>
+  </data>
+  <data name="Cp.EphemeralError" xml:space="preserve">
+    <value>geçici nesne {0}: {1}</value>
+  </data>
+  <data name="Cp.EphemeralInvalidSize" xml:space="preserve">
+    <value>geçici nesne {0}: geçersiz boyut {1}</value>
+  </data>
+  <data name="Cp.EphemeralNotLatest" xml:space="preserve">
+    <value>geçici nesne {0}: son işlemin parçası değil (xid {1})</value>
+  </data>
+  <data name="Cp.EphemeralNotMapped" xml:space="preserve">
+    <value>geçici nesne {0} checkpoint haritasında yok</value>
+  </data>
+  <data name="Cp.EphemeralOutsideRing" xml:space="preserve">
+    <value>geçici nesne {0}: veri halkasının dışında</value>
+  </data>
+  <data name="Cp.EphemeralOverlap" xml:space="preserve">
+    <value>geçici nesneler veri halkasında üst üste biniyor ya da boşluk bırakıyor</value>
+  </data>
+  <data name="Cp.EphemeralTypeMismatch" xml:space="preserve">
+    <value>geçici nesne {0}: tür eşlemeyle uyuşmuyor</value>
+  </data>
+  <data name="Cp.EphemeralWrongOid" xml:space="preserve">
+    <value>geçici nesne {0}: nesne kimliği yanlış</value>
+  </data>
+  <data name="Cp.MapBlockChecksum" xml:space="preserve">
+    <value>eşleme bloğu {0}: sağlama toplamı bozuk</value>
+  </data>
+  <data name="Cp.MapBlockCountTooBig" xml:space="preserve">
+    <value>eşleme bloğu {0}: girdi sayısı bloğa sığmıyor</value>
+  </data>
+  <data name="Cp.MapBlockLastMisplaced" xml:space="preserve">
+    <value>eşleme bloğu {0}: LAST işareti yanlış yerde</value>
+  </data>
+  <data name="Cp.MapBlockUnknownFlag" xml:space="preserve">
+    <value>eşleme bloğu {0}: bilinmeyen bayrak</value>
+  </data>
+  <data name="Cp.MapBlockUnreadable" xml:space="preserve">
+    <value>eşleme bloğu {0} okunamadı</value>
+  </data>
+  <data name="Cp.MapBlockWrongOid" xml:space="preserve">
+    <value>eşleme bloğu {0}: nesne kimliği yanlış</value>
+  </data>
+  <data name="Cp.MapBlockWrongType" xml:space="preserve">
+    <value>eşleme bloğu {0}: tür yanlış</value>
+  </data>
+  <data name="Cp.MapBlockXid" xml:space="preserve">
+    <value>eşleme bloğu {0}: xid {1} ≠ checkpoint {2}</value>
+  </data>
+  <data name="Cp.MappingDuplicate" xml:space="preserve">
+    <value>eşleme {0}: aynı nesne iki kez eşlenmiş</value>
+  </data>
+  <data name="Cp.MappingOrder" xml:space="preserve">
+    <value>eşleme {0}: veri halkasında sırasız ya da boşluklu</value>
+  </data>
+  <data name="Cp.MappingPadding" xml:space="preserve">
+    <value>eşleme {0}: dolgu alanı sıfır değil</value>
+  </data>
+  <data name="Cp.MappingSize" xml:space="preserve">
+    <value>eşleme {0}: boyut blok katı değil</value>
+  </data>
+  <data name="Cp.NoLastMapBlock" xml:space="preserve">
+    <value>LAST işaretli eşleme bloğu yok</value>
+  </data>
+  <data name="Cp.NonContiguous" xml:space="preserve">
+    <value>bitişik olmayan checkpoint alanı desteklenmiyor</value>
+  </data>
+  <data name="Cp.RingInconsistent" xml:space="preserve">
+    <value>checkpoint halka göstergeleri tutarsız</value>
+  </data>
+  <data name="Cp.SuperblockNotAtEnd" xml:space="preserve">
+    <value>süper blok tanımlayıcı aralığının sonunda değil (blok {0}, beklenen {1})</value>
+  </data>
+  <data name="Crypto.KekIterationsInvalid" xml:space="preserve">
+    <value>KEK yineleme sayısı geçersiz</value>
+  </data>
+  <data name="Crypto.KeybagCorrupt" xml:space="preserve">
+    <value>anahtar deposu bozuk veya çözülemedi</value>
+  </data>
+  <data name="Crypto.KeybagLocationInvalid" xml:space="preserve">
+    <value>anahtar deposunun konumu geçersiz</value>
+  </data>
+  <data name="Crypto.KeybagUnexpectedType" xml:space="preserve">
+    <value>anahtar deposunun türü beklenmeyen</value>
+  </data>
+  <data name="Crypto.NoKeybag" xml:space="preserve">
+    <value>kapsayıcıda anahtar deposu (keybag) yok</value>
+  </data>
+  <data name="Crypto.NoUnlockRecords" xml:space="preserve">
+    <value>birimin kilit açma kayıtları bulunamadı</value>
+  </data>
+  <data name="Crypto.OnlyAesXts128" xml:space="preserve">
+    <value>yalnızca AES-XTS-128 destekleniyor</value>
+  </data>
+  <data name="Crypto.PasswordHint" xml:space="preserve">
+    <value>ipucu: {0}</value>
+  </data>
+  <data name="Crypto.VekLength" xml:space="preserve">
+    <value>VEK 32 bayt olmalı</value>
+  </data>
+  <data name="Crypto.VolumeKeyNotInContainer" xml:space="preserve">
+    <value>birimin şifreleme anahtarı kapsayıcıda yok (donanım şifrelemesi olabilir)</value>
+  </data>
+  <data name="Crypto.XtsLengthNotMultiple" xml:space="preserve">
+    <value>XTS verisi 512 baytın katı olmalı</value>
+  </data>
+  <data name="Decmpfs.BlockOutsideFork" xml:space="preserve">
+    <value>sıkıştırılmış blok kaynak çatalının dışında</value>
+  </data>
+  <data name="Decmpfs.BlockTableUnordered" xml:space="preserve">
+    <value>sıkıştırılmış blok tablosu sırasız</value>
+  </data>
+  <data name="Decmpfs.Empty" xml:space="preserve">
+    <value>sıkıştırılmış veri boş</value>
+  </data>
+  <data name="Decmpfs.ForkShort" xml:space="preserve">
+    <value>kaynak çatalı beklenenden kısa</value>
+  </data>
+  <data name="Decmpfs.ForkUnreadable" xml:space="preserve">
+    <value>kaynak çatalı okunamadı</value>
+  </data>
+  <data name="Decmpfs.InlineTooLarge" xml:space="preserve">
+    <value>öznitelik içinde çok büyük sıkıştırılmış veri ({0} bayt)</value>
+  </data>
+  <data name="Decmpfs.InvalidBlockTable" xml:space="preserve">
+    <value>sıkıştırılmış blok tablosu geçersiz</value>
+  </data>
+  <data name="Decmpfs.InvalidFileSize" xml:space="preserve">
+    <value>sıkıştırılmış dosya boyutu geçersiz</value>
+  </data>
+  <data name="Decmpfs.InvalidHeader" xml:space="preserve">
+    <value>sıkıştırma başlığı (decmpfs) geçersiz</value>
+  </data>
+  <data name="Decmpfs.LzfseShort" xml:space="preserve">
+    <value>LZFSE verisi beklenenden kısa</value>
+  </data>
+  <data name="Decmpfs.LzvnShort" xml:space="preserve">
+    <value>LZVN verisi beklenenden kısa</value>
+  </data>
+  <data name="Decmpfs.NoCompressionInfo" xml:space="preserve">
+    <value>sıkıştırılmış olarak işaretli dosyada sıkıştırma bilgisi yok</value>
+  </data>
+  <data name="Decmpfs.ResourceForkMissing" xml:space="preserve">
+    <value>sıkıştırılmış dosyanın kaynak çatalı bulunamadı</value>
+  </data>
+  <data name="Decmpfs.TypeDeduplicated" xml:space="preserve">
+    <value>tekilleştirilmiş</value>
+  </data>
+  <data name="Decmpfs.TypeOther" xml:space="preserve">
+    <value>tür {0}</value>
+  </data>
+  <data name="Decmpfs.TypeUncompressed" xml:space="preserve">
+    <value>sıkıştırılmamış</value>
+  </data>
+  <data name="Decmpfs.UncompressedShort" xml:space="preserve">
+    <value>sıkıştırılmamış veri beklenenden kısa</value>
+  </data>
+  <data name="Decmpfs.UnsupportedType" xml:space="preserve">
+    <value>bu dosya desteklenmeyen bir sıkıştırma türü kullanıyor ({0})</value>
+  </data>
+  <data name="Der.ElementOutOfBounds" xml:space="preserve">
+    <value>DER öğesi sınır dışında</value>
+  </data>
+  <data name="Der.IntegerTooLarge" xml:space="preserve">
+    <value>DER tamsayısı çok büyük</value>
+  </data>
+  <data name="Der.InvalidLength" xml:space="preserve">
+    <value>geçersiz DER uzunluğu</value>
+  </data>
+  <data name="Der.KeyRecordPrefix" xml:space="preserve">
+    <value>şifreleme anahtarı kaydı: {0}</value>
+  </data>
+  <data name="Der.MissingElement" xml:space="preserve">
+    <value>eksik DER öğesi</value>
+  </data>
+  <data name="Der.TagMismatch" xml:space="preserve">
+    <value>beklenen DER etiketi 0x{0:x2}, bulunan 0x{1:x2}</value>
+  </data>
+  <data name="Dump.Block0Copy" xml:space="preserve">
+    <value>  blok 0 kopyası: xid {0}, sağlama {1}</value>
+  </data>
+  <data name="Dump.Block0Older" xml:space="preserve">
+    <value> (son checkpoint'ten eski: düzgün kapatılmamış)</value>
+  </data>
+  <data name="Dump.Block0SameAsLatest" xml:space="preserve">
+    <value> (son checkpoint ile aynı)</value>
+  </data>
+  <data name="Dump.CheckpointHeader" xml:space="preserve">
+    <value>[checkpoint] eşleme blokları: {0}; {1} geçici nesne</value>
+  </data>
+  <data name="Dump.CheckpointMapping" xml:space="preserve">
+    <value>  oid {0}: tür 0x{1:x8}/{2:x}, {3} bayt, blok {4}{5}</value>
+  </data>
+  <data name="Dump.CheckpointMappingVolume" xml:space="preserve">
+    <value>, birim {0}</value>
+  </data>
+  <data name="Dump.ChecksumBad" xml:space="preserve">
+    <value>BOZUK</value>
+  </data>
+  <data name="Dump.ChecksumOk" xml:space="preserve">
+    <value>doğru</value>
+  </data>
+  <data name="Dump.ChunkBitmapMismatch" xml:space="preserve">
+    <value>  SORUN: {0} parçada bitmap ile parça bilgisi farklı</value>
+  </data>
+  <data name="Dump.ChunkCountsMismatch" xml:space="preserve">
+    <value>  SORUN: parça/blok sayıları aygıtla tutmuyor</value>
+  </data>
+  <data name="Dump.ChunkInfoUnreadable" xml:space="preserve">
+    <value>  SORUN: parça bilgileri okunamadı: {0}</value>
+  </data>
+  <data name="Dump.ChunksNotConsecutive" xml:space="preserve">
+    <value>  SORUN: {0} parça ardışık değil</value>
+  </data>
+  <data name="Dump.ChunksSummary" xml:space="preserve">
+    <value>  parçalar: {0}, toplam {1} blok; boş: aygıt sayacı {2}, parça bilgileri {3}, bitmap'ler {4}</value>
+  </data>
+  <data name="Dump.ContainerBlocks" xml:space="preserve">
+    <value>  blok {0} × {1}, uuid {2}</value>
+  </data>
+  <data name="Dump.ContainerFeatures" xml:space="preserve">
+    <value>  özellikler 0x{0:x}, ro-uyumlu 0x{1:x}, uyumsuz 0x{2:x}, bayraklar 0x{3:x}</value>
+  </data>
+  <data name="Dump.ContainerHeader" xml:space="preserve">
+    <value>[kapsayıcı] xid {0} (blok {1}), sonraki xid {2}, sonraki oid {3}</value>
+  </data>
+  <data name="Dump.ContainerOmapTitle" xml:space="preserve">
+    <value>[kapsayıcı omap]</value>
+  </data>
+  <data name="Dump.ContainerVolumes" xml:space="preserve">
+    <value>  birimler: {0} (en fazla {1}); engelli aralık {2}+{3}</value>
+  </data>
+  <data name="Dump.DataRing" xml:space="preserve">
+    <value>  veri halkası:        taban {0}, {1} blok, index {2}, len {3}, next {4}</value>
+  </data>
+  <data name="Dump.DescRing" xml:space="preserve">
+    <value>  tanımlayıcı halkası: taban {0}, {1} blok, index {2}, len {3}, next {4}</value>
+  </data>
+  <data name="Dump.FreeCountersDisagree" xml:space="preserve">
+    <value>  SORUN: boş blok sayaçları birbirini tutmuyor</value>
+  </data>
+  <data name="Dump.FreeQueue" xml:space="preserve">
+    <value>  boş kuyruk ({0}): sayaç {1}, ağaç {2}, en eski xid {3}, düğüm sınırı {4}; {5} kayıt, {6} blok</value>
+  </data>
+  <data name="Dump.FreeQueueCountMismatch" xml:space="preserve">
+    <value>  SORUN: sayaç tutmuyor</value>
+  </data>
+  <data name="Dump.FreeQueueOldestMismatch" xml:space="preserve">
+    <value>  SORUN: en eski xid tutmuyor</value>
+  </data>
+  <data name="Dump.FreeQueueUnreadable" xml:space="preserve">
+    <value>  SORUN: boş kuyruk ({0}) okunamadı: {1}</value>
+  </data>
+  <data name="Dump.IpBitmapUnreadable" xml:space="preserve">
+    <value>  SORUN: iç havuz bitmap'i okunamadı: {0}</value>
+  </data>
+  <data name="Dump.IpBitmapUsage" xml:space="preserve">
+    <value>  iç havuz bitmap'i: {0} / {1} blok kullanımda</value>
+  </data>
+  <data name="Dump.ModifiedByEntry" xml:space="preserve">
+    <value>"{0}" zaman {1} son xid {2}</value>
+  </data>
+  <data name="Dump.OmapLine" xml:space="preserve">
+    <value>{0} blok {1}: bayrak 0x{2:x}, anlık görüntü {3}, ağaç türü 0x{4:x8}, ağaç {5}, anlık görüntü ağacı {6}, en yeni anlık {7}</value>
+  </data>
+  <data name="Dump.PhysExtent" xml:space="preserve">
+    <value>PhysExt     blok {0} uzunluk {1} tür {2} sahip {3} başvuru {4}</value>
+  </data>
+  <data name="Dump.Problem" xml:space="preserve">
+    <value>  SORUN: {0}</value>
+  </data>
+  <data name="Dump.ProblemMarker" xml:space="preserve">
+    <value>SORUN:</value>
+  </data>
+  <data name="Dump.QueueInternalPool" xml:space="preserve">
+    <value>iç havuz</value>
+  </data>
+  <data name="Dump.QueueMainDevice" xml:space="preserve">
+    <value>ana aygıt</value>
+  </data>
+  <data name="Dump.QueueTier2" xml:space="preserve">
+    <value>ikinci katman</value>
+  </data>
+  <data name="Dump.ReapList" xml:space="preserve">
+    <value>  liste {0} (blok {1}): next {2}, bayrak 0x{3:x}, en fazla {4}, sayı {5}, ilk 0x{6:x8}, son 0x{7:x8}, boş 0x{8:x8}</value>
+  </data>
+  <data name="Dump.ReaperHeader" xml:space="preserve">
+    <value>[reaper] sonraki {0}, tamamlanan {1}, baş {2}, kuyruk {3}, bayrak 0x{4:x}, liste {5}, tür 0x{6:x}, birim {7}, nesne {8}, xid {9}</value>
+  </data>
+  <data name="Dump.ReaperNotInCheckpoint" xml:space="preserve">
+    <value>[reaper] SORUN: checkpoint haritasında yok</value>
+  </data>
+  <data name="Dump.ReaperProblem" xml:space="preserve">
+    <value>[reaper] SORUN: {0}</value>
+  </data>
+  <data name="Dump.ReaperStatus" xml:space="preserve">
+    <value>  durum: {0}</value>
+  </data>
+  <data name="Dump.ReaperStatusIdle" xml:space="preserve">
+    <value>  durum: boşta</value>
+  </data>
+  <data name="Dump.ReaperStatusProblem" xml:space="preserve">
+    <value>  durum: SORUN: {0}</value>
+  </data>
+  <data name="Dump.RecordKey" xml:space="preserve">
+    <value>{0,-11} id {1,-6} anahtar {2}</value>
+  </data>
+  <data name="Dump.RecordValue" xml:space="preserve">
+    <value>            değer({0}) {1}</value>
+  </data>
+  <data name="Dump.SpacemanBlockCountMismatch" xml:space="preserve">
+    <value>  SORUN: alan yöneticisinin blok sayısı kapsayıcıdan farklı</value>
+  </data>
+  <data name="Dump.SpacemanGeometry" xml:space="preserve">
+    <value>  parça başına blok {0}, CIB başına parça {1}, CAB başına CIB {2}</value>
+  </data>
+  <data name="Dump.SpacemanHeader" xml:space="preserve">
+    <value>[alan yöneticisi] xid {0}, {1} bayt, sürüm {2}, yapı {3}, bayrak 0x{4:x}</value>
+  </data>
+  <data name="Dump.SpacemanInternalPool" xml:space="preserve">
+    <value>  iç havuz: taban {0}, {1} blok; bitmap halkası taban {2}, {3} blok, bitmap {4} blok, çarpan {5}, boş liste {6}→{7}</value>
+  </data>
+  <data name="Dump.SpacemanMainDevice" xml:space="preserve">
+    <value>  ana aygıt: {0} blok, {1} parça, {2} CIB, {3} CAB, boş {4}, adres ofseti {5}</value>
+  </data>
+  <data name="Dump.SpacemanReserve" xml:space="preserve">
+    <value>  birim rezervi: {0} blok, ayrılan {1}</value>
+  </data>
+  <data name="Dump.SpacemanTier2" xml:space="preserve">
+    <value>  ikinci katman: {0} blok (Fusion)</value>
+  </data>
+  <data name="Dump.SpacemanUnreadable" xml:space="preserve">
+    <value>[alan yöneticisi] SORUN: okunamadı: {0}</value>
+  </data>
+  <data name="Dump.VolumeBlocks" xml:space="preserve">
+    <value>  bloklar: ayrılan {0}, toplam ayrılmış {1}, toplam bırakılmış {2}; rezerv {3}, kota {4}</value>
+  </data>
+  <data name="Dump.VolumeCounts" xml:space="preserve">
+    <value>  sayaçlar: dosya {0}, klasör {1}, sembolik {2}, diğer {3}, anlık görüntü {4}</value>
+  </data>
+  <data name="Dump.VolumeFeatures" xml:space="preserve">
+    <value>  özellikler 0x{0:x}, ro-uyumlu 0x{1:x}, uyumsuz 0x{2:x}, fs bayrakları 0x{3:x}</value>
+  </data>
+  <data name="Dump.VolumeFormattedBy" xml:space="preserve">
+    <value>  biçimlendiren: {0}</value>
+  </data>
+  <data name="Dump.VolumeHeader" xml:space="preserve">
+    <value>[birim {0}] "{1}" blok {2}, xid {3}, sıra {4}, rol 0x{5:x}</value>
+  </data>
+  <data name="Dump.VolumeIds" xml:space="preserve">
+    <value>  sonraki nesne kimliği {0}, sonraki belge kimliği {1}, son değişiklik {2}, ayırma zamanı {3}</value>
+  </data>
+  <data name="Dump.VolumeMetaCrypto" xml:space="preserve">
+    <value>  meta_crypto: {0}.{1} bayrak 0x{2:x} sınıf {3}</value>
+  </data>
+  <data name="Dump.VolumeMisc" xml:space="preserve">
+    <value>  geri dönüş xid {0}, er_state {1}, cloneinfo {2}/{3}, integrity {4}, fext {5}</value>
+  </data>
+  <data name="Dump.VolumeModifiedBy" xml:space="preserve">
+    <value>  değiştiren[{0}]: {1}</value>
+  </data>
+  <data name="Dump.VolumeOmapTitle" xml:space="preserve">
+    <value>  [birim omap]</value>
+  </data>
+  <data name="Dump.VolumeProblem" xml:space="preserve">
+    <value>[birim {0}] SORUN: {1}</value>
+  </data>
+  <data name="Dump.VolumeTrees" xml:space="preserve">
+    <value>  ağaçlar: omap {0}, kök {1} (tür 0x{2:x8}), extentref {3} (tür 0x{4:x8}), snap_meta {5} (tür 0x{6:x8})</value>
+  </data>
+  <data name="Dump.Warning" xml:space="preserve">
+    <value>  UYARI: {0}</value>
+  </data>
+  <data name="Fs.DeleteFailed" xml:space="preserve">
+    <value>"{0}" silinemedi: {1}</value>
+  </data>
+  <data name="Fs.EntryUnreadable" xml:space="preserve">
+    <value>"{0}" okunamadı: {1}</value>
+  </data>
+  <data name="Fs.MountFailed" xml:space="preserve">
+    <value>sürücü bağlanamadı (NTSTATUS 0x{0:X8}); harf kullanımda olabilir</value>
+  </data>
+  <data name="Fs.RootDirectory" xml:space="preserve">
+    <value>kök klasör</value>
+  </data>
+  <data name="Fs.StatsErrorCode" xml:space="preserve">
+    <value>Hata:{0}</value>
+  </data>
+  <data name="Fs.StatsErrorType" xml:space="preserve">
+    <value>Hata:{0}</value>
+  </data>
+  <data name="Fs.UnexpectedError" xml:space="preserve">
+    <value>Beklenmeyen hata: {0}</value>
+  </data>
+  <data name="Fs.WinFspMissing" xml:space="preserve">
+    <value>WinFsp kurulu değil veya yüklenemedi</value>
+  </data>
+  <data name="Fs.WriteBackFailed" xml:space="preserve">
+    <value>Değişiklikler diske yazılamadı: {0}</value>
+  </data>
+  <data name="Io.DeviceClosed" xml:space="preserve">
+    <value>aygıt kapatıldı</value>
+  </data>
+  <data name="Io.PartitionBeyondDisk" xml:space="preserve">
+    <value>bölüm sınırları diskin dışına taşıyor</value>
+  </data>
+  <data name="Io.PathIsDirectory" xml:space="preserve">
+    <value>"{0}" bir klasör; disk görüntüsü dosyası veya \\.\PhysicalDriveN bekleniyor</value>
+  </data>
+  <data name="Io.ReadOutsideDevice" xml:space="preserve">
+    <value>aygıt sınırı dışında okuma: {0}+{1}</value>
+  </data>
+  <data name="Io.ReadOutsidePartition" xml:space="preserve">
+    <value>bölüm sınırı dışında okuma: {0}+{1}</value>
+  </data>
+  <data name="Io.UnexpectedEof" xml:space="preserve">
+    <value>beklenmeyen dosya sonu</value>
+  </data>
+  <data name="Io.WriteOutsideDevice" xml:space="preserve">
+    <value>aygıt sınırı dışında yazma: {0}+{1}</value>
+  </data>
+  <data name="Io.WriteOutsidePartition" xml:space="preserve">
+    <value>bölüm sınırı dışında yazma: {0}+{1}</value>
+  </data>
+  <data name="Lzfse.BitCountsInvalid" xml:space="preserve">
+    <value>LZFSE bit sayaçları geçersiz</value>
+  </data>
+  <data name="Lzfse.BitStreamExhausted" xml:space="preserve">
+    <value>LZFSE bit akışı tükendi</value>
+  </data>
+  <data name="Lzfse.BitStreamInitFailed" xml:space="preserve">
+    <value>LZFSE bit akışı başlatılamadı</value>
+  </data>
+  <data name="Lzfse.BitStreamStartInvalid" xml:space="preserve">
+    <value>LZFSE bit akışı başlangıcı geçersiz</value>
+  </data>
+  <data name="Lzfse.BitStreamUnderflow" xml:space="preserve">
+    <value>LZFSE bit akışı başına taştı</value>
+  </data>
+  <data name="Lzfse.BlockCountsInvalid" xml:space="preserve">
+    <value>LZFSE blok sayaçları geçersiz</value>
+  </data>
+  <data name="Lzfse.BlockOutOfStream" xml:space="preserve">
+    <value>LZFSE bloğu akışın dışında</value>
+  </data>
+  <data name="Lzfse.BlockSizeMismatch" xml:space="preserve">
+    <value>LZFSE bloğu beklenen boyutta değil</value>
+  </data>
+  <data name="Lzfse.FreqExceedsStates" xml:space="preserve">
+    <value>LZFSE frekansları durum sayısını aşıyor</value>
+  </data>
+  <data name="Lzfse.FreqTableSizeMismatch" xml:space="preserve">
+    <value>LZFSE frekans tablosu boyutu tutarsız</value>
+  </data>
+  <data name="Lzfse.FreqTableTruncated" xml:space="preserve">
+    <value>LZFSE frekans tablosu kesik</value>
+  </data>
+  <data name="Lzfse.InitialStatesInvalid" xml:space="preserve">
+    <value>LZFSE başlangıç durumları geçersiz</value>
+  </data>
+  <data name="Lzfse.InvalidMatchDistance" xml:space="preserve">
+    <value>LZFSE eşleşme mesafesi geçersiz ({0})</value>
+  </data>
+  <data name="Lzfse.LiteralCountExceeded" xml:space="preserve">
+    <value>LZFSE değişmez bayt sayısı aşıldı</value>
+  </data>
+  <data name="Lzfse.LzvnBlockOutOfStream" xml:space="preserve">
+    <value>LZFSE/LZVN bloğu akışın dışında</value>
+  </data>
+  <data name="Lzfse.LzvnBlockShort" xml:space="preserve">
+    <value>LZVN bloğu beklenenden kısa çıktı</value>
+  </data>
+  <data name="Lzfse.OutputExceedsBlock" xml:space="preserve">
+    <value>LZFSE çıktısı blok boyutunu aşıyor</value>
+  </data>
+  <data name="Lzfse.OutputExceedsExpected" xml:space="preserve">
+    <value>LZFSE çıktısı beklenen boyutu aşıyor</value>
+  </data>
+  <data name="Lzfse.RawBlockOutOfStream" xml:space="preserve">
+    <value>LZFSE ham blok akışın dışında</value>
+  </data>
+  <data name="Lzfse.SizesInvalid" xml:space="preserve">
+    <value>LZFSE boyutları geçersiz</value>
+  </data>
+  <data name="Lzfse.StateOutOfTable" xml:space="preserve">
+    <value>LZFSE durumu tablo dışında</value>
+  </data>
+  <data name="Lzfse.UnexpectedEnd" xml:space="preserve">
+    <value>LZFSE akışı beklenmeden bitti</value>
+  </data>
+  <data name="Lzfse.UnknownBlockMagic" xml:space="preserve">
+    <value>LZFSE blok imzası tanınmıyor (0x{0:x8})</value>
+  </data>
+  <data name="Lzfse.V1HeaderOutOfStream" xml:space="preserve">
+    <value>LZFSE v1 başlığı akışın dışında</value>
+  </data>
+  <data name="Lzfse.V2HeaderOutOfStream" xml:space="preserve">
+    <value>LZFSE v2 başlığı akışın dışında</value>
+  </data>
+  <data name="Lzfse.V2HeaderSizeInvalid" xml:space="preserve">
+    <value>LZFSE v2 başlık boyutu geçersiz</value>
+  </data>
+  <data name="Lzvn.InvalidMatchDistance" xml:space="preserve">
+    <value>LZVN eşleşme mesafesi geçersiz ({0})</value>
+  </data>
+  <data name="Lzvn.LiteralsOutOfStream" xml:space="preserve">
+    <value>LZVN değişmez baytları akışın dışında</value>
+  </data>
+  <data name="Lzvn.OpcodeOutOfStream" xml:space="preserve">
+    <value>LZVN işlem kodu akışın dışına taşıyor</value>
+  </data>
+  <data name="Lzvn.UndefinedOpcode" xml:space="preserve">
+    <value>LZVN akışında tanımsız işlem kodu 0x{0:x2}</value>
+  </data>
+  <data name="Lzvn.UnexpectedEnd" xml:space="preserve">
+    <value>LZVN akışı beklenmeden bitti</value>
+  </data>
+  <data name="MBTree.EmptyNode" xml:space="preserve">
+    <value>boş B-ağacı düğümü</value>
+  </data>
+  <data name="MBTree.FixedKeySizeMismatch" xml:space="preserve">
+    <value>sabit anahtar boyutu uyuşmuyor</value>
+  </data>
+  <data name="MBTree.LevelInconsistent" xml:space="preserve">
+    <value>B-ağacı düğüm seviyesi tutarsız</value>
+  </data>
+  <data name="MBTree.NotEphemeral" xml:space="preserve">
+    <value>geçici olmayan ağaç</value>
+  </data>
+  <data name="MBTree.NotPhysical" xml:space="preserve">
+    <value>fiziksel olmayan ağaç</value>
+  </data>
+  <data name="MBTree.NotVirtual" xml:space="preserve">
+    <value>sanal olmayan ağaç</value>
+  </data>
+  <data name="MBTree.SingleRecordTooBig" xml:space="preserve">
+    <value>tek kayıt düğüme sığmıyor</value>
+  </data>
+  <data name="Nx.NoSignature" xml:space="preserve">
+    <value>NXSB imzası yok</value>
+  </data>
+  <data name="Object.Block" xml:space="preserve">
+    <value>blok {0}</value>
+  </data>
+  <data name="Object.BlockOutsideDisk" xml:space="preserve">
+    <value>blok adresi diskin dışında: {0}</value>
+  </data>
+  <data name="Object.InvalidBlockSize" xml:space="preserve">
+    <value>geçersiz blok boyutu {0}</value>
+  </data>
+  <data name="Object.OidMismatch" xml:space="preserve">
+    <value>blok {0}: nesne kimliği eşleşmiyor</value>
+  </data>
+  <data name="Object.TypeMismatch" xml:space="preserve">
+    <value>blok {0}: beklenen nesne türü 0x{1:x}, bulunan 0x{2:x}</value>
+  </data>
+  <data name="Omap.NonPhysicalTree" xml:space="preserve">
+    <value>fiziksel olmayan nesne haritası ağacı</value>
+  </data>
+  <data name="Omap.ObjectNotFound" xml:space="preserve">
+    <value>nesne haritasında bulunamayan nesne {0}</value>
+  </data>
+  <data name="Omap.RecordTooShort" xml:space="preserve">
+    <value>nesne haritası kaydı çok kısa</value>
+  </data>
+  <data name="Partition.GptHeaderInvalid" xml:space="preserve">
+    <value>GPT bölüm tablosu başlığı geçersiz</value>
+  </data>
+  <data name="Partition.GptOutsideDisk" xml:space="preserve">
+    <value>GPT bölüm tablosu diskin dışında</value>
+  </data>
+  <data name="Reaper.ContinuePending" xml:space="preserve">
+    <value>reaper meşgul: yarım kalmış bir silme var</value>
+  </data>
+  <data name="Reaper.DeletingObject" xml:space="preserve">
+    <value>reaper meşgul: nesne {0} siliniyor</value>
+  </data>
+  <data name="Reaper.DeletionUnfinished" xml:space="preserve">
+    <value>reaper meşgul: bitmemiş silme var (sonraki {0}, tamamlanan {1})</value>
+  </data>
+  <data name="Reaper.ListNotEmpty" xml:space="preserve">
+    <value>reaper meşgul: liste {0} boş değil</value>
+  </data>
+  <data name="Reaper.ListNotMapped" xml:space="preserve">
+    <value>reaper listesi {0} checkpoint haritasında yok</value>
+  </data>
+  <data name="Reaper.ListPointersInconsistent" xml:space="preserve">
+    <value>reaper meşgul: liste göstergeleri tutarsız</value>
+  </data>
+  <data name="Reaper.ListWrongMax" xml:space="preserve">
+    <value>reaper listesi {0}: en fazla girdi sayısı yanlış</value>
+  </data>
+  <data name="Reaper.ListWrongType" xml:space="preserve">
+    <value>reaper listesi {0}: tür yanlış</value>
+  </data>
+  <data name="Reaper.MultipleLists" xml:space="preserve">
+    <value>reaper meşgul: birden çok liste (baş {0}, kuyruk {1}, sayı {2})</value>
+  </data>
+  <data name="Reaper.VolumeRecord" xml:space="preserve">
+    <value>reaper meşgul: birim {0} için silme kaydı var</value>
+  </data>
+  <data name="Records.InodeTooShort" xml:space="preserve">
+    <value>inode kaydı çok kısa</value>
+  </data>
+  <data name="Records.NameTooLong" xml:space="preserve">
+    <value>ad çok uzun (en fazla 255 bayt)</value>
+  </data>
+  <data name="Records.XFieldsOverflow" xml:space="preserve">
+    <value>genişletilmiş alanlar kayda sığmıyor</value>
+  </data>
+  <data name="Sm.BlockOutOfRange" xml:space="preserve">
+    <value>blok {0} alan yöneticisinin kapsamı dışında</value>
+  </data>
+  <data name="Sm.CabCountTooBig" xml:space="preserve">
+    <value>CAB {0}: CIB sayısı bloğa sığmıyor</value>
+  </data>
+  <data name="Sm.CabWrongIndex" xml:space="preserve">
+    <value>CAB {0}: sıra numarası yanlış</value>
+  </data>
+  <data name="Sm.CibCountTooBig" xml:space="preserve">
+    <value>CIB {0}: parça sayısı bloğa sığmıyor</value>
+  </data>
+  <data name="Sm.CibWrongIndex" xml:space="preserve">
+    <value>CIB {0}: sıra numarası yanlış</value>
+  </data>
+  <data name="Sm.FreeQueueKeyTooShort" xml:space="preserve">
+    <value>boş kuyruk anahtarı çok kısa</value>
+  </data>
+  <data name="Sm.FreeQueueNodeNotMapped" xml:space="preserve">
+    <value>boş kuyruk düğümü {0} checkpoint haritasında yok</value>
+  </data>
+  <data name="Sm.FreeQueueTreeNotMapped" xml:space="preserve">
+    <value>boş kuyruk ağacı {0} checkpoint haritasında yok</value>
+  </data>
+  <data name="Sm.IpBitmapIndexOutside" xml:space="preserve">
+    <value>iç havuz bitmap indeksi halkanın dışında</value>
+  </data>
+  <data name="Sm.NotInCheckpoint" xml:space="preserve">
+    <value>alan yöneticisi checkpoint haritasında yok</value>
+  </data>
+  <data name="Sm.SizeInconsistent" xml:space="preserve">
+    <value>alan yöneticisinin blok/parça boyutu tutarsız</value>
+  </data>
+  <data name="Sm.WrongType" xml:space="preserve">
+    <value>alan yöneticisi nesnesinin türü yanlış</value>
+  </data>
+  <data name="SmWriter.BlockAlreadyState" xml:space="preserve">
+    <value>blok {0} zaten {1} (alan yöneticisi tutarsız)</value>
+  </data>
+  <data name="SmWriter.BlockFreedTwice" xml:space="preserve">
+    <value>blok {0} aynı işlemde iki kez bırakıldı</value>
+  </data>
+  <data name="SmWriter.BlockOutsideContainer" xml:space="preserve">
+    <value>blok {0} kapsayıcının dışında</value>
+  </data>
+  <data name="SmWriter.BlockOutsideIp" xml:space="preserve">
+    <value>blok {0} iç havuzun dışında</value>
+  </data>
+  <data name="SmWriter.CibUnsupported" xml:space="preserve">
+    <value>CIB adres blokları (çok büyük disk) henüz desteklenmiyor</value>
+  </data>
+  <data name="SmWriter.FreeQueueFutureTx" xml:space="preserve">
+    <value>boş kuyrukta gelecekteki bir işlemin kaydı</value>
+  </data>
+  <data name="SmWriter.FreeingFreeBlock" xml:space="preserve">
+    <value>boş blok {0} bırakılmak istendi</value>
+  </data>
+  <data name="SmWriter.FusionSpaceman" xml:space="preserve">
+    <value>Fusion alan yöneticisi</value>
+  </data>
+  <data name="SmWriter.IpBlockAlreadyState" xml:space="preserve">
+    <value>iç havuz bloğu {0} zaten {1}</value>
+  </data>
+  <data name="SmWriter.IpBlockFreedTwice" xml:space="preserve">
+    <value>iç havuz bloğu {0} aynı işlemde iki kez bırakıldı</value>
+  </data>
+  <data name="SmWriter.IpFreeQueueFutureTx" xml:space="preserve">
+    <value>iç havuz boş kuyruğunda gelecekteki bir işlemin kaydı</value>
+  </data>
+  <data name="SmWriter.IpFull" xml:space="preserve">
+    <value>iç havuzda yer kalmadı (alan yöneticisi tutarsız)</value>
+  </data>
+  <data name="SmWriter.IpRingNoSlot" xml:space="preserve">
+    <value>iç havuz bitmap halkasında boş yuva yok</value>
+  </data>
+  <data name="SmWriter.MultiBlockIpBitmap" xml:space="preserve">
+    <value>çok bloklu iç havuz bitmap'i</value>
+  </data>
+  <data name="SmWriter.StateFree" xml:space="preserve">
+    <value>boş</value>
+  </data>
+  <data name="SmWriter.StateUsed" xml:space="preserve">
+    <value>dolu</value>
+  </data>
+  <data name="SmWriter.TooManyFreed" xml:space="preserve">
+    <value>tek işlemde çok fazla blok bırakıldı (boş kuyruk sınırı)</value>
+  </data>
+  <data name="Stats.AvgBytes" xml:space="preserve">
+    <value>  ort. {0:0.#} KB/çağrı</value>
+  </data>
+  <data name="Stats.Line" xml:space="preserve">
+    <value>{0,-22} {1,9:N0} çağrı  {2,10:N1} ms toplam  {3,8:N1} µs/çağrı{4}</value>
+  </data>
+  <data name="VolWriter.ClonedReadOnly" xml:space="preserve">
+    <value>Mac'te çoğaltılmış (klon) bir dosya bu sürümde değiştirilemiyor; dosyayı kopyalayıp kopyasını düzenleyin</value>
+  </data>
+  <data name="VolWriter.CompressedReadOnly" xml:space="preserve">
+    <value>macOS'un sıkıştırdığı dosyalar bu sürümde değiştirilemiyor; dosyayı kopyalayıp kopyasını düzenleyin</value>
+  </data>
+  <data name="VolWriter.DirectoryId" xml:space="preserve">
+    <value>klasör {0}</value>
+  </data>
+  <data name="VolWriter.EncryptedExtentOnPlain" xml:space="preserve">
+    <value>şifresiz birimde şifreli extent</value>
+  </data>
+  <data name="VolWriter.EncryptedNoKey" xml:space="preserve">
+    <value>şifreli birime anahtarsız yazılmaz; önce kilidi açın</value>
+  </data>
+  <data name="VolWriter.EntryInodeMissing" xml:space="preserve">
+    <value>"{0}" girdisinin inode'u yok</value>
+  </data>
+  <data name="VolWriter.EntryRecordMissing" xml:space="preserve">
+    <value>"{0}" girdisinin kaydı bulunamadı</value>
+  </data>
+  <data name="VolWriter.ExtentWithoutCryptoId" xml:space="preserve">
+    <value>veri akışı {0}: şifreli birimde crypto_id'siz extent</value>
+  </data>
+  <data name="VolWriter.InvalidName" xml:space="preserve">
+    <value>geçersiz ad</value>
+  </data>
+  <data name="VolWriter.InvalidNameChar" xml:space="preserve">
+    <value>adda geçersiz karakter</value>
+  </data>
+  <data name="VolWriter.KeyWrongVolume" xml:space="preserve">
+    <value>anahtar bu birime ait değil</value>
+  </data>
+  <data name="VolWriter.MoveIntoSelf" xml:space="preserve">
+    <value>klasör kendi içine taşınamaz</value>
+  </data>
+  <data name="VolWriter.MultipleOmapRecords" xml:space="preserve">
+    <value>nesne {0} için birden çok omap kaydı</value>
+  </data>
+  <data name="VolWriter.NameTooLong" xml:space="preserve">
+    <value>ad çok uzun (en fazla 255 bayt)</value>
+  </data>
+  <data name="VolWriter.NotADirectory" xml:space="preserve">
+    <value>klasör değil</value>
+  </data>
+  <data name="VolWriter.NotAFile" xml:space="preserve">
+    <value>dosya değil</value>
+  </data>
+  <data name="VolWriter.NotInVolumeOmap" xml:space="preserve">
+    <value>nesne {0} birim omap'inde yok</value>
+  </data>
+  <data name="VolWriter.OmapDeleted" xml:space="preserve">
+    <value>nesne {0} silinmiş işaretli</value>
+  </data>
+  <data name="VolWriter.PerFileKeys" xml:space="preserve">
+    <value>dosya başına anahtarlı şifreli birime yazılmaz</value>
+  </data>
+  <data name="VolWriter.PhysExtentMissing" xml:space="preserve">
+    <value>blok {0}+{1} için fiziksel extent kaydı eksik</value>
+  </data>
+  <data name="VolWriter.UnalignedExtent" xml:space="preserve">
+    <value>veri akışı {0}: hizasız extent</value>
+  </data>
+  <data name="VolWriter.ViewTooLate" xml:space="preserve">
+    <value>görüntü, oturumun ilk değişikliğinden önce kurulmalı</value>
+  </data>
+  <data name="Volume.DirEntryKeyLength" xml:space="preserve">
+    <value>dizin girdisi anahtarının uzunluğu tutarsız</value>
+  </data>
+  <data name="Volume.DirEntryValueShort" xml:space="preserve">
+    <value>dizin girdisi değeri çok kısa</value>
+  </data>
+  <data name="Volume.DirectoryAsFile" xml:space="preserve">
+    <value>klasör dosya olarak açılamaz</value>
+  </data>
+  <data name="Volume.ExtentOutsideDisk" xml:space="preserve">
+    <value>dosya parçası diskin dışını gösteriyor</value>
+  </data>
+  <data name="Volume.ExtentSizeOverflow" xml:space="preserve">
+    <value>dosya parçası boyutu taşıyor</value>
+  </data>
+  <data name="Volume.ExtentsOverlap" xml:space="preserve">
+    <value>dosya parçaları (extent) üst üste biniyor</value>
+  </data>
+  <data name="Volume.FileExtentShort" xml:space="preserve">
+    <value>dosya extent kaydı çok kısa</value>
+  </data>
+  <data name="Volume.InodeRecordShort" xml:space="preserve">
+    <value>inode {0} kaydı çok kısa</value>
+  </data>
+  <data name="Volume.KeyNotForVolume" xml:space="preserve">
+    <value>anahtar "{0}" birimine ait değil</value>
+  </data>
+  <data name="Volume.LockedName" xml:space="preserve">
+    <value>birim "{0}"{1}</value>
+  </data>
+  <data name="Volume.NoApsbMagic" xml:space="preserve">
+    <value>birim süper bloğunda APSB imzası yok (oid {0})</value>
+  </data>
+  <data name="Volume.PasswordHintSuffix" xml:space="preserve">
+    <value>; parola ipucu: {0}</value>
+  </data>
+  <data name="Volume.PhysicalFsTree" xml:space="preserve">
+    <value>fiziksel dosya sistemi ağacı</value>
+  </data>
+  <data name="Volume.SealedSystemVolume" xml:space="preserve">
+    <value>birim "{0}" mühürlü bir macOS sistem birimi</value>
+  </data>
+  <data name="Volume.XattrDstreamShort" xml:space="preserve">
+    <value>öznitelik veri akışı kaydı çok kısa</value>
+  </data>
+  <data name="Volume.XattrTooLarge" xml:space="preserve">
+    <value>öznitelik çok büyük ({0} bayt)</value>
+  </data>
+  <data name="Volume.XattrUnknownStorage" xml:space="preserve">
+    <value>öznitelik "{0}" bilinmeyen depolama türünde</value>
+  </data>
+  <data name="Write.Block" xml:space="preserve">
+    <value>blok {0}</value>
+  </data>
+  <data name="Write.BlockNotAllocatedThisTx" xml:space="preserve">
+    <value>blok {0} bu işlemde ayrılmadı; üzerine yazılamaz</value>
+  </data>
+  <data name="Write.ChangedSinceGrant" xml:space="preserve">
+    <value>disk yazma izni verildikten sonra değişmiş; yeniden denetlenmeli</value>
+  </data>
+  <data name="Write.CheckpointDataAreaFull" xml:space="preserve">
+    <value>checkpoint veri alanı yetersiz</value>
+  </data>
+  <data name="Write.CheckpointDescAreaFull" xml:space="preserve">
+    <value>checkpoint tanımlayıcı alanı yetersiz</value>
+  </data>
+  <data name="Write.CheckpointInvalid" xml:space="preserve">
+    <value>checkpoint geçersiz: {0}</value>
+  </data>
+  <data name="Write.CryptoIdZero" xml:space="preserve">
+    <value>şifreli veri için crypto_id 0 olamaz</value>
+  </data>
+  <data name="Write.DataNotBlockMultiple" xml:space="preserve">
+    <value>veri blok katı değil</value>
+  </data>
+  <data name="Write.MultipleOmapRecords" xml:space="preserve">
+    <value>birim {0} için birden çok omap kaydı</value>
+  </data>
+  <data name="Write.NoApsbMagic" xml:space="preserve">
+    <value>birim süper bloğunda APSB imzası yok</value>
+  </data>
+  <data name="Write.NotInContainerOmap" xml:space="preserve">
+    <value>birim {0} kapsayıcı omap'inde yok</value>
+  </data>
+  <data name="Write.OidMismatch" xml:space="preserve">
+    <value>blok {0}: nesne kimliği {1} değil</value>
+  </data>
+  <data name="Write.OpenWarnings" xml:space="preserve">
+    <value>disk açılırken uyarı alındı; yazmaya açılmaz</value>
+  </data>
+  <data name="Write.PhysOidNotAddress" xml:space="preserve">
+    <value>blok {0}: fiziksel nesnenin kimliği adresi değil</value>
+  </data>
+  <data name="Write.PlainWriteRefused" xml:space="preserve">
+    <value>şifreli birimin oturumunda anahtarsız veri yazımı reddedildi</value>
+  </data>
+  <data name="Write.UnknownEphemeral" xml:space="preserve">
+    <value>tanınmayan geçici nesne: oid {0}, tür 0x{1:x8}/{2}</value>
+  </data>
+  <data name="Write.WrittenCheckpointInvalid" xml:space="preserve">
+    <value>yazılan checkpoint geçersiz: {0}</value>
+  </data>
+  <data name="Write.WrongObjectType" xml:space="preserve">
+    <value>blok {0}: nesne türü yanlış</value>
+  </data>
+  <data name="Zlib.BlockCountMismatch" xml:space="preserve">
+    <value>zlib blok sayısı dosya boyutuyla uyuşmuyor</value>
+  </data>
+  <data name="Zlib.Corrupt" xml:space="preserve">
+    <value>zlib verisi bozuk: {0}</value>
+  </data>
+  <data name="Zlib.InvalidForkHeader" xml:space="preserve">
+    <value>zlib kaynak çatalı başlığı geçersiz</value>
+  </data>
+  <data name="Zlib.InvalidHeader" xml:space="preserve">
+    <value>zlib başlığı geçersiz</value>
+  </data>
+  <data name="Zlib.Short" xml:space="preserve">
+    <value>zlib verisi beklenenden kısa</value>
+  </data>
+</root>

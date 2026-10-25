@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About.Text" xml:space="preserve">
+    <value>Opens Mac-formatted APFS disks in Windows: read-only by default, optional writing (experimental). Open source, GPLv3 license.</value>
+  </data>
+  <data name="Action.AllowWriting" xml:space="preserve">
+    <value>Allow writing</value>
+  </data>
+  <data name="Action.BackToReadOnly" xml:space="preserve">
+    <value>Back to read-only</value>
+  </data>
+  <data name="Action.Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Action.CancelDialog" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Action.Checking" xml:space="preserve">
+    <value>Checking…</value>
+  </data>
+  <data name="Action.ContinueAnyway" xml:space="preserve">
+    <value>Continue anyway</value>
+  </data>
+  <data name="Action.Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Action.EjectAnyway" xml:space="preserve">
+    <value>Eject anyway</value>
+  </data>
+  <data name="Action.Ejecting" xml:space="preserve">
+    <value>Ejecting…</value>
+  </data>
+  <data name="Action.Exit" xml:space="preserve">
+    <value>Exit</value>
+  </data>
+  <data name="Action.Open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Action.OpenLog" xml:space="preserve">
+    <value>Open log</value>
+  </data>
+  <data name="Action.OpenMain" xml:space="preserve">
+    <value>Open main window</value>
+  </data>
+  <data name="Action.Rescan" xml:space="preserve">
+    <value>Scan again</value>
+  </data>
+  <data name="Action.Rescanning" xml:space="preserve">
+    <value>Scanning…</value>
+  </data>
+  <data name="Action.SafelyEject" xml:space="preserve">
+    <value>Safely eject</value>
+  </data>
+  <data name="Action.Saving" xml:space="preserve">
+    <value>Saving…</value>
+  </data>
+  <data name="Action.Unlock" xml:space="preserve">
+    <value>Unlock</value>
+  </data>
+  <data name="Card.Checking" xml:space="preserve">
+    <value>Checking the disk…</value>
+  </data>
+  <data name="Card.DriveState" xml:space="preserve">
+    <value>Drive {0} · {1}</value>
+  </data>
+  <data name="Card.Failed" xml:space="preserve">
+    <value>Could not be opened</value>
+  </data>
+  <data name="Card.NeedsPassword" xml:space="preserve">
+    <value>Encrypted · password needed</value>
+  </data>
+  <data name="Card.NoVolumes" xml:space="preserve">
+    <value>This disk has no volumes to show (only macOS internal volumes).</value>
+  </data>
+  <data name="Card.ReadOnly" xml:space="preserve">
+    <value>read-only</value>
+  </data>
+  <data name="Card.Writable" xml:space="preserve">
+    <value>writable (experimental)</value>
+  </data>
+  <data name="Card.WriteRefused" xml:space="preserve">
+    <value>Writing could not be enabled: {0}</value>
+  </data>
+  <data name="Disk.Gone" xml:space="preserve">
+    <value>This disk is no longer attached.</value>
+  </data>
+  <data name="Disk.PhysicalName" xml:space="preserve">
+    <value>Disk {0} ({1})</value>
+  </data>
+  <data name="Eject.Busy" xml:space="preserve">
+    <value>A file on {0} is open or being copied right now ({1}). If you eject now, the copy will be cut short; your Mac disk will not be harmed.</value>
+  </data>
+  <data name="Eject.BusyHeading" xml:space="preserve">
+    <value>A copy seems to be in progress</value>
+  </data>
+  <data name="Eject.Detached" xml:space="preserve">
+    <value>Volumes unmounted.</value>
+  </data>
+  <data name="Eject.Ejected" xml:space="preserve">
+    <value>The disk was safely ejected.</value>
+  </data>
+  <data name="Eject.Failed" xml:space="preserve">
+    <value>The disk could not be ejected.</value>
+  </data>
+  <data name="Eject.Remounting" xml:space="preserve">
+    <value>{0} The disk is being mounted again.</value>
+  </data>
+  <data name="Error.OperationFailed" xml:space="preserve">
+    <value>The operation could not be completed.</value>
+  </data>
+  <data name="Error.ServiceUnreachable" xml:space="preserve">
+    <value>Could not reach the service.</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>Unknown error.</value>
+  </data>
+  <data name="Language.Windows" xml:space="preserve">
+    <value>Windows language</value>
+  </data>
+  <data name="List.Connecting" xml:space="preserve">
+    <value>Connecting…</value>
+  </data>
+  <data name="List.NoDiskBody" xml:space="preserve">
+    <value>Plug in your Mac disk; it appears here within a few seconds. Your disk opens read-only first; if you want to write to it, you allow that separately with the button on its card.</value>
+  </data>
+  <data name="List.NoDiskHeading" xml:space="preserve">
+    <value>No Mac disk yet</value>
+  </data>
+  <data name="List.ServiceDownBody" xml:space="preserve">
+    <value>The service that mounts the disks cannot be reached. Try restarting the computer or reinstalling the program.</value>
+  </data>
+  <data name="List.ServiceDownHeading" xml:space="preserve">
+    <value>The background service is not running</value>
+  </data>
+  <data name="Log.NoneYet" xml:space="preserve">
+    <value>There is no log yet.</value>
+  </data>
+  <data name="Main.Subtitle" xml:space="preserve">
+    <value>Your Mac disks are safe: read-only first, writable if you choose.</value>
+  </data>
+  <data name="Main.Version" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="Notice.CloseWriteFailed" xml:space="preserve">
+    <value>{0}: some of the latest changes could not be written to the disk (it may have been removed). The disk will open in its previously saved state. Details: {1}</value>
+  </data>
+  <data name="Notice.ContainerOpenFailed" xml:space="preserve">
+    <value>{0}: the APFS container could not be opened. {1}</value>
+  </data>
+  <data name="Notice.Detached" xml:space="preserve">
+    <value>The volumes of {0} were unmounted. This disk does not appear as a removable device; to mount it again, use "Scan again".</value>
+  </data>
+  <data name="Notice.DiskUnreadable" xml:space="preserve">
+    <value>{0} could not be read: {1}</value>
+  </data>
+  <data name="Notice.Ejected" xml:space="preserve">
+    <value>{0} was safely ejected. You can unplug the cable now.</value>
+  </data>
+  <data name="Notice.MountFailed" xml:space="preserve">
+    <value>"{0}" could not be mounted. {1}</value>
+  </data>
+  <data name="Notice.Mounted" xml:space="preserve">
+    <value>"{0}" was mounted as drive {1} (read-only).</value>
+  </data>
+  <data name="Notice.MountedWritable" xml:space="preserve">
+    <value>"{0}" was mounted as drive {1} WITH WRITING (experimental). Use "Safely eject" before removing the disk.</value>
+  </data>
+  <data name="Notice.NeedsPassword" xml:space="preserve">
+    <value>Volume "{0}" is encrypted. To open it, enter the password from the APFS icon in the notification area.</value>
+  </data>
+  <data name="Notice.RemountedReadOnly" xml:space="preserve">
+    <value>{0} was mounted read-only again; changes were saved.</value>
+  </data>
+  <data name="Notice.VolumeOpenFailed" xml:space="preserve">
+    <value>{0}: volume {1} could not be opened. {2}</value>
+  </data>
+  <data name="Notice.WriteRefused" xml:space="preserve">
+    <value>Writing was not enabled on {0}. {1}</value>
+  </data>
+  <data name="Password.Hint" xml:space="preserve">
+    <value>Hint: {0}</value>
+  </data>
+  <data name="Password.Locked" xml:space="preserve">
+    <value>"{0}" is locked</value>
+  </data>
+  <data name="Password.Prompt" xml:space="preserve">
+    <value>This volume is encrypted. To open it, enter the password you use on the Mac.</value>
+  </data>
+  <data name="Password.Reassurance" xml:space="preserve">
+    <value>The disk is only read; the password is not saved anywhere.</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>APFS for Windows: encrypted volume</value>
+  </data>
+  <data name="Release.Changed" xml:space="preserve">
+    <value>was changed by another program (e.g. reformatted); the APFS drive was removed</value>
+  </data>
+  <data name="Release.Removed" xml:space="preserve">
+    <value>was removed</value>
+  </data>
+  <data name="Release.SafeToRemove" xml:space="preserve">
+    <value>was unmounted for safe removal; you can remove the disk now</value>
+  </data>
+  <data name="Release.ServiceStopped" xml:space="preserve">
+    <value>was unmounted because the service stopped</value>
+  </data>
+  <data name="Release.UnsavedLost" xml:space="preserve">
+    <value>The latest unsaved changes could not be written; the disk will open in its previously saved state.</value>
+  </data>
+  <data name="Release.UnsavedNotWrittenChanged" xml:space="preserve">
+    <value>The latest unsaved changes were not written, so as not to damage the new content on the disk.</value>
+  </data>
+  <data name="Tray.MenuEject" xml:space="preserve">
+    <value>{0}{1}: safely eject</value>
+  </data>
+  <data name="Tray.MenuNoDisk" xml:space="preserve">
+    <value>No Mac disk attached</value>
+  </data>
+  <data name="Tray.MenuServiceDown" xml:space="preserve">
+    <value>Service not running (check the installation)</value>
+  </data>
+  <data name="Tray.StillRunning" xml:space="preserve">
+    <value>The program keeps running in the notification area. You can reach your disks from here.</value>
+  </data>
+  <data name="Tray.TipMounted" xml:space="preserve">
+    <value>APFS for Windows: {0} volume(s) mounted</value>
+  </data>
+  <data name="Tray.TipNoVolumes" xml:space="preserve">
+    <value>APFS for Windows: no volumes mounted</value>
+  </data>
+  <data name="Tray.TipServiceDown" xml:space="preserve">
+    <value>APFS for Windows: service not running</value>
+  </data>
+  <data name="Unlock.Failed" xml:space="preserve">
+    <value>Could not unlock.</value>
+  </data>
+  <data name="Unlock.MountFailed" xml:space="preserve">
+    <value>Could not be mounted.</value>
+  </data>
+  <data name="Unlock.Mounted" xml:space="preserve">
+    <value>"{0}" was mounted as {1}.</value>
+  </data>
+  <data name="Unlock.NotWaiting" xml:space="preserve">
+    <value>This volume is no longer waiting for a password.</value>
+  </data>
+  <data name="Volume.DefaultName" xml:space="preserve">
+    <value>volume {0}</value>
+  </data>
+  <data name="Volume.InternalRole" xml:space="preserve">
+    <value>macOS internal volume ({0})</value>
+  </data>
+  <data name="Write.AlreadyReadOnly" xml:space="preserve">
+    <value>This partition is already read-only.</value>
+  </data>
+  <data name="Write.AlreadyWritable" xml:space="preserve">
+    <value>Writing is already allowed on this partition.</value>
+  </data>
+  <data name="Write.Busy" xml:space="preserve">
+    <value>A file on {0} is open or being copied right now ({1}). If you continue, the drive is briefly unmounted and mounted again; open files are closed.</value>
+  </data>
+  <data name="Write.BusyHeading" xml:space="preserve">
+    <value>The disk is in use</value>
+  </data>
+  <data name="Write.CheckFailed" xml:space="preserve">
+    <value>The disk could not be checked: {0}</value>
+  </data>
+  <data name="Write.ConfirmHeading" xml:space="preserve">
+    <value>Allow writing to this disk?</value>
+  </data>
+  <data name="Write.ConfirmText" xml:space="preserve">
+    <value>{0}
+
+Writing is EXPERIMENTAL. Make sure you have a backup of your important files.
+
+• The disk is checked first; if a problem is found, writing is not enabled.
+• Always use "Safely eject" before removing the disk or plugging it into a Mac.
+• Files deleted on this disk do not go to the Recycle Bin; they are deleted permanently.
+• You can choose "Back to read-only" at any time; your changes are saved.</value>
+  </data>
+  <data name="Write.EnableFailed" xml:space="preserve">
+    <value>Writing could not be enabled: {0}</value>
+  </data>
+  <data name="Write.EnableFailedTitle" xml:space="preserve">
+    <value>Writing could not be enabled</value>
+  </data>
+  <data name="Write.Enabled" xml:space="preserve">
+    <value>Writing is now allowed on "{0}" ({1}).</value>
+  </data>
+  <data name="Write.MultipleVolumes" xml:space="preserve">
+    <value>This partition contains more than one volume; in this version writing can only be allowed on single-volume partitions.</value>
+  </data>
+  <data name="Write.NoSuchPartition" xml:space="preserve">
+    <value>This disk has no such APFS partition.</value>
+  </data>
+  <data name="Write.PreviousRequestPending" xml:space="preserve">
+    <value>The previous request for this partition has not finished yet.</value>
+  </data>
+  <data name="Write.RemountedReadOnly" xml:space="preserve">
+    <value>The disk was mounted read-only again.</value>
+  </data>
+</root>

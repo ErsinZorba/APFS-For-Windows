@@ -53,7 +53,7 @@ public sealed class WriteSession : IDisposable
         var reaper = ReaperState.Read(cp, sb);
         if (reaper.Problem is { } busy) throw new ApfsException(ApfsErrorCode.Unsupported, busy);
         if (reaper.NotRewrittenByWriter(cp, sb).ToList() is [var unknown, ..])
-            throw new ApfsException(ApfsErrorCode.Unsupported, $"tanınmayan geçici nesne: oid {unknown.Oid}, tür 0x{unknown.Type:x8}/{unknown.Subtype}");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Write.UnknownEphemeral", unknown.Oid, unknown.Type, unknown.Subtype));
         _reaper = (byte[])reaper.Raw.Clone();
         _reapLists = reaper.Lists.Select(l => (l.Map, (byte[])l.Raw.Clone())).ToList();
         _cOmapObjPaddr = sb.OmapOid;
@@ -70,9 +70,9 @@ public sealed class WriteSession : IDisposable
     internal byte[] LoadPhysical(ulong paddr, uint type)
     {
         var b = _reader.ReadBlock(paddr);
-        if (!Fletcher64.Verify(b)) throw new ApfsException(ApfsErrorCode.ChecksumMismatch, $"blok {paddr}");
-        if (Bin.U64(b, 8) != paddr) throw ApfsException.Corrupt($"blok {paddr}: fiziksel nesnenin kimliği adresi değil");
-        if (type != 0 && (Bin.U32(b, 24) & ApfsConstants.ObjectTypeMask) != type) throw ApfsException.Corrupt($"blok {paddr}: nesne türü yanlış");
+        if (!Fletcher64.Verify(b)) throw new ApfsException(ApfsErrorCode.ChecksumMismatch, CoreText.T("Write.Block", paddr));
+        if (Bin.U64(b, 8) != paddr) throw ApfsException.Corrupt(CoreText.T("Write.PhysOidNotAddress", paddr));
+        if (type != 0 && (Bin.U32(b, 24) & ApfsConstants.ObjectTypeMask) != type) throw ApfsException.Corrupt(CoreText.T("Write.WrongObjectType", paddr));
         return b;
     }
 
@@ -84,8 +84,8 @@ public sealed class WriteSession : IDisposable
     {
         var b = _reader.ReadBlock(paddr);
         crypto?.DecryptBlock(b, paddr);
-        if (!Fletcher64.Verify(b)) throw new ApfsException(ApfsErrorCode.ChecksumMismatch, $"blok {paddr}");
-        if (Bin.U64(b, 8) != oid) throw ApfsException.Corrupt($"blok {paddr}: nesne kimliği {oid} değil");
+        if (!Fletcher64.Verify(b)) throw new ApfsException(ApfsErrorCode.ChecksumMismatch, CoreText.T("Write.Block", paddr));
+        if (Bin.U64(b, 8) != oid) throw ApfsException.Corrupt(CoreText.T("Write.OidMismatch", paddr, oid));
         return b;
     }
 
@@ -111,10 +111,10 @@ public sealed class WriteSession : IDisposable
         ulong? found = null;
         foreach (var e in _cOmap.Scan(k => Bin.U64(k, 0).CompareTo(oid)))
         {
-            if (found is not null) throw ApfsException.Corrupt($"birim {oid} için birden çok omap kaydı");
+            if (found is not null) throw ApfsException.Corrupt(CoreText.T("Write.MultipleOmapRecords", oid));
             found = Bin.U64(e.Value, 8);
         }
-        return found ?? throw ApfsException.Corrupt($"birim {oid} kapsayıcı omap'inde yok");
+        return found ?? throw ApfsException.Corrupt(CoreText.T("Write.NotInContainerOmap", oid));
     }
 
     /// <summary>
@@ -127,7 +127,7 @@ public sealed class WriteSession : IDisposable
         if (_volumes.TryGetValue(oid, out var vw)) return vw;
         ulong paddr = ResolveContainerOmap(oid);
         var apsb = LoadVirtual(oid, paddr);
-        if (Bin.U32(apsb, 32) != ApfsConstants.ApfsMagic) throw ApfsException.Corrupt("birim süper bloğunda APSB imzası yok");
+        if (Bin.U32(apsb, 32) != ApfsConstants.ApfsMagic) throw ApfsException.Corrupt(CoreText.T("Write.NoApsbMagic"));
         vw = new VolumeWriter(this, oid, paddr, apsb, key);
         if (vw.Crypto is not null) _encryptedVolumes++;
         // Görüntü HEMEN kurulur: sonraki commit'ler kapsayıcının eski omap bloklarını yeniden kullanabilir
@@ -154,11 +154,11 @@ public sealed class WriteSession : IDisposable
         var container = ApfsContainer.Open(device);
         var sb = container.Superblock;
         if (sb.Uuid != grant.ContainerUuid || sb.Xid != grant.Xid)
-            throw new ApfsException(ApfsErrorCode.InvalidArgument, "disk yazma izni verildikten sonra değişmiş; yeniden denetlenmeli");
+            throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("Write.ChangedSinceGrant"));
         if (container.Warnings.Count > 0)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "disk açılırken uyarı alındı; yazmaya açılmaz");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Write.OpenWarnings"));
         var cp = Checkpoint.Read(container);
-        if (!cp.IsValid) throw new ApfsException(ApfsErrorCode.Corrupt, "checkpoint geçersiz: " + string.Join("; ", cp.Problems));
+        if (!cp.IsValid) throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Write.CheckpointInvalid", string.Join("; ", cp.Problems)));
         var nx = container.Reader.ReadBlock(sb.Paddr);
         return new WriteSession(device, container, nx, sb, cp);
     }
@@ -194,12 +194,12 @@ public sealed class WriteSession : IDisposable
     internal void WriteData(ulong paddr, ReadOnlySpan<byte> data, Crypto.VolumeCrypto? crypto = null, ulong cryptoId = 0)
     {
         uint bs = _reader.BlockSize;
-        if (data.Length % bs != 0) throw new ArgumentException("veri blok katı değil");
+        if (data.Length % bs != 0) throw new ArgumentException(CoreText.T("Write.DataNotBlockMultiple"));
         if (_encryptedVolumes > 0 && (crypto is null || cryptoId == 0))
-            throw new InvalidOperationException("şifreli birimin oturumunda anahtarsız veri yazımı reddedildi");
-        if (crypto is not null && cryptoId == 0) throw new InvalidOperationException("şifreli veri için crypto_id 0 olamaz");
+            throw new InvalidOperationException(CoreText.T("Write.PlainWriteRefused"));
+        if (crypto is not null && cryptoId == 0) throw new InvalidOperationException(CoreText.T("Write.CryptoIdZero"));
         for (ulong b = paddr; b < paddr + (ulong)(data.Length / bs); b++)
-            if (!_spaceman.IsAllocatedThisTx(b)) throw new InvalidOperationException($"blok {b} bu işlemde ayrılmadı; üzerine yazılamaz");
+            if (!_spaceman.IsAllocatedThisTx(b)) throw new InvalidOperationException(CoreText.T("Write.BlockNotAllocatedThisTx", b));
         if (crypto is null)
         {
             _device.Write((long)(paddr * bs), data);
@@ -260,7 +260,7 @@ public sealed class WriteSession : IDisposable
         uint dataBlocks = _sb.XpDataBlocks, descBlocks = _sb.XpDescBlocks;
         uint need = (uint)ephemeral.Sum(e => e.Data.Length / bs);
         if (need > dataBlocks - _sb.XpDataLen)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "checkpoint veri alanı yetersiz");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Write.CheckpointDataAreaFull"));
         uint dataIndex = _sb.XpDataNext, idx = dataIndex;
         var placed = new List<CheckpointMapping>();
         foreach (var (map, data) in ephemeral)
@@ -277,7 +277,7 @@ public sealed class WriteSession : IDisposable
         int perBlock = (int)((bs - 40) / 40);
         int mapBlocks = Math.Max(1, (placed.Count + perBlock - 1) / perBlock);
         if (mapBlocks + 1 > descBlocks - _sb.XpDescLen)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "checkpoint tanımlayıcı alanı yetersiz");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Write.CheckpointDescAreaFull"));
         uint descIndex = _sb.XpDescNext;
         for (int m = 0; m < mapBlocks; m++)
         {
@@ -331,7 +331,7 @@ public sealed class WriteSession : IDisposable
         _nx = nx;
         _sb = NxSuperblock.Parse(nx, sbPaddr);
         _cp = Checkpoint.Read(_reader, _sb);
-        if (!_cp.IsValid) throw new InvalidOperationException("yazılan checkpoint geçersiz: " + string.Join("; ", _cp.Problems));
+        if (!_cp.IsValid) throw new InvalidOperationException(CoreText.T("Write.WrittenCheckpointInvalid", string.Join("; ", _cp.Problems)));
         BeginTransaction();
     }
 

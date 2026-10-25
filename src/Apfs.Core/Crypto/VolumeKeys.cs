@@ -44,7 +44,7 @@ public static class VolumeKeys
         var bag = LoadContainerKeybag(container);
         var vekEntry = bag.FirstOrDefault(e => e.Tag == TagVolumeKey && e.Uuid == volumeUuid);
         if (vekEntry.Data is null)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "birimin şifreleme anahtarı kapsayıcıda yok (donanım şifrelemesi olabilir)");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Crypto.VolumeKeyNotInContainer"));
         var recs = LoadVolumeKeybag(container, volumeUuid);
 
         var pw = System.Text.Encoding.UTF8.GetBytes(password);
@@ -70,7 +70,7 @@ public static class VolumeKeys
             CryptographicOperations.ZeroMemory(pw);
         }
         string? hint = recs.FirstOrDefault(e => e.Tag == TagPassphraseHint && e.Uuid == volumeUuid).Data is { } h ? Bin.Utf8Z(h) : null;
-        throw new ApfsException(ApfsErrorCode.WrongPassword, hint is null ? null : $"ipucu: {hint}");
+        throw new ApfsException(ApfsErrorCode.WrongPassword, hint is null ? null : CoreText.T("Crypto.PasswordHint", hint));
     }
 
     // ---- Keybag'ler ----
@@ -79,7 +79,7 @@ public static class VolumeKeys
     {
         var sb = container.Superblock;
         if (sb.KeylockerStart == 0 || sb.KeylockerBlockCount == 0)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "kapsayıcıda anahtar deposu (keybag) yok");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Crypto.NoKeybag"));
         return LoadKeybag(container, sb.KeylockerStart, sb.KeylockerBlockCount, sb.Uuid, ContainerKeybagType);
     }
 
@@ -88,7 +88,7 @@ public static class VolumeKeys
         var bag = LoadContainerKeybag(container);
         var loc = bag.FirstOrDefault(e => e.Tag == TagVolumeUnlockRecords && e.Uuid == volumeUuid);
         if (loc.Data is null || loc.Data.Length < 16)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "birimin kilit açma kayıtları bulunamadı");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Crypto.NoUnlockRecords"));
         return LoadKeybag(container, Bin.U64(loc.Data, 0), Bin.U64(loc.Data, 8), volumeUuid, VolumeKeybagType);
     }
 
@@ -96,7 +96,7 @@ public static class VolumeKeys
     private static List<KeybagEntry> LoadKeybag(ApfsContainer container, ulong start, ulong count, Guid uuid, uint type)
     {
         if (count == 0 || count > MaxKeybagBlocks || start >= container.Reader.BlockCount || start + count > container.Reader.BlockCount)
-            throw ApfsException.Corrupt("anahtar deposunun konumu geçersiz");
+            throw ApfsException.Corrupt(CoreText.T("Crypto.KeybagLocationInvalid"));
         uint bs = container.BlockSize;
         var data = new byte[count * bs];
         for (ulong i = 0; i < count; i++)
@@ -110,9 +110,9 @@ public static class VolumeKeys
         }
         for (ulong i = 0; i < count; i++)
             if (!Fletcher64.Verify(data.AsSpan((int)(i * bs), (int)bs)))
-                throw new ApfsException(ApfsErrorCode.ChecksumMismatch, "anahtar deposu bozuk veya çözülemedi");
+                throw new ApfsException(ApfsErrorCode.ChecksumMismatch, CoreText.T("Crypto.KeybagCorrupt"));
         if (Bin.U32(data, 24) != type)
-            throw ApfsException.Corrupt("anahtar deposunun türü beklenmeyen");
+            throw ApfsException.Corrupt(CoreText.T("Crypto.KeybagUnexpectedType"));
 
         // kb_locker_t: sürüm, girdi sayısı, bayt sayısı, 8 bayt dolgu; girdiler 16 bayta hizalı
         ushort nkeys = Bin.U16(data, 34);
@@ -160,7 +160,7 @@ public static class VolumeKeys
         var wrapped = inner.Read(0x83);
         ulong iterations = Der.ToUInt(inner.Read(0x84));
         var salt = inner.Read(0x85);
-        if (iterations is 0 or > 100_000_000) throw ApfsException.Corrupt("KEK yineleme sayısı geçersiz");
+        if (iterations is 0 or > 100_000_000) throw ApfsException.Corrupt(CoreText.T("Crypto.KekIterationsInvalid"));
 
         bool aes128 = (hdr.Flags & 2) != 0;
         var dk = Rfc2898DeriveBytes.Pbkdf2(password, salt, (int)iterations, HashAlgorithmName.SHA256, 32);
@@ -208,7 +208,7 @@ public sealed class VolumeKey : IDisposable
 
     private VolumeKey(Guid volumeUuid, byte[] vek)
     {
-        if (vek.Length != 32) throw new ArgumentException("VEK 32 bayt olmalı", nameof(vek));
+        if (vek.Length != 32) throw new ArgumentException(CoreText.T("Crypto.VekLength"), nameof(vek));
         VolumeUuid = volumeUuid;
         _vek = vek;
     }

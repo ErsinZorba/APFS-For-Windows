@@ -33,24 +33,24 @@ public sealed class ApfsException : Exception
 
     public static string Describe(ApfsErrorCode code, string? detail) => code switch
     {
-        ApfsErrorCode.NotApfs => "Bu disk veya dosya APFS biçiminde değil." + Suffix(detail),
+        ApfsErrorCode.NotApfs => CoreText.U("Error.NotApfs") + Suffix(detail),
         ApfsErrorCode.NoValidCheckpoint =>
-            "APFS kapsayıcısının hiçbir kontrol noktası sağlam değil. Disk ciddi şekilde hasarlı olabilir. Diskinize hiçbir şey yazılmadı." + Suffix(detail),
+            CoreText.U("Error.NoValidCheckpoint") + Suffix(detail),
         ApfsErrorCode.Corrupt =>
-            "Diskteki bir yapı bozuk görünüyor. Bu kısım okunamadı, diskinize hiçbir şey yazılmadı." + Suffix(detail),
+            CoreText.U("Error.Corrupt") + Suffix(detail),
         ApfsErrorCode.ChecksumMismatch =>
-            "Diskteki bir bloğun sağlama toplamı tutmuyor; bu bölüm hasarlı olabilir. Diskinize hiçbir şey yazılmadı." + Suffix(detail),
-        ApfsErrorCode.Unsupported => "Bu özellik henüz desteklenmiyor." + Suffix(detail),
-        ApfsErrorCode.Encrypted => "Bu birim şifreli. Açmak için parola gerekiyor." + Suffix(detail),
-        ApfsErrorCode.NotFound => "Dosya veya klasör bulunamadı." + Suffix(detail),
-        ApfsErrorCode.IoError => "Diskten okunamadı. Disk çıkarılmış veya arızalı olabilir." + Suffix(detail),
-        ApfsErrorCode.AccessDenied => "Erişim izni yok." + Suffix(detail),
-        ApfsErrorCode.InvalidArgument => "Geçersiz değer." + Suffix(detail),
-        ApfsErrorCode.WrongPassword => "Parola yanlış." + Suffix(detail),
-        ApfsErrorCode.DiskFull => "Diskte yer kalmadı." + Suffix(detail),
-        ApfsErrorCode.AlreadyExists => "Bu adda bir dosya veya klasör zaten var." + Suffix(detail),
-        ApfsErrorCode.DirectoryNotEmpty => "Klasör boş değil." + Suffix(detail),
-        _ => "Bilinmeyen hata." + Suffix(detail),
+            CoreText.U("Error.ChecksumMismatch") + Suffix(detail),
+        ApfsErrorCode.Unsupported => CoreText.U("Error.Unsupported") + Suffix(detail),
+        ApfsErrorCode.Encrypted => CoreText.U("Error.Encrypted") + Suffix(detail),
+        ApfsErrorCode.NotFound => CoreText.U("Error.NotFound") + Suffix(detail),
+        ApfsErrorCode.IoError => CoreText.U("Error.IoError") + Suffix(detail),
+        ApfsErrorCode.AccessDenied => CoreText.U("Error.AccessDenied") + Suffix(detail),
+        ApfsErrorCode.InvalidArgument => CoreText.U("Error.InvalidArgument") + Suffix(detail),
+        ApfsErrorCode.WrongPassword => CoreText.U("Error.WrongPassword") + Suffix(detail),
+        ApfsErrorCode.DiskFull => CoreText.U("Error.DiskFull") + Suffix(detail),
+        ApfsErrorCode.AlreadyExists => CoreText.U("Error.AlreadyExists") + Suffix(detail),
+        ApfsErrorCode.DirectoryNotEmpty => CoreText.U("Error.DirectoryNotEmpty") + Suffix(detail),
+        _ => CoreText.U("Error.Unknown") + Suffix(detail),
     };
 
     private static string Suffix(string? detail) => string.IsNullOrEmpty(detail) ? "" : $" ({detail})";

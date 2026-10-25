@@ -17,7 +17,7 @@ internal static class LauncherRegistration
     public static int Register()
     {
         RequireAdmin();
-        string? winfsp = WinFspInstallDir() ?? throw new ApfsException(ApfsErrorCode.Unsupported, "WinFsp kurulu değil. Kurmak için: winget install WinFsp.WinFsp");
+        string? winfsp = WinFspInstallDir() ?? throw new ApfsException(ApfsErrorCode.Unsupported, WinText.T("Cli.WinFspMissing"));
 
         string source = AppContext.BaseDirectory;
         if (!string.Equals(Path.GetFullPath(source).TrimEnd('\\'), InstallDir, StringComparison.OrdinalIgnoreCase))
@@ -41,10 +41,10 @@ internal static class LauncherRegistration
         key.SetValue("JobControl", 1, RegistryValueKind.DWord);
 
         string launchctl = Path.Combine(winfsp, "bin", "launchctl-x64.exe");
-        Console.WriteLine($"Kaydedildi. Program: {InstallDir}");
-        Console.WriteLine("Bir diski bağlamak için (yönetici gerekmez):");
+        Console.WriteLine(WinText.T("Cli.Registered", InstallDir));
+        Console.WriteLine(WinText.T("Cli.RegisterMountHint"));
         Console.WriteLine($"  \"{launchctl}\" start {ServiceName} disk2 PhysicalDrive2 X:");
-        Console.WriteLine("Ayırmak için:");
+        Console.WriteLine(WinText.T("Cli.RegisterUnmountHint"));
         Console.WriteLine($"  \"{launchctl}\" stop {ServiceName} disk2");
         return 0;
     }
@@ -54,12 +54,12 @@ internal static class LauncherRegistration
         RequireAdmin();
         using var hklm32 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
         hklm32.DeleteSubKeyTree(ServicesKey, throwOnMissingSubKey: false);
-        Console.WriteLine("WinFsp kaydı kaldırıldı.");
+        Console.WriteLine(WinText.T("Cli.Unregistered"));
         if (Directory.Exists(InstallDir) &&
             !string.Equals(Path.GetFullPath(AppContext.BaseDirectory).TrimEnd('\\'), InstallDir, StringComparison.OrdinalIgnoreCase))
         {
             Directory.Delete(InstallDir, recursive: true);
-            Console.WriteLine($"Silindi: {InstallDir}");
+            Console.WriteLine(WinText.T("Cli.Deleted", InstallDir));
         }
         return 0;
     }
@@ -75,6 +75,6 @@ internal static class LauncherRegistration
     {
         using var id = WindowsIdentity.GetCurrent();
         if (!new WindowsPrincipal(id).IsInRole(WindowsBuiltInRole.Administrator))
-            throw new ApfsException(ApfsErrorCode.AccessDenied, "bu komut yönetici olarak çalıştırılmalı");
+            throw new ApfsException(ApfsErrorCode.AccessDenied, WinText.T("Cli.AdminRequired"));
     }
 }

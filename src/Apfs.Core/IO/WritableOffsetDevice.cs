@@ -11,7 +11,7 @@ public sealed class WritableOffsetDevice : IWritableBlockDevice
     {
         ArgumentNullException.ThrowIfNull(grant);
         if (start < 0 || length < 0 || start > inner.Length - length)
-            throw ApfsException.Corrupt("bölüm sınırları diskin dışına taşıyor");
+            throw ApfsException.Corrupt(CoreText.T("Io.PartitionBeyondDisk"));
         _inner = inner;
         _start = start;
         Length = length;
@@ -24,14 +24,14 @@ public sealed class WritableOffsetDevice : IWritableBlockDevice
     public void Read(long offset, Span<byte> buffer)
     {
         if (offset < 0 || offset > Length - buffer.Length)
-            throw ApfsException.Corrupt($"bölüm sınırı dışında okuma: {offset}+{buffer.Length}");
+            throw ApfsException.Corrupt(CoreText.T("Io.ReadOutsidePartition", offset, buffer.Length));
         _inner.Read(_start + offset, buffer);
     }
 
     public void Write(long offset, ReadOnlySpan<byte> data)
     {
         if (offset < 0 || offset > Length - data.Length)
-            throw new ApfsException(ApfsErrorCode.InvalidArgument, $"bölüm sınırı dışında yazma: {offset}+{data.Length}");
+            throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("Io.WriteOutsidePartition", offset, data.Length));
         _inner.Write(_start + offset, data);
     }
 

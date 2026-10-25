@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About.Text" xml:space="preserve">
+    <value>Mac でフォーマットされた APFS ディスクを Windows で開きます。既定では読み取り専用で、書き込みも選択できます（試験的）。オープンソース、GPLv3 ライセンス。</value>
+  </data>
+  <data name="Action.AllowWriting" xml:space="preserve">
+    <value>書き込みを許可</value>
+  </data>
+  <data name="Action.BackToReadOnly" xml:space="preserve">
+    <value>読み取り専用に戻す</value>
+  </data>
+  <data name="Action.Cancel" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="Action.CancelDialog" xml:space="preserve">
+    <value>キャンセル</value>
+  </data>
+  <data name="Action.Checking" xml:space="preserve">
+    <value>確認中…</value>
+  </data>
+  <data name="Action.ContinueAnyway" xml:space="preserve">
+    <value>このまま続行</value>
+  </data>
+  <data name="Action.Details" xml:space="preserve">
+    <value>詳細</value>
+  </data>
+  <data name="Action.EjectAnyway" xml:space="preserve">
+    <value>このまま取り出す</value>
+  </data>
+  <data name="Action.Ejecting" xml:space="preserve">
+    <value>取り出し中…</value>
+  </data>
+  <data name="Action.Exit" xml:space="preserve">
+    <value>終了</value>
+  </data>
+  <data name="Action.Open" xml:space="preserve">
+    <value>開く</value>
+  </data>
+  <data name="Action.OpenLog" xml:space="preserve">
+    <value>ログを開く</value>
+  </data>
+  <data name="Action.OpenMain" xml:space="preserve">
+    <value>メイン ウィンドウを開く</value>
+  </data>
+  <data name="Action.Rescan" xml:space="preserve">
+    <value>再スキャン</value>
+  </data>
+  <data name="Action.Rescanning" xml:space="preserve">
+    <value>スキャン中…</value>
+  </data>
+  <data name="Action.SafelyEject" xml:space="preserve">
+    <value>安全に取り出す</value>
+  </data>
+  <data name="Action.Saving" xml:space="preserve">
+    <value>保存中…</value>
+  </data>
+  <data name="Action.Unlock" xml:space="preserve">
+    <value>ロック解除</value>
+  </data>
+  <data name="Card.Checking" xml:space="preserve">
+    <value>ディスクを確認しています…</value>
+  </data>
+  <data name="Card.DriveState" xml:space="preserve">
+    <value>ドライブ {0} · {1}</value>
+  </data>
+  <data name="Card.Failed" xml:space="preserve">
+    <value>開けませんでした</value>
+  </data>
+  <data name="Card.NeedsPassword" xml:space="preserve">
+    <value>暗号化 · パスワードが必要</value>
+  </data>
+  <data name="Card.NoVolumes" xml:space="preserve">
+    <value>このディスクには表示できるボリュームがありません（macOS の内部ボリュームのみ）。</value>
+  </data>
+  <data name="Card.ReadOnly" xml:space="preserve">
+    <value>読み取り専用</value>
+  </data>
+  <data name="Card.Writable" xml:space="preserve">
+    <value>書き込み可能（試験的）</value>
+  </data>
+  <data name="Card.WriteRefused" xml:space="preserve">
+    <value>書き込みを有効にできませんでした：{0}</value>
+  </data>
+  <data name="Disk.Gone" xml:space="preserve">
+    <value>このディスクはもう接続されていません。</value>
+  </data>
+  <data name="Disk.PhysicalName" xml:space="preserve">
+    <value>ディスク {0}（{1}）</value>
+  </data>
+  <data name="Eject.Busy" xml:space="preserve">
+    <value>{0} 上のファイルが現在開かれているか、コピー中です（{1}）。今取り出すとコピーは途中で中断されますが、Mac のディスクが損傷することはありません。</value>
+  </data>
+  <data name="Eject.BusyHeading" xml:space="preserve">
+    <value>コピーが進行中のようです</value>
+  </data>
+  <data name="Eject.Detached" xml:space="preserve">
+    <value>ボリュームのマウントを解除しました。</value>
+  </data>
+  <data name="Eject.Ejected" xml:space="preserve">
+    <value>ディスクを安全に取り出しました。</value>
+  </data>
+  <data name="Eject.Failed" xml:space="preserve">
+    <value>ディスクを取り出せませんでした。</value>
+  </data>
+  <data name="Eject.Remounting" xml:space="preserve">
+    <value>{0}ディスクを再度マウントしています。</value>
+  </data>
+  <data name="Error.OperationFailed" xml:space="preserve">
+    <value>操作を完了できませんでした。</value>
+  </data>
+  <data name="Error.ServiceUnreachable" xml:space="preserve">
+    <value>サービスに接続できませんでした。</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>不明なエラーです。</value>
+  </data>
+  <data name="Language.Windows" xml:space="preserve">
+    <value>Windows の言語</value>
+  </data>
+  <data name="List.Connecting" xml:space="preserve">
+    <value>接続しています…</value>
+  </data>
+  <data name="List.NoDiskBody" xml:space="preserve">
+    <value>Mac のディスクを接続してください。数秒以内にここに表示されます。ディスクはまず読み取り専用で開かれます。書き込みたい場合は、ディスクのカードにあるボタンで別途許可してください。</value>
+  </data>
+  <data name="List.NoDiskHeading" xml:space="preserve">
+    <value>Mac のディスクはまだありません</value>
+  </data>
+  <data name="List.ServiceDownBody" xml:space="preserve">
+    <value>ディスクをマウントするサービスに接続できません。コンピューターを再起動するか、プログラムを再インストールしてみてください。</value>
+  </data>
+  <data name="List.ServiceDownHeading" xml:space="preserve">
+    <value>バックグラウンド サービスが実行されていません</value>
+  </data>
+  <data name="Log.NoneYet" xml:space="preserve">
+    <value>ログはまだありません。</value>
+  </data>
+  <data name="Main.Subtitle" xml:space="preserve">
+    <value>Mac のディスクは安全です。まずは読み取り専用で、必要なら書き込みもできます。</value>
+  </data>
+  <data name="Main.Version" xml:space="preserve">
+    <value>バージョン {0}</value>
+  </data>
+  <data name="Notice.CloseWriteFailed" xml:space="preserve">
+    <value>{0}：最新の変更の一部をディスクに書き込めませんでした（ディスクが取り外された可能性があります）。ディスクは前回保存された状態で開かれます。詳細：{1}</value>
+  </data>
+  <data name="Notice.ContainerOpenFailed" xml:space="preserve">
+    <value>{0}：APFS コンテナを開けませんでした。{1}</value>
+  </data>
+  <data name="Notice.Detached" xml:space="preserve">
+    <value>{0} のボリュームのマウントを解除しました。このディスクはリムーバブル デバイスとして表示されないため、再度マウントするには "再スキャン" を使用してください。</value>
+  </data>
+  <data name="Notice.DiskUnreadable" xml:space="preserve">
+    <value>{0} を読み取れませんでした：{1}</value>
+  </data>
+  <data name="Notice.Ejected" xml:space="preserve">
+    <value>{0} を安全に取り出しました。ケーブルを抜いてもかまいません。</value>
+  </data>
+  <data name="Notice.MountFailed" xml:space="preserve">
+    <value>"{0}" をマウントできませんでした。{1}</value>
+  </data>
+  <data name="Notice.Mounted" xml:space="preserve">
+    <value>"{0}" をドライブ {1} としてマウントしました（読み取り専用）。</value>
+  </data>
+  <data name="Notice.MountedWritable" xml:space="preserve">
+    <value>"{0}" を【書き込み可能】な状態でドライブ {1} としてマウントしました（試験的）。ディスクを取り外す前に "安全に取り出す" を使用してください。</value>
+  </data>
+  <data name="Notice.NeedsPassword" xml:space="preserve">
+    <value>ボリューム "{0}" は暗号化されています。開くには、通知領域の APFS アイコンからパスワードを入力してください。</value>
+  </data>
+  <data name="Notice.RemountedReadOnly" xml:space="preserve">
+    <value>{0} を読み取り専用で再マウントしました。変更は保存されました。</value>
+  </data>
+  <data name="Notice.VolumeOpenFailed" xml:space="preserve">
+    <value>{0}：ボリューム {1} を開けませんでした。{2}</value>
+  </data>
+  <data name="Notice.WriteRefused" xml:space="preserve">
+    <value>{0} では書き込みが有効になりませんでした。{1}</value>
+  </data>
+  <data name="Password.Hint" xml:space="preserve">
+    <value>ヒント：{0}</value>
+  </data>
+  <data name="Password.Locked" xml:space="preserve">
+    <value>"{0}" はロックされています</value>
+  </data>
+  <data name="Password.Prompt" xml:space="preserve">
+    <value>このボリュームは暗号化されています。開くには、Mac で使用しているパスワードを入力してください。</value>
+  </data>
+  <data name="Password.Reassurance" xml:space="preserve">
+    <value>ディスクは読み取られるだけです。パスワードはどこにも保存されません。</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>APFS for Windows：暗号化されたボリューム</value>
+  </data>
+  <data name="Release.Changed" xml:space="preserve">
+    <value>は別のプログラムによって変更された（再フォーマットなど）ため、APFS ドライブを取り外しました</value>
+  </data>
+  <data name="Release.Removed" xml:space="preserve">
+    <value>は取り外されました</value>
+  </data>
+  <data name="Release.SafeToRemove" xml:space="preserve">
+    <value>は安全に取り外せるようにマウントが解除されました。今すぐディスクを取り外せます</value>
+  </data>
+  <data name="Release.ServiceStopped" xml:space="preserve">
+    <value>はサービスが停止したため、マウントが解除されました</value>
+  </data>
+  <data name="Release.UnsavedLost" xml:space="preserve">
+    <value>保存されていない最新の変更を書き込めませんでした。ディスクは前回保存された状態で開かれます。</value>
+  </data>
+  <data name="Release.UnsavedNotWrittenChanged" xml:space="preserve">
+    <value>ディスク上の新しい内容を損なわないよう、保存されていない最新の変更は書き込みませんでした。</value>
+  </data>
+  <data name="Tray.MenuEject" xml:space="preserve">
+    <value>{0}{1}：安全に取り出す</value>
+  </data>
+  <data name="Tray.MenuNoDisk" xml:space="preserve">
+    <value>Mac のディスクが接続されていません</value>
+  </data>
+  <data name="Tray.MenuServiceDown" xml:space="preserve">
+    <value>サービスが実行されていません（インストールを確認してください）</value>
+  </data>
+  <data name="Tray.StillRunning" xml:space="preserve">
+    <value>プログラムは通知領域で引き続き実行されています。ディスクにはここからアクセスできます。</value>
+  </data>
+  <data name="Tray.TipMounted" xml:space="preserve">
+    <value>APFS for Windows：{0} 個のボリュームがマウントされています</value>
+  </data>
+  <data name="Tray.TipNoVolumes" xml:space="preserve">
+    <value>APFS for Windows：マウントされたボリュームはありません</value>
+  </data>
+  <data name="Tray.TipServiceDown" xml:space="preserve">
+    <value>APFS for Windows：サービスが実行されていません</value>
+  </data>
+  <data name="Unlock.Failed" xml:space="preserve">
+    <value>ロックを解除できませんでした。</value>
+  </data>
+  <data name="Unlock.MountFailed" xml:space="preserve">
+    <value>マウントできませんでした。</value>
+  </data>
+  <data name="Unlock.Mounted" xml:space="preserve">
+    <value>"{0}" を {1} としてマウントしました。</value>
+  </data>
+  <data name="Unlock.NotWaiting" xml:space="preserve">
+    <value>このボリュームはもうパスワードの入力を待っていません。</value>
+  </data>
+  <data name="Volume.DefaultName" xml:space="preserve">
+    <value>ボリューム {0}</value>
+  </data>
+  <data name="Volume.InternalRole" xml:space="preserve">
+    <value>macOS 内部ボリューム（{0}）</value>
+  </data>
+  <data name="Write.AlreadyReadOnly" xml:space="preserve">
+    <value>このパーティションは既に読み取り専用です。</value>
+  </data>
+  <data name="Write.AlreadyWritable" xml:space="preserve">
+    <value>このパーティションでは既に書き込みが許可されています。</value>
+  </data>
+  <data name="Write.Busy" xml:space="preserve">
+    <value>{0} 上のファイルが現在開かれているか、コピー中です（{1}）。続行すると、ドライブのマウントが一時的に解除されて再度マウントされ、開いているファイルは閉じられます。</value>
+  </data>
+  <data name="Write.BusyHeading" xml:space="preserve">
+    <value>ディスクは使用中です</value>
+  </data>
+  <data name="Write.CheckFailed" xml:space="preserve">
+    <value>ディスクを確認できませんでした：{0}</value>
+  </data>
+  <data name="Write.ConfirmHeading" xml:space="preserve">
+    <value>このディスクへの書き込みを許可しますか？</value>
+  </data>
+  <data name="Write.ConfirmText" xml:space="preserve">
+    <value>{0}
+
+書き込みは【試験的】な機能です。重要なファイルのバックアップがあることを確認してください。
+
+• 最初にディスクが確認され、問題が見つかった場合は書き込みは有効になりません。
+• ディスクを取り外す前や Mac に接続する前には、必ず "安全に取り出す" を使用してください。
+• このディスクで削除したファイルはごみ箱に移動されず、完全に削除されます。
+• いつでも "読み取り専用に戻す" を選択できます。変更は保存されます。</value>
+  </data>
+  <data name="Write.EnableFailed" xml:space="preserve">
+    <value>書き込みを有効にできませんでした：{0}</value>
+  </data>
+  <data name="Write.EnableFailedTitle" xml:space="preserve">
+    <value>書き込みを有効にできませんでした</value>
+  </data>
+  <data name="Write.Enabled" xml:space="preserve">
+    <value>"{0}"（{1}）で書き込みが許可されました。</value>
+  </data>
+  <data name="Write.MultipleVolumes" xml:space="preserve">
+    <value>このパーティションには複数のボリュームが含まれています。このバージョンでは、ボリュームが 1 つだけのパーティションでのみ書き込みを許可できます。</value>
+  </data>
+  <data name="Write.NoSuchPartition" xml:space="preserve">
+    <value>このディスクにはそのような APFS パーティションはありません。</value>
+  </data>
+  <data name="Write.PreviousRequestPending" xml:space="preserve">
+    <value>このパーティションに対する前回の要求がまだ完了していません。</value>
+  </data>
+  <data name="Write.RemountedReadOnly" xml:space="preserve">
+    <value>ディスクを読み取り専用で再マウントしました。</value>
+  </data>
+</root>

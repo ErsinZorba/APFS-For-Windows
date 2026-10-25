@@ -1,6 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>Apfs</RootNamespace>
+    <!-- Nötr kaynak dili İngilizce: çevirisi olmayan dil İngilizce görünür (Localization/Languages.cs). -->
+    <NeutralLanguage>en</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
     <InternalsVisibleTo Include="Apfs.Tests" />

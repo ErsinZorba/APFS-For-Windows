@@ -3,7 +3,7 @@
 ; WinFsp yoksa (veya 2.1'den eskiyse) içindeki resmi WinFsp kurulum paketini sessizce kurar.
 
 #ifndef AppVersion
-  #define AppVersion "1.2.0"
+  #define AppVersion "1.3.0"
 #endif
 #define AppName "APFS for Windows"
 #define ServiceName "APFSforWindows"
@@ -40,23 +40,73 @@ MinVersion=10.0.17763
 ; Tepsiyi ve hizmeti PrepareToInstall kendisi durdurur.
 CloseApplications=no
 
+; İlk dil, Windows dili listede yoksa kullanılır: İngilizce. Inno Setup'ın resmî Çince çevirisi yok → Çince Windows'ta İngilizce sihirbaz.
 [Languages]
-Name: "tr"; MessagesFile: "compiler:Languages\Turkish.isl"; InfoBeforeFile: "lisans-bilgisi.tr.txt"
 Name: "en"; MessagesFile: "compiler:Default.isl"; InfoBeforeFile: "lisans-bilgisi.en.txt"
+Name: "tr"; MessagesFile: "compiler:Languages\Turkish.isl"; InfoBeforeFile: "lisans-bilgisi.tr.txt"
+Name: "de"; MessagesFile: "compiler:Languages\German.isl"; InfoBeforeFile: "lisans-bilgisi.de.txt"
+Name: "fr"; MessagesFile: "compiler:Languages\French.isl"; InfoBeforeFile: "lisans-bilgisi.fr.txt"
+Name: "es"; MessagesFile: "compiler:Languages\Spanish.isl"; InfoBeforeFile: "lisans-bilgisi.es.txt"
+Name: "ptbr"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"; InfoBeforeFile: "lisans-bilgisi.pt-BR.txt"
+Name: "it"; MessagesFile: "compiler:Languages\Italian.isl"; InfoBeforeFile: "lisans-bilgisi.it.txt"
+Name: "ja"; MessagesFile: "compiler:Languages\Japanese.isl"; InfoBeforeFile: "lisans-bilgisi.ja.txt"
+Name: "ko"; MessagesFile: "compiler:Languages\Korean.isl"; InfoBeforeFile: "lisans-bilgisi.ko.txt"
 
 [CustomMessages]
-tr.LaunchApp=APFS for Windows'u aç
 en.LaunchApp=Open APFS for Windows
-tr.InstallingWinFsp=WinFsp dosya sistemi sürücüsü kuruluyor...
+tr.LaunchApp=APFS for Windows'u aç
+de.LaunchApp=APFS for Windows öffnen
+fr.LaunchApp=Ouvrir APFS for Windows
+es.LaunchApp=Abrir APFS for Windows
+ptbr.LaunchApp=Abrir o APFS for Windows
+it.LaunchApp=Apri APFS for Windows
+ja.LaunchApp=APFS for Windows を開く
+ko.LaunchApp=APFS for Windows 열기
 en.InstallingWinFsp=Installing the WinFsp file system driver...
-tr.InstallingService=Arka plan hizmeti kuruluyor...
+tr.InstallingWinFsp=WinFsp dosya sistemi sürücüsü kuruluyor...
+de.InstallingWinFsp=Der Dateisystemtreiber WinFsp wird installiert...
+fr.InstallingWinFsp=Installation du pilote de système de fichiers WinFsp...
+es.InstallingWinFsp=Instalando el controlador de sistema de archivos WinFsp...
+ptbr.InstallingWinFsp=Instalando o driver de sistema de arquivos WinFsp...
+it.InstallingWinFsp=Installazione del driver del file system WinFsp...
+ja.InstallingWinFsp=ファイル システム ドライバー WinFsp をインストールしています...
+ko.InstallingWinFsp=파일 시스템 드라이버 WinFsp를 설치하는 중...
 en.InstallingService=Installing the background service...
-tr.WinFspFailed=WinFsp kurulamadı (kod %1). Mac diskleri bağlanamaz. WinFsp'i https://winfsp.dev adresinden kurup programı yeniden kurun.
+tr.InstallingService=Arka plan hizmeti kuruluyor...
+de.InstallingService=Der Hintergrunddienst wird installiert...
+fr.InstallingService=Installation du service d'arrière-plan...
+es.InstallingService=Instalando el servicio en segundo plano...
+ptbr.InstallingService=Instalando o serviço em segundo plano...
+it.InstallingService=Installazione del servizio in background...
+ja.InstallingService=バックグラウンド サービスをインストールしています...
+ko.InstallingService=백그라운드 서비스를 설치하는 중...
 en.WinFspFailed=WinFsp could not be installed (code %1). Mac disks cannot be mounted. Install WinFsp from https://winfsp.dev and run this setup again.
-tr.ServiceFailed=Arka plan hizmeti başlatılamadı (kod %1). Ayrıntı: C:\ProgramData\APFS for Windows\log.txt
+tr.WinFspFailed=WinFsp kurulamadı (kod %1). Mac diskleri bağlanamaz. WinFsp'i https://winfsp.dev adresinden kurup programı yeniden kurun.
+de.WinFspFailed=WinFsp konnte nicht installiert werden (Code %1). Mac-Datenträger können nicht eingebunden werden. Installieren Sie WinFsp von https://winfsp.dev und führen Sie dieses Setup erneut aus.
+fr.WinFspFailed=Impossible d'installer WinFsp (code %1). Les disques Mac ne peuvent pas être montés. Installez WinFsp depuis https://winfsp.dev, puis relancez cette installation.
+es.WinFspFailed=No se pudo instalar WinFsp (código %1). No se pueden montar los discos de Mac. Instale WinFsp desde https://winfsp.dev y vuelva a ejecutar este instalador.
+ptbr.WinFspFailed=Não foi possível instalar o WinFsp (código %1). Os discos do Mac não podem ser montados. Instale o WinFsp em https://winfsp.dev e execute esta instalação novamente.
+it.WinFspFailed=Impossibile installare WinFsp (codice %1). I dischi Mac non possono essere montati. Installa WinFsp da https://winfsp.dev ed esegui di nuovo questa installazione.
+ja.WinFspFailed=WinFsp をインストールできませんでした (コード %1)。Mac のディスクをマウントできません。https://winfsp.dev から WinFsp をインストールしてから、このセットアップをもう一度実行してください。
+ko.WinFspFailed=WinFsp를 설치하지 못했습니다(코드 %1). Mac 디스크를 마운트할 수 없습니다. https://winfsp.dev 에서 WinFsp를 설치한 후 이 설치 프로그램을 다시 실행하세요.
 en.ServiceFailed=The background service could not be started (code %1). Details: C:\ProgramData\APFS for Windows\log.txt
-tr.ServiceDescription=Takılan Mac (APFS) disklerini Windows'ta sürücü olarak bağlar (önce salt okunur; isteğe bağlı yazma).
+tr.ServiceFailed=Arka plan hizmeti başlatılamadı (kod %1). Ayrıntı: C:\ProgramData\APFS for Windows\log.txt
+de.ServiceFailed=Der Hintergrunddienst konnte nicht gestartet werden (Code %1). Details: C:\ProgramData\APFS for Windows\log.txt
+fr.ServiceFailed=Impossible de démarrer le service d'arrière-plan (code %1). Détails : C:\ProgramData\APFS for Windows\log.txt
+es.ServiceFailed=No se pudo iniciar el servicio en segundo plano (código %1). Detalles: C:\ProgramData\APFS for Windows\log.txt
+ptbr.ServiceFailed=Não foi possível iniciar o serviço em segundo plano (código %1). Detalhes: C:\ProgramData\APFS for Windows\log.txt
+it.ServiceFailed=Impossibile avviare il servizio in background (codice %1). Dettagli: C:\ProgramData\APFS for Windows\log.txt
+ja.ServiceFailed=バックグラウンド サービスを開始できませんでした (コード %1)。詳細: C:\ProgramData\APFS for Windows\log.txt
+ko.ServiceFailed=백그라운드 서비스를 시작하지 못했습니다(코드 %1). 자세한 내용: C:\ProgramData\APFS for Windows\log.txt
 en.ServiceDescription=Mounts attached Mac (APFS) disks as drives in Windows (read-only by default; optional writing).
+tr.ServiceDescription=Takılan Mac (APFS) disklerini Windows'ta sürücü olarak bağlar (önce salt okunur; isteğe bağlı yazma).
+de.ServiceDescription=Bindet angeschlossene Mac-Datenträger (APFS) als Laufwerke in Windows ein (standardmäßig schreibgeschützt; Schreiben optional).
+fr.ServiceDescription=Monte les disques Mac (APFS) connectés comme lecteurs dans Windows (en lecture seule par défaut ; écriture facultative).
+es.ServiceDescription=Monta los discos de Mac (APFS) conectados como unidades en Windows (de solo lectura por defecto; escritura opcional).
+ptbr.ServiceDescription=Monta os discos do Mac (APFS) conectados como unidades no Windows (somente leitura por padrão; gravação opcional).
+it.ServiceDescription=Monta i dischi Mac (APFS) collegati come unità in Windows (in sola lettura per impostazione predefinita; scrittura facoltativa).
+ja.ServiceDescription=接続された Mac (APFS) ディスクを Windows のドライブとしてマウントします (既定では読み取り専用、書き込みは任意)。
+ko.ServiceDescription=연결된 Mac(APFS) 디스크를 Windows 드라이브로 마운트합니다(기본값은 읽기 전용, 쓰기는 선택 사항).
 
 [Files]
 Source: "{#SrcDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs

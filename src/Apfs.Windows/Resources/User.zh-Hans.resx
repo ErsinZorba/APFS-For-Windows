@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About.Text" xml:space="preserve">
+    <value>在 Windows 中打开 Mac 格式的 APFS 磁盘：默认只读，可选择写入（实验性）。开源软件，GPLv3 许可证。</value>
+  </data>
+  <data name="Action.AllowWriting" xml:space="preserve">
+    <value>允许写入</value>
+  </data>
+  <data name="Action.BackToReadOnly" xml:space="preserve">
+    <value>恢复只读</value>
+  </data>
+  <data name="Action.Cancel" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Action.CancelDialog" xml:space="preserve">
+    <value>取消</value>
+  </data>
+  <data name="Action.Checking" xml:space="preserve">
+    <value>正在检查…</value>
+  </data>
+  <data name="Action.ContinueAnyway" xml:space="preserve">
+    <value>仍然继续</value>
+  </data>
+  <data name="Action.Details" xml:space="preserve">
+    <value>详细信息</value>
+  </data>
+  <data name="Action.EjectAnyway" xml:space="preserve">
+    <value>仍然弹出</value>
+  </data>
+  <data name="Action.Ejecting" xml:space="preserve">
+    <value>正在弹出…</value>
+  </data>
+  <data name="Action.Exit" xml:space="preserve">
+    <value>退出</value>
+  </data>
+  <data name="Action.Open" xml:space="preserve">
+    <value>打开</value>
+  </data>
+  <data name="Action.OpenLog" xml:space="preserve">
+    <value>打开日志</value>
+  </data>
+  <data name="Action.OpenMain" xml:space="preserve">
+    <value>打开主窗口</value>
+  </data>
+  <data name="Action.Rescan" xml:space="preserve">
+    <value>重新扫描</value>
+  </data>
+  <data name="Action.Rescanning" xml:space="preserve">
+    <value>正在扫描…</value>
+  </data>
+  <data name="Action.SafelyEject" xml:space="preserve">
+    <value>安全弹出</value>
+  </data>
+  <data name="Action.Saving" xml:space="preserve">
+    <value>正在保存…</value>
+  </data>
+  <data name="Action.Unlock" xml:space="preserve">
+    <value>解锁</value>
+  </data>
+  <data name="Card.Checking" xml:space="preserve">
+    <value>正在检查磁盘…</value>
+  </data>
+  <data name="Card.DriveState" xml:space="preserve">
+    <value>驱动器 {0} · {1}</value>
+  </data>
+  <data name="Card.Failed" xml:space="preserve">
+    <value>无法打开</value>
+  </data>
+  <data name="Card.NeedsPassword" xml:space="preserve">
+    <value>已加密 · 需要密码</value>
+  </data>
+  <data name="Card.NoVolumes" xml:space="preserve">
+    <value>此磁盘没有可显示的卷（只有 macOS 内部卷）。</value>
+  </data>
+  <data name="Card.ReadOnly" xml:space="preserve">
+    <value>只读</value>
+  </data>
+  <data name="Card.Writable" xml:space="preserve">
+    <value>可写（实验性）</value>
+  </data>
+  <data name="Card.WriteRefused" xml:space="preserve">
+    <value>无法启用写入：{0}</value>
+  </data>
+  <data name="Disk.Gone" xml:space="preserve">
+    <value>此磁盘已不再连接。</value>
+  </data>
+  <data name="Disk.PhysicalName" xml:space="preserve">
+    <value>磁盘 {0}（{1}）</value>
+  </data>
+  <data name="Eject.Busy" xml:space="preserve">
+    <value>{0} 上的某个文件当前处于打开状态或正在复制（{1}）。如果现在弹出，复制将被中断；你的 Mac 磁盘不会受到损害。</value>
+  </data>
+  <data name="Eject.BusyHeading" xml:space="preserve">
+    <value>似乎正在复制</value>
+  </data>
+  <data name="Eject.Detached" xml:space="preserve">
+    <value>已卸载卷。</value>
+  </data>
+  <data name="Eject.Ejected" xml:space="preserve">
+    <value>已安全弹出磁盘。</value>
+  </data>
+  <data name="Eject.Failed" xml:space="preserve">
+    <value>无法弹出磁盘。</value>
+  </data>
+  <data name="Eject.Remounting" xml:space="preserve">
+    <value>{0}正在重新装载磁盘。</value>
+  </data>
+  <data name="Error.OperationFailed" xml:space="preserve">
+    <value>无法完成该操作。</value>
+  </data>
+  <data name="Error.ServiceUnreachable" xml:space="preserve">
+    <value>无法连接到服务。</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>未知错误。</value>
+  </data>
+  <data name="Language.Windows" xml:space="preserve">
+    <value>Windows 显示语言</value>
+  </data>
+  <data name="List.Connecting" xml:space="preserve">
+    <value>正在连接…</value>
+  </data>
+  <data name="List.NoDiskBody" xml:space="preserve">
+    <value>请插入你的 Mac 磁盘；几秒钟内它就会显示在这里。磁盘会先以只读方式打开；如果想写入，请使用其卡片上的按钮另行允许。</value>
+  </data>
+  <data name="List.NoDiskHeading" xml:space="preserve">
+    <value>尚无 Mac 磁盘</value>
+  </data>
+  <data name="List.ServiceDownBody" xml:space="preserve">
+    <value>无法连接到负责装载磁盘的服务。请尝试重启计算机或重新安装此程序。</value>
+  </data>
+  <data name="List.ServiceDownHeading" xml:space="preserve">
+    <value>后台服务未运行</value>
+  </data>
+  <data name="Log.NoneYet" xml:space="preserve">
+    <value>暂无日志。</value>
+  </data>
+  <data name="Main.Subtitle" xml:space="preserve">
+    <value>你的 Mac 磁盘很安全：先以只读方式打开，需要时也可写入。</value>
+  </data>
+  <data name="Main.Version" xml:space="preserve">
+    <value>版本 {0}</value>
+  </data>
+  <data name="Notice.CloseWriteFailed" xml:space="preserve">
+    <value>{0}：最近的部分更改未能写入磁盘（磁盘可能已被移除）。磁盘将以上次保存的状态打开。详细信息：{1}</value>
+  </data>
+  <data name="Notice.ContainerOpenFailed" xml:space="preserve">
+    <value>{0}：无法打开 APFS 容器。{1}</value>
+  </data>
+  <data name="Notice.Detached" xml:space="preserve">
+    <value>已卸载 {0} 的卷。此磁盘不显示为可移动设备；要重新装载，请使用 "重新扫描"。</value>
+  </data>
+  <data name="Notice.DiskUnreadable" xml:space="preserve">
+    <value>无法读取 {0}：{1}</value>
+  </data>
+  <data name="Notice.Ejected" xml:space="preserve">
+    <value>已安全弹出 {0}。现在可以拔下连接线了。</value>
+  </data>
+  <data name="Notice.MountFailed" xml:space="preserve">
+    <value>无法装载 "{0}"。{1}</value>
+  </data>
+  <data name="Notice.Mounted" xml:space="preserve">
+    <value>已将 "{0}" 装载为驱动器 {1}（只读）。</value>
+  </data>
+  <data name="Notice.MountedWritable" xml:space="preserve">
+    <value>已将 "{0}" 以【可写】方式装载为驱动器 {1}（实验性）。移除磁盘前，请使用 "安全弹出"。</value>
+  </data>
+  <data name="Notice.NeedsPassword" xml:space="preserve">
+    <value>卷 "{0}" 已加密。要打开它，请通过通知区域中的 APFS 图标输入密码。</value>
+  </data>
+  <data name="Notice.RemountedReadOnly" xml:space="preserve">
+    <value>已将 {0} 重新以只读方式装载；更改已保存。</value>
+  </data>
+  <data name="Notice.VolumeOpenFailed" xml:space="preserve">
+    <value>{0}：无法打开卷 {1}。{2}</value>
+  </data>
+  <data name="Notice.WriteRefused" xml:space="preserve">
+    <value>未在 {0} 上启用写入。{1}</value>
+  </data>
+  <data name="Password.Hint" xml:space="preserve">
+    <value>提示：{0}</value>
+  </data>
+  <data name="Password.Locked" xml:space="preserve">
+    <value>"{0}" 已锁定</value>
+  </data>
+  <data name="Password.Prompt" xml:space="preserve">
+    <value>此卷已加密。要打开它，请输入你在 Mac 上使用的密码。</value>
+  </data>
+  <data name="Password.Reassurance" xml:space="preserve">
+    <value>只会读取磁盘；密码不会保存在任何地方。</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>APFS for Windows：加密卷</value>
+  </data>
+  <data name="Release.Changed" xml:space="preserve">
+    <value>已被其他程序更改（例如重新格式化）；APFS 驱动器已移除</value>
+  </data>
+  <data name="Release.Removed" xml:space="preserve">
+    <value>已被移除</value>
+  </data>
+  <data name="Release.SafeToRemove" xml:space="preserve">
+    <value>已卸载以便安全移除；现在可以拔下磁盘了</value>
+  </data>
+  <data name="Release.ServiceStopped" xml:space="preserve">
+    <value>因服务已停止而被卸载</value>
+  </data>
+  <data name="Release.UnsavedLost" xml:space="preserve">
+    <value>最近未保存的更改未能写入；磁盘将以上次保存的状态打开。</value>
+  </data>
+  <data name="Release.UnsavedNotWrittenChanged" xml:space="preserve">
+    <value>为避免损坏磁盘上的新内容，最近未保存的更改未写入。</value>
+  </data>
+  <data name="Tray.MenuEject" xml:space="preserve">
+    <value>{0}{1}：安全弹出</value>
+  </data>
+  <data name="Tray.MenuNoDisk" xml:space="preserve">
+    <value>未连接 Mac 磁盘</value>
+  </data>
+  <data name="Tray.MenuServiceDown" xml:space="preserve">
+    <value>服务未运行（请检查安装）</value>
+  </data>
+  <data name="Tray.StillRunning" xml:space="preserve">
+    <value>程序仍在通知区域中运行。你可以从这里访问磁盘。</value>
+  </data>
+  <data name="Tray.TipMounted" xml:space="preserve">
+    <value>APFS for Windows：已装载 {0} 个卷</value>
+  </data>
+  <data name="Tray.TipNoVolumes" xml:space="preserve">
+    <value>APFS for Windows：未装载任何卷</value>
+  </data>
+  <data name="Tray.TipServiceDown" xml:space="preserve">
+    <value>APFS for Windows：服务未运行</value>
+  </data>
+  <data name="Unlock.Failed" xml:space="preserve">
+    <value>无法解锁。</value>
+  </data>
+  <data name="Unlock.MountFailed" xml:space="preserve">
+    <value>无法装载。</value>
+  </data>
+  <data name="Unlock.Mounted" xml:space="preserve">
+    <value>已将 "{0}" 装载为 {1}。</value>
+  </data>
+  <data name="Unlock.NotWaiting" xml:space="preserve">
+    <value>此卷已不再等待输入密码。</value>
+  </data>
+  <data name="Volume.DefaultName" xml:space="preserve">
+    <value>卷 {0}</value>
+  </data>
+  <data name="Volume.InternalRole" xml:space="preserve">
+    <value>macOS 内部卷（{0}）</value>
+  </data>
+  <data name="Write.AlreadyReadOnly" xml:space="preserve">
+    <value>此分区已是只读。</value>
+  </data>
+  <data name="Write.AlreadyWritable" xml:space="preserve">
+    <value>此分区已允许写入。</value>
+  </data>
+  <data name="Write.Busy" xml:space="preserve">
+    <value>{0} 上的某个文件当前处于打开状态或正在复制（{1}）。如果继续，驱动器会被短暂卸载后重新装载；打开的文件将被关闭。</value>
+  </data>
+  <data name="Write.BusyHeading" xml:space="preserve">
+    <value>磁盘正在使用中</value>
+  </data>
+  <data name="Write.CheckFailed" xml:space="preserve">
+    <value>无法检查磁盘：{0}</value>
+  </data>
+  <data name="Write.ConfirmHeading" xml:space="preserve">
+    <value>允许写入此磁盘吗？</value>
+  </data>
+  <data name="Write.ConfirmText" xml:space="preserve">
+    <value>{0}
+
+写入是【实验性】功能。请确保你已备份重要文件。
+
+• 会先检查磁盘；如果发现问题，将不会启用写入。
+• 在移除磁盘或将其插入 Mac 之前，请务必使用 "安全弹出"。
+• 在此磁盘上删除的文件不会进入回收站，而是被永久删除。
+• 你可以随时选择 "恢复只读"；你所做的更改会被保存。</value>
+  </data>
+  <data name="Write.EnableFailed" xml:space="preserve">
+    <value>无法启用写入：{0}</value>
+  </data>
+  <data name="Write.EnableFailedTitle" xml:space="preserve">
+    <value>无法启用写入</value>
+  </data>
+  <data name="Write.Enabled" xml:space="preserve">
+    <value>现已允许写入 "{0}"（{1}）。</value>
+  </data>
+  <data name="Write.MultipleVolumes" xml:space="preserve">
+    <value>此分区包含多个卷；此版本仅允许对单卷分区启用写入。</value>
+  </data>
+  <data name="Write.NoSuchPartition" xml:space="preserve">
+    <value>此磁盘上没有这样的 APFS 分区。</value>
+  </data>
+  <data name="Write.PreviousRequestPending" xml:space="preserve">
+    <value>对此分区的上一个请求尚未完成。</value>
+  </data>
+  <data name="Write.RemountedReadOnly" xml:space="preserve">
+    <value>已将磁盘重新以只读方式装载。</value>
+  </data>
+</root>

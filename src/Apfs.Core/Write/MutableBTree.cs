@@ -49,8 +49,8 @@ internal sealed class MutableBTree
         ulong oid = Bin.U64(n.Vals[i]!, 0);
         var child = NodeCodec.Parse(_load(oid, false), _shape, isRoot: false);
         child.Oid = oid;
-        if (child.Level != n.Level - 1) throw ApfsException.Corrupt("B-ağacı düğüm seviyesi tutarsız");
-        if (child.Count == 0) throw ApfsException.Corrupt("boş B-ağacı düğümü");
+        if (child.Level != n.Level - 1) throw ApfsException.Corrupt(CoreText.T("MBTree.LevelInconsistent"));
+        if (child.Count == 0) throw ApfsException.Corrupt(CoreText.T("MBTree.EmptyNode"));
         n.Children[i] = child;
         return child;
     }
@@ -150,7 +150,7 @@ internal sealed class MutableBTree
     /// <summary>Kaydı ekler; anahtar varsa değerini değiştirir. <paramref name="value"/> null ise hayalet kayıt.</summary>
     public void Put(byte[] key, byte[]? value)
     {
-        if (_shape.IsFixed && key.Length != _shape.FixedKeySize) throw new ArgumentException("sabit anahtar boyutu uyuşmuyor");
+        if (_shape.IsFixed && key.Length != _shape.FixedKeySize) throw new ArgumentException(CoreText.T("MBTree.FixedKeySizeMismatch"));
         var path = new List<(MNode Node, int Index)>();
         var leaf = FindLeaf(key, path);
         int i = LeafSearch(leaf, key);
@@ -239,7 +239,7 @@ internal sealed class MutableBTree
         {
             bool isRoot = ReferenceEquals(node, _root);
             if (NodeCodec.Fits(node, _shape, isRoot)) return;
-            if (node.Count < 2) throw new InvalidOperationException("tek kayıt düğüme sığmıyor");
+            if (node.Count < 2) throw new InvalidOperationException(CoreText.T("MBTree.SingleRecordTooBig"));
 
             if (isRoot)
             {
@@ -375,7 +375,7 @@ internal sealed class MutableBTree
     /// </summary>
     public ulong FlushPhysical(ulong xid, Func<ulong> allocate, Action<ulong> free, Action<ulong, byte[]> write)
     {
-        if (!_physical) throw new InvalidOperationException("fiziksel olmayan ağaç");
+        if (!_physical) throw new InvalidOperationException(CoreText.T("MBTree.NotPhysical"));
         foreach (ulong oid in _deletedOids) free(oid);
         _deletedOids.Clear();
         if (_root.Dirty) FlushPhysicalNode(_root, isRoot: true, xid, allocate, free, write);
@@ -406,7 +406,7 @@ internal sealed class MutableBTree
     /// </summary>
     public void FlushVirtual(ulong xid, Func<ulong> allocate, Action<ulong, ulong> relocate, Action<ulong> remove, Action<ulong, byte[]> write)
     {
-        if (_physical) throw new InvalidOperationException("sanal olmayan ağaç");
+        if (_physical) throw new InvalidOperationException(CoreText.T("MBTree.NotVirtual"));
         foreach (ulong oid in _deletedOids) remove(oid);
         _deletedOids.Clear();
         FlushVirtualNode(_root, isRoot: true, xid, allocate, relocate, write);
@@ -434,7 +434,7 @@ internal sealed class MutableBTree
     /// </summary>
     public void FlushEphemeral(ulong xid, Action<ulong, byte[]> place)
     {
-        if (_physical) throw new InvalidOperationException("geçici olmayan ağaç");
+        if (_physical) throw new InvalidOperationException(CoreText.T("MBTree.NotEphemeral"));
         _deletedOids.Clear();
         _createdOids.Clear();
         FlushEphemeralNode(_root, isRoot: true, xid, place);

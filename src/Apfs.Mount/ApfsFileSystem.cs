@@ -345,13 +345,13 @@ public sealed class ApfsFileSystem : FileSystemBase
     /// <summary>Okuyucudan gelen hataları NTSTATUS'a çevirir; süreç asla çökmez.</summary>
     public override int ExceptionHandler(Exception ex)
     {
-        Stats.Stop(ex is ApfsException a ? $"Hata:{a.Code}" : $"Hata:{ex.GetType().Name}", Stats.Start());
+        Stats.Stop(ex is ApfsException a ? CoreText.T("Fs.StatsErrorCode", a.Code) : CoreText.T("Fs.StatsErrorType", ex.GetType().Name), Stats.Start());
         if (ex is ApfsException ae)
         {
             if (ae.Code is not ApfsErrorCode.NotFound) Error?.Invoke(ae.Message);
             return ToNtStatus(ae.Code);
         }
-        Error?.Invoke($"Beklenmeyen hata: {ex.Message}");
+        Error?.Invoke(CoreText.T("Fs.UnexpectedError", ex.Message));
         return StatusUnexpectedIoError;
     }
 
@@ -483,7 +483,7 @@ public sealed class ApfsFileSystem : FileSystemBase
                 catch (ApfsException ex) when (ex.Code is not ApfsErrorCode.IoError)
                 {
                     // Bozuk bir girdi tüm klasörü gizlemesin: atla ve bildir.
-                    fs.Error?.Invoke($"\"{e.Name}\" okunamadı: {ex.Message}");
+                    fs.Error?.Invoke(CoreText.T("Fs.EntryUnreadable", e.Name, ex.Message));
                     continue;
                 }
                 yield return (WindowsNames.ToWindows(e.Name), child.Info);

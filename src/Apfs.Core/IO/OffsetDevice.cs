@@ -10,7 +10,7 @@ public sealed class OffsetDevice : IBlockDevice
     public OffsetDevice(IBlockDevice inner, long start, long length, bool ownsInner = false)
     {
         if (start < 0 || length < 0 || start > inner.Length - length)
-            throw ApfsException.Corrupt("bölüm sınırları diskin dışına taşıyor");
+            throw ApfsException.Corrupt(CoreText.T("Io.PartitionBeyondDisk"));
         _inner = inner;
         _start = start;
         Length = length;
@@ -23,7 +23,7 @@ public sealed class OffsetDevice : IBlockDevice
     public void Read(long offset, Span<byte> buffer)
     {
         if (offset < 0 || offset > Length - buffer.Length)
-            throw ApfsException.Corrupt($"bölüm sınırı dışında okuma: {offset}+{buffer.Length}");
+            throw ApfsException.Corrupt(CoreText.T("Io.ReadOutsidePartition", offset, buffer.Length));
         _inner.Read(_start + offset, buffer);
     }
 

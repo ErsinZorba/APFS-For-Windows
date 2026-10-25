@@ -35,7 +35,7 @@ public sealed class RawDiskDevice : IBlockDevice
             _handle.Dispose();
             throw err switch
             {
-                5 => new ApfsException(ApfsErrorCode.AccessDenied, $"{devicePath}: ham diski okumak için yönetici yetkisi gerekir"),
+                5 => new ApfsException(ApfsErrorCode.AccessDenied, WinText.T("Raw.ReadAdminRequired", devicePath)),
                 2 or 3 => new ApfsException(ApfsErrorCode.NotFound, devicePath),
                 _ => new ApfsException(ApfsErrorCode.IoError, $"{devicePath}: {new Win32Exception(err).Message}"),
             };
@@ -58,7 +58,7 @@ public sealed class RawDiskDevice : IBlockDevice
     public void Read(long offset, Span<byte> buffer)
     {
         if (offset < 0 || offset > Length - buffer.Length)
-            throw new ApfsException(ApfsErrorCode.Corrupt, $"disk sınırı dışında okuma: {offset}+{buffer.Length}");
+            throw new ApfsException(ApfsErrorCode.Corrupt, WinText.T("Raw.ReadOutOfRange", offset, buffer.Length));
         if (buffer.IsEmpty) return;
 
         long alignedStart = offset / SectorSize * SectorSize;
@@ -81,8 +81,8 @@ public sealed class RawDiskDevice : IBlockDevice
                         n = RandomAccess.Read(_handle, span[done..], alignedStart + done);
                     }
                     catch (IOException e) { throw new ApfsException(ApfsErrorCode.IoError, e.Message, e); }
-                    catch (ObjectDisposedException e) { throw new ApfsException(ApfsErrorCode.IoError, "disk kapatıldı", e); }
-                    if (n <= 0) throw new ApfsException(ApfsErrorCode.IoError, "diskten beklenenden az veri okundu");
+                    catch (ObjectDisposedException e) { throw new ApfsException(ApfsErrorCode.IoError, WinText.T("Raw.DiskClosed"), e); }
+                    if (n <= 0) throw new ApfsException(ApfsErrorCode.IoError, WinText.T("Raw.ShortRead"));
                     done += n;
                 }
                 span.Slice((int)(offset - alignedStart), buffer.Length).CopyTo(buffer);
@@ -98,7 +98,7 @@ public sealed class RawDiskDevice : IBlockDevice
     {
         Span<byte> outBuf = stackalloc byte[8];
         if (!DeviceIoControl(_handle, IoctlDiskGetLengthInfo, IntPtr.Zero, 0, ref MemoryMarshal.GetReference(outBuf), 8, out _, IntPtr.Zero))
-            throw new ApfsException(ApfsErrorCode.IoError, $"disk boyutu alınamadı: {new Win32Exception(Marshal.GetLastPInvokeError()).Message}");
+            throw new ApfsException(ApfsErrorCode.IoError, WinText.T("Raw.LengthQueryFailedDetail", new Win32Exception(Marshal.GetLastPInvokeError()).Message));
         return BitConverter.ToInt64(outBuf);
     }
 

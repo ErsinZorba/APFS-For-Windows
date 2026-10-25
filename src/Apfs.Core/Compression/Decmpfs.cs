@@ -28,44 +28,44 @@ public static class Decmpfs
     public static Header ParseHeader(ReadOnlySpan<byte> attr)
     {
         if (attr.Length < HeaderSize || BinaryPrimitives.ReadUInt32LittleEndian(attr) != Magic)
-            throw new ApfsException(ApfsErrorCode.Corrupt, "sıkıştırma başlığı (decmpfs) geçersiz");
+            throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.InvalidHeader"));
         return new Header(BinaryPrimitives.ReadUInt32LittleEndian(attr[4..]), BinaryPrimitives.ReadUInt64LittleEndian(attr[8..]));
     }
 
     public static string TypeName(uint type) => type switch
     {
-        1 or 9 or 10 => "sıkıştırılmamış",
+        1 or 9 or 10 => CoreText.T("Decmpfs.TypeUncompressed"),
         3 or 4 => "zlib",
         7 or 8 => "LZVN",
         11 or 12 => "LZFSE",
-        5 => "tekilleştirilmiş",
+        5 => CoreText.T("Decmpfs.TypeDeduplicated"),
         13 or 14 => "LZBITMAP",
-        _ => $"tür {type}",
+        _ => CoreText.T("Decmpfs.TypeOther", type),
     };
 
     internal static bool IsSupported(uint type) => type is 1 or 3 or 4 or 7 or 8 or 9 or 10 or 11 or 12;
     internal static bool IsInline(uint type) => type is 1 or 3 or 7 or 9 or 11;
 
     internal static ApfsException Unsupported(uint type) =>
-        new(ApfsErrorCode.Unsupported, $"bu dosya desteklenmeyen bir sıkıştırma türü kullanıyor ({TypeName(type)})");
+        new(ApfsErrorCode.Unsupported, CoreText.T("Decmpfs.UnsupportedType", TypeName(type)));
 
     /// <summary>Sıkıştırılmış dosyanın okuyucusunu açar.</summary>
     public static IDataReader Open(ApfsVolume volume, Inode inode)
     {
         var attr = volume.ReadXattr(inode.Id, AttrName)
-            ?? throw new ApfsException(ApfsErrorCode.Corrupt, "sıkıştırılmış olarak işaretli dosyada sıkıştırma bilgisi yok");
+            ?? throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.NoCompressionInfo"));
         var h = ParseHeader(attr);
         if (!IsSupported(h.Type)) throw Unsupported(h.Type);
         if (IsInline(h.Type))
         {
             if (h.UncompressedSize > MaxInlineSize)
-                throw new ApfsException(ApfsErrorCode.Unsupported, $"öznitelik içinde çok büyük sıkıştırılmış veri ({h.UncompressedSize} bayt)");
+                throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Decmpfs.InlineTooLarge", h.UncompressedSize));
             var data = new byte[h.UncompressedSize];
             DecodeChunk(h.Type, attr.AsSpan(HeaderSize), data);
             return new MemoryDataReader(data);
         }
         var fork = volume.OpenXattrStream(inode.Id, ResourceForkName)
-            ?? throw new ApfsException(ApfsErrorCode.Corrupt, "sıkıştırılmış dosyanın kaynak çatalı bulunamadı");
+            ?? throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.ResourceForkMissing"));
         return new ResourceForkReader(h, fork);
     }
 
@@ -76,7 +76,7 @@ public static class Decmpfs
     internal static void DecodeChunk(uint type, ReadOnlySpan<byte> src, Span<byte> output)
     {
         if (output.IsEmpty) return;
-        if (src.IsEmpty) throw new ApfsException(ApfsErrorCode.Corrupt, "sıkıştırılmış veri boş");
+        if (src.IsEmpty) throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.Empty"));
         switch (type)
         {
             case 1:
@@ -92,12 +92,12 @@ public static class Decmpfs
             case 7 or 8:
                 if (src[0] == 0x06) { CopyExact(src[1..], output); return; }
                 if (Lzvn.Decode(src, output) != output.Length)
-                    throw new ApfsException(ApfsErrorCode.Corrupt, "LZVN verisi beklenenden kısa");
+                    throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.LzvnShort"));
                 return;
             case 11 or 12:
                 if (src.Length == output.Length + 1 && src[0] != (byte)'b') { CopyExact(src[1..], output); return; }
                 if (Lzfse.Decode(src, output) != output.Length)
-                    throw new ApfsException(ApfsErrorCode.Corrupt, "LZFSE verisi beklenenden kısa");
+                    throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.LzfseShort"));
                 return;
             default:
                 throw Unsupported(type);
@@ -106,7 +106,7 @@ public static class Decmpfs
 
     private static void CopyExact(ReadOnlySpan<byte> src, Span<byte> output)
     {
-        if (src.Length < output.Length) throw new ApfsException(ApfsErrorCode.Corrupt, "sıkıştırılmamış veri beklenenden kısa");
+        if (src.Length < output.Length) throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.UncompressedShort"));
         src[..output.Length].CopyTo(output);
     }
 
@@ -117,7 +117,7 @@ public static class Decmpfs
     private static void Inflate(ReadOnlySpan<byte> src, Span<byte> output)
     {
         if (src.Length < 2 || (src[0] & 0x0F) != 8 || ((src[0] << 8) | src[1]) % 31 != 0)
-            throw new ApfsException(ApfsErrorCode.Corrupt, "zlib başlığı geçersiz");
+            throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Zlib.InvalidHeader"));
         using var ms = new MemoryStream(src[2..].ToArray(), writable: false);
         using var deflate = new DeflateStream(ms, CompressionMode.Decompress);
         int done = 0;
@@ -132,9 +132,9 @@ public static class Decmpfs
         }
         catch (InvalidDataException e)
         {
-            throw new ApfsException(ApfsErrorCode.Corrupt, $"zlib verisi bozuk: {e.Message}", e);
+            throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Zlib.Corrupt", e.Message), e);
         }
-        if (done != output.Length) throw new ApfsException(ApfsErrorCode.Corrupt, "zlib verisi beklenenden kısa");
+        if (done != output.Length) throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Zlib.Short"));
     }
 
     private sealed class MemoryDataReader(byte[] data) : IDataReader
@@ -167,7 +167,7 @@ public static class Decmpfs
             _fork = fork;
             Length = h.UncompressedSize;
             long numBlocks = (long)((h.UncompressedSize + BlockSize - 1) / BlockSize);
-            if (numBlocks > 1 << 26) throw new ApfsException(ApfsErrorCode.Corrupt, "sıkıştırılmış dosya boyutu geçersiz");
+            if (numBlocks > 1 << 26) throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.InvalidFileSize"));
             _blocks = h.Type == 4 ? ReadZlibTable(fork, (int)numBlocks) : ReadOffsetTable(fork, (int)numBlocks);
         }
 
@@ -178,9 +178,9 @@ public static class Decmpfs
         {
             var head = ReadFork(fork, 0, 0x108);
             uint dataOffset = BinaryPrimitives.ReadUInt32BigEndian(head);
-            if (dataOffset != 0x100) throw new ApfsException(ApfsErrorCode.Corrupt, "zlib kaynak çatalı başlığı geçersiz");
+            if (dataOffset != 0x100) throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Zlib.InvalidForkHeader"));
             uint count = BinaryPrimitives.ReadUInt32LittleEndian(head.AsSpan(0x104));
-            if (count != numBlocks) throw new ApfsException(ApfsErrorCode.Corrupt, "zlib blok sayısı dosya boyutuyla uyuşmuyor");
+            if (count != numBlocks) throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Zlib.BlockCountMismatch"));
             var table = ReadFork(fork, 0x108, checked(numBlocks * 8));
             var result = new (long, int)[numBlocks];
             for (int i = 0; i < numBlocks; i++)
@@ -198,11 +198,11 @@ public static class Decmpfs
             var table = ReadFork(fork, 0, checked((numBlocks + 1) * 4));
             var result = new (long, int)[numBlocks];
             uint prev = BinaryPrimitives.ReadUInt32LittleEndian(table);
-            if (prev != (uint)(numBlocks + 1) * 4) throw new ApfsException(ApfsErrorCode.Corrupt, "sıkıştırılmış blok tablosu geçersiz");
+            if (prev != (uint)(numBlocks + 1) * 4) throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.InvalidBlockTable"));
             for (int i = 0; i < numBlocks; i++)
             {
                 uint next = BinaryPrimitives.ReadUInt32LittleEndian(table.AsSpan((i + 1) * 4));
-                if (next < prev) throw new ApfsException(ApfsErrorCode.Corrupt, "sıkıştırılmış blok tablosu sırasız");
+                if (next < prev) throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.BlockTableUnordered"));
                 result[i] = Validate(fork, prev, next - prev);
                 prev = next;
             }
@@ -212,7 +212,7 @@ public static class Decmpfs
         private static (long, int) Validate(IDataReader fork, long offset, uint size)
         {
             if (size == 0 || size > BlockSize * 2 || offset < 0 || (ulong)offset + size > fork.Length)
-                throw new ApfsException(ApfsErrorCode.Corrupt, "sıkıştırılmış blok kaynak çatalının dışında");
+                throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.BlockOutsideFork"));
             return (offset, (int)size);
         }
 
@@ -220,9 +220,9 @@ public static class Decmpfs
         {
             // Bozuk bir tablo boyutu yüzünden büyük bellek ayrılmasın (64 MiB ≈ 16 milyon blok ≈ 1 TB'lık dosya)
             if (length < 0 || length > 64 * 1024 * 1024 || (ulong)offset + (ulong)length > fork.Length)
-                throw new ApfsException(ApfsErrorCode.Corrupt, "kaynak çatalı beklenenden kısa");
+                throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.ForkShort"));
             var buf = new byte[length];
-            if (fork.Read((ulong)offset, buf) != length) throw new ApfsException(ApfsErrorCode.Corrupt, "kaynak çatalı okunamadı");
+            if (fork.Read((ulong)offset, buf) != length) throw new ApfsException(ApfsErrorCode.Corrupt, CoreText.T("Decmpfs.ForkUnreadable"));
             return buf;
         }
 

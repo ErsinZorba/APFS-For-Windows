@@ -40,13 +40,13 @@ public sealed class ApfsVolume
         LastModTimeNs = (long)Bin.U64(sb, 256);
 
         if (IsSealed)
-            throw new ApfsException(ApfsErrorCode.Unsupported, $"birim \"{Name}\" mühürlü bir macOS sistem birimi");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Volume.SealedSystemVolume", Name));
         if ((RootTreeType & ApfsConstants.ObjectTypeFlagsMask) != ApfsConstants.ObjVirtual)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "fiziksel dosya sistemi ağacı");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Volume.PhysicalFsTree"));
 
         if (IsEncrypted && key is not null)
         {
-            if (key.VolumeUuid != Uuid) throw new ApfsException(ApfsErrorCode.InvalidArgument, $"anahtar \"{Name}\" birimine ait değil");
+            if (key.VolumeUuid != Uuid) throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("Volume.KeyNotForVolume", Name));
             Crypto = key.CreateCrypto(container.BlockSize);
         }
         else if (IsEncrypted)
@@ -55,7 +55,7 @@ public sealed class ApfsVolume
             string? password = passwordProvider?.Invoke(info);
             if (password is null)
                 throw new ApfsException(ApfsErrorCode.Encrypted,
-                    $"birim \"{Name}\"{(info.Hint is null ? "" : $"; parola ipucu: {info.Hint}")}");
+                    CoreText.T("Volume.LockedName", Name, (info.Hint is null ? "" : CoreText.T("Volume.PasswordHintSuffix", info.Hint))));
             Crypto = new Apfs.Crypto.VolumeCrypto(Apfs.Crypto.VolumeKeys.Unlock(container, Uuid, password), container.BlockSize);
         }
 
@@ -104,15 +104,15 @@ public sealed class ApfsVolume
     public string RoleName => Role switch
     {
         ApfsConstants.RoleNone => "",
-        ApfsConstants.RoleSystem => "Sistem",
-        ApfsConstants.RoleUser => "Kullanıcı",
-        ApfsConstants.RoleRecovery => "Kurtarma",
-        ApfsConstants.RoleVm => "Sanal bellek",
-        ApfsConstants.RolePreboot => "Önyükleme",
-        ApfsConstants.RoleInstaller => "Yükleyici",
-        ApfsConstants.RoleData => "Veri",
-        ApfsConstants.RoleUpdate => "Güncelleme",
-        ApfsConstants.RoleBackup => "Yedek",
+        ApfsConstants.RoleSystem => CoreText.U("Volume.RoleSystem"),
+        ApfsConstants.RoleUser => CoreText.U("Volume.RoleUser"),
+        ApfsConstants.RoleRecovery => CoreText.U("Volume.RoleRecovery"),
+        ApfsConstants.RoleVm => CoreText.U("Volume.RoleVm"),
+        ApfsConstants.RolePreboot => CoreText.U("Volume.RolePreboot"),
+        ApfsConstants.RoleInstaller => CoreText.U("Volume.RoleInstaller"),
+        ApfsConstants.RoleData => CoreText.U("Volume.RoleData"),
+        ApfsConstants.RoleUpdate => CoreText.U("Volume.RoleUpdate"),
+        ApfsConstants.RoleBackup => CoreText.U("Volume.RoleBackup"),
         _ => $"0x{Role:x}",
     };
 
@@ -125,7 +125,7 @@ public sealed class ApfsVolume
         var loc = container.Omap.Resolve(oid, container.Xid);
         var sb = container.Reader.ReadObject(loc.Paddr, ApfsConstants.TypeFs, oid);
         if (Bin.U32(sb, 32) != ApfsConstants.ApfsMagic)
-            throw ApfsException.Corrupt($"birim süper bloğunda APSB imzası yok (oid {oid})");
+            throw ApfsException.Corrupt(CoreText.T("Volume.NoApsbMagic", oid));
         return new ApfsVolume(container, oid, loc.Paddr, sb, passwordProvider);
     }
 
@@ -139,7 +139,7 @@ public sealed class ApfsVolume
         var loc = container.Omap.Resolve(oid, container.Xid);
         var sb = container.Reader.ReadObject(loc.Paddr, ApfsConstants.TypeFs, oid);
         if (Bin.U32(sb, 32) != ApfsConstants.ApfsMagic)
-            throw ApfsException.Corrupt($"birim süper bloğunda APSB imzası yok (oid {oid})");
+            throw ApfsException.Corrupt(CoreText.T("Volume.NoApsbMagic", oid));
         return new ApfsVolume(container, oid, loc.Paddr, sb, null, key);
     }
 
@@ -259,8 +259,8 @@ public sealed class ApfsVolume
         else if (10 + plainLen == key.Length)
             name = Bin.Utf8Z(Bin.Slice(key, 10, plainLen));
         else
-            throw ApfsException.Corrupt("dizin girdisi anahtarının uzunluğu tutarsız");
-        if (val.Length < 18) throw ApfsException.Corrupt("dizin girdisi değeri çok kısa");
+            throw ApfsException.Corrupt(CoreText.T("Volume.DirEntryKeyLength"));
+        if (val.Length < 18) throw ApfsException.Corrupt(CoreText.T("Volume.DirEntryValueShort"));
         ulong fileId = Bin.U64(val, 0);
         long added = (long)Bin.U64(val, 8);
         var type = (DirEntryType)(Bin.U16(val, 16) & 0xF);
@@ -277,7 +277,7 @@ public sealed class ApfsVolume
         var list = new List<FileExtent>();
         foreach (var e in Records(privateId, JType.FileExtent))
         {
-            if (e.Key.Length < 16 || e.Value.Length < 24) throw ApfsException.Corrupt("dosya extent kaydı çok kısa");
+            if (e.Key.Length < 16 || e.Value.Length < 24) throw ApfsException.Corrupt(CoreText.T("Volume.FileExtentShort"));
             ulong logical = Bin.U64(e.Key, 8);
             ulong lenAndFlags = Bin.U64(e.Value, 0);
             ulong len = lenAndFlags & 0x00FFFFFFFFFFFFFF;
@@ -312,16 +312,16 @@ public sealed class ApfsVolume
             if ((flags & XattrDataEmbedded) != 0) return data;
             if ((flags & XattrDataStream) != 0)
             {
-                if (data.Length < 16) throw ApfsException.Corrupt("öznitelik veri akışı kaydı çok kısa");
+                if (data.Length < 16) throw ApfsException.Corrupt(CoreText.T("Volume.XattrDstreamShort"));
                 ulong streamId = Bin.U64(data, 0);
                 ulong size = Bin.U64(data, 8);
-                if (size > (ulong)maxSize) throw new ApfsException(ApfsErrorCode.Unsupported, $"öznitelik çok büyük ({size} bayt)");
+                if (size > (ulong)maxSize) throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Volume.XattrTooLarge", size));
                 var buf = new byte[size];
                 var reader = new FileDataReader(this, GetExtents(streamId), size);
                 reader.Read(0, buf);
                 return buf;
             }
-            throw ApfsException.Corrupt($"öznitelik \"{name}\" bilinmeyen depolama türünde");
+            throw ApfsException.Corrupt(CoreText.T("Volume.XattrUnknownStorage", name));
         }
         return null;
     }
@@ -362,7 +362,7 @@ public sealed class ApfsVolume
     public IDataReader OpenFile(Inode inode)
     {
         if (inode.IsDirectory)
-            throw new ApfsException(ApfsErrorCode.InvalidArgument, "klasör dosya olarak açılamaz");
+            throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("Volume.DirectoryAsFile"));
         if (inode.IsCompressed)
             return Compression.Decmpfs.Open(this, inode);
         var extents = inode.HasDataStream ? GetExtents(inode.PrivateId) : [];
@@ -396,11 +396,11 @@ public sealed class ApfsVolume
             if (!string.Equals(n, name, StringComparison.Ordinal)) continue;
             if ((flags & XattrDataStream) != 0)
             {
-                if (data.Length < 16) throw ApfsException.Corrupt("öznitelik veri akışı kaydı çok kısa");
+                if (data.Length < 16) throw ApfsException.Corrupt(CoreText.T("Volume.XattrDstreamShort"));
                 return new FileDataReader(this, GetExtents(Bin.U64(data, 0)), Bin.U64(data, 8));
             }
             if ((flags & XattrDataEmbedded) != 0) return new EmbeddedReader(data);
-            throw ApfsException.Corrupt($"öznitelik \"{name}\" bilinmeyen depolama türünde");
+            throw ApfsException.Corrupt(CoreText.T("Volume.XattrUnknownStorage", name));
         }
         return null;
     }

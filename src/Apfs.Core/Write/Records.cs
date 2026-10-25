@@ -38,7 +38,7 @@ internal static class Records
         int n = Bin.U16(blob, 0);
         int used = Bin.U16(blob, 2);
         int data = 4 + n * 4;
-        if (data + used > blob.Length) throw ApfsException.Corrupt("genişletilmiş alanlar kayda sığmıyor");
+        if (data + used > blob.Length) throw ApfsException.Corrupt(CoreText.T("Records.XFieldsOverflow"));
         for (int i = 0; i < n; i++)
         {
             int h = 4 + i * 4;
@@ -89,7 +89,7 @@ internal static class Records
     public static byte[] DrecKey(ulong parent, string name, bool hashed, bool caseInsensitive)
     {
         var nb = Encoding.UTF8.GetBytes(name + "\0");
-        if (nb.Length > 255 + 1 && hashed) throw new ApfsException(ApfsErrorCode.InvalidArgument, "ad çok uzun (en fazla 255 bayt)");
+        if (nb.Length > 255 + 1 && hashed) throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("Records.NameTooLong"));
         if (hashed)
         {
             var k = Key(parent, JType.DirRec, 4 + nb.Length);
@@ -186,7 +186,7 @@ internal sealed class InodeRecord
 
     public static InodeRecord Parse(ReadOnlySpan<byte> v)
     {
-        if (v.Length < BaseSize) throw ApfsException.Corrupt("inode kaydı çok kısa");
+        if (v.Length < BaseSize) throw ApfsException.Corrupt(CoreText.T("Records.InodeTooShort"));
         return new InodeRecord
         {
             ParentId = Bin.U64(v, 0),

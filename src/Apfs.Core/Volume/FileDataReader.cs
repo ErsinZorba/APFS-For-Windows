@@ -19,10 +19,10 @@ public sealed class FileDataReader : IDataReader
         foreach (var e in _extents)
         {
             if (e.LogicalOffset < prevEnd)
-                throw ApfsException.Corrupt("dosya parçaları (extent) üst üste biniyor");
+                throw ApfsException.Corrupt(CoreText.T("Volume.ExtentsOverlap"));
             prevEnd = e.LogicalOffset + e.Length;
             if (prevEnd < e.LogicalOffset)
-                throw ApfsException.Corrupt("dosya parçası boyutu taşıyor");
+                throw ApfsException.Corrupt(CoreText.T("Volume.ExtentSizeOverflow"));
         }
     }
 
@@ -65,7 +65,7 @@ public sealed class FileDataReader : IDataReader
             {
                 ulong lastBlock = ext.PhysBlock + (ext.Length - 1) / bs;
                 if (lastBlock >= _volume.Reader.BlockCount || lastBlock < ext.PhysBlock)
-                    throw ApfsException.Corrupt("dosya parçası diskin dışını gösteriyor");
+                    throw ApfsException.Corrupt(CoreText.T("Volume.ExtentOutsideDisk"));
                 if (_volume.Crypto is { } crypto && ext.CryptoId != 0)
                     ReadEncrypted(crypto, ext, within, buffer.Slice(done, count));
                 else

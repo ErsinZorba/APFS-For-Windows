@@ -29,14 +29,14 @@ public sealed class FileImageWriter : IWritableBlockDevice
     public void Read(long offset, Span<byte> buffer)
     {
         if (offset < 0 || offset > Length - buffer.Length)
-            throw ApfsException.Corrupt($"aygıt sınırı dışında okuma: {offset}+{buffer.Length}");
+            throw ApfsException.Corrupt(CoreText.T("Io.ReadOutsideDevice", offset, buffer.Length));
         int done = 0;
         try
         {
             while (done < buffer.Length)
             {
                 int n = RandomAccess.Read(_handle, buffer[done..], offset + done);
-                if (n <= 0) throw new ApfsException(ApfsErrorCode.IoError, "beklenmeyen dosya sonu");
+                if (n <= 0) throw new ApfsException(ApfsErrorCode.IoError, CoreText.T("Io.UnexpectedEof"));
                 done += n;
             }
         }
@@ -46,7 +46,7 @@ public sealed class FileImageWriter : IWritableBlockDevice
     public void Write(long offset, ReadOnlySpan<byte> data)
     {
         if (offset < 0 || offset > Length - data.Length)
-            throw new ApfsException(ApfsErrorCode.InvalidArgument, $"aygıt sınırı dışında yazma: {offset}+{data.Length}");
+            throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("Io.WriteOutsideDevice", offset, data.Length));
         try { RandomAccess.Write(_handle, data, offset); }
         catch (IOException e) { throw new ApfsException(ApfsErrorCode.IoError, e.Message, e); }
     }

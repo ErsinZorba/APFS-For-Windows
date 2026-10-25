@@ -24,8 +24,25 @@ internal static class Theme
     public static readonly Color Amber = Color.FromArgb(226, 152, 28);
     public static readonly Color Red = Color.FromArgb(214, 72, 60);
 
-    private static readonly string FontName =
-        new InstalledFontCollection().Families.Any(f => f.Name == "Segoe UI Variable Text") ? "Segoe UI Variable Text" : "Segoe UI";
+    /// <summary>
+    /// Arayüz dili Asya diliyse o dilin Windows arayüz yazı tipi: Segoe UI'ın yedek yazı tipi Windows'un diline göre seçilir,
+    /// Türkçe Windows'ta Çince seçilince Japonca ve Çince biçimli karakterler karışıyordu. Dil, formlardan önce ayarlanır.
+    /// </summary>
+    private static readonly string FontName = PickFontName();
+
+    private static string PickFontName()
+    {
+        var installed = new InstalledFontCollection().Families.Select(f => f.Name).ToHashSet();
+        string? asian = System.Globalization.CultureInfo.CurrentUICulture.Name switch
+        {
+            "ja" => "Yu Gothic UI",
+            "zh-Hans" => "Microsoft YaHei UI",
+            "ko" => "Malgun Gothic",
+            _ => null,
+        };
+        if (asian is not null && installed.Contains(asian)) return asian;
+        return installed.Contains("Segoe UI Variable Text") ? "Segoe UI Variable Text" : "Segoe UI";
+    }
 
     private static readonly Dictionary<(float, FontStyle), Font> Fonts = [];
 

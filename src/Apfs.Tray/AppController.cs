@@ -136,7 +136,7 @@ internal sealed class AppController : IDisposable
             }
             catch (Exception e) when (e is TimeoutException or IOException or OperationCanceledException)
             {
-                error = "Hizmete ulaşılamadı.";
+                error = WinText.U("Error.ServiceUnreachable");
                 continue;
             }
             if (r is { Ok: true })
@@ -145,7 +145,7 @@ internal sealed class AppController : IDisposable
                 await PollAsync();
                 return;
             }
-            error = r?.Message ?? "Kilit açılamadı.";
+            error = r?.Message ?? WinText.U("Unlock.Failed");
         }
     }
 
@@ -168,7 +168,7 @@ internal sealed class AppController : IDisposable
                 r = await SendEjectAsync(d.Id, force: true);
             }
             if (r is not { Ok: true })
-                MessageBox.Show(owner, r?.Message ?? "Disk çıkarılamadı.", "APFS for Windows", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(owner, r?.Message ?? WinText.U("Eject.Failed"), "APFS for Windows", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
         finally
         {
@@ -186,18 +186,18 @@ internal sealed class AppController : IDisposable
         }
         catch (Exception e) when (e is TimeoutException or IOException or OperationCanceledException)
         {
-            return new UnlockResponse(false, "Hizmete ulaşılamadı.");
+            return new UnlockResponse(false, WinText.U("Error.ServiceUnreachable"));
         }
     }
 
     private static bool ConfirmBusyEject(IWin32Window? owner, string message)
     {
-        var eject = new TaskDialogButton("Yine de çıkar");
-        var cancel = new TaskDialogButton("Vazgeç");
+        var eject = new TaskDialogButton(WinText.U("Action.EjectAnyway"));
+        var cancel = new TaskDialogButton(WinText.U("Action.Cancel"));
         var page = new TaskDialogPage
         {
             Caption = "APFS for Windows",
-            Heading = "Kopyalama sürüyor gibi görünüyor",
+            Heading = WinText.U("Eject.BusyHeading"),
             Text = message,
             Icon = TaskDialogIcon.Warning,
             Buttons = { eject, cancel },
@@ -227,11 +227,11 @@ internal sealed class AppController : IDisposable
             var r = await SendSetWritableAsync(d.Id, container, enable, force: false);
             if (r is { Busy: true })
             {
-                if (!ConfirmBusy(owner, "Disk kullanımda", r.Message, "Yine de devam et")) return;
+                if (!ConfirmBusy(owner, WinText.U("Write.BusyHeading"), r.Message, WinText.U("Action.ContinueAnyway"))) return;
                 r = await SendSetWritableAsync(d.Id, container, enable, force: true);
             }
             if (r is not { Ok: true })
-                MessageBox.Show(owner, r?.Message ?? "İşlem yapılamadı.", enable ? "Yazmaya açılamadı" : "APFS for Windows",
+                MessageBox.Show(owner, r?.Message ?? WinText.U("Error.OperationFailed"), enable ? WinText.U("Write.EnableFailedTitle") : "APFS for Windows",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         finally
@@ -251,24 +251,19 @@ internal sealed class AppController : IDisposable
         }
         catch (Exception e) when (e is TimeoutException or IOException or OperationCanceledException)
         {
-            return new UnlockResponse(false, "Hizmete ulaşılamadı.");
+            return new UnlockResponse(false, WinText.U("Error.ServiceUnreachable"));
         }
     }
 
     private static bool ConfirmEnableWrite(IWin32Window? owner, string disk)
     {
-        var allow = new TaskDialogButton("Yazmaya izin ver");
-        var cancel = new TaskDialogButton("Vazgeç");
+        var allow = new TaskDialogButton(WinText.U("Action.AllowWriting"));
+        var cancel = new TaskDialogButton(WinText.U("Action.Cancel"));
         var page = new TaskDialogPage
         {
             Caption = "APFS for Windows",
-            Heading = "Bu diske yazmaya izin verilsin mi?",
-            Text = $"{disk}\n\n" +
-                   "Yazma özelliği DENEYSELDİR. Önemli dosyalarınızın bir yedeği olsun.\n\n" +
-                   "• Önce disk denetlenir; bir sorun görülürse yazmaya açılmaz.\n" +
-                   "• Diski çıkarmadan ya da Mac'e takmadan önce mutlaka \"Güvenle çıkar\"ı kullanın.\n" +
-                   "• Bu diskte silinen dosyalar Geri Dönüşüm Kutusu'na gitmez, kalıcı olarak silinir.\n" +
-                   "• İstediğiniz an \"Salt okunura dön\" diyebilirsiniz; yaptığınız değişiklikler kaydedilir.",
+            Heading = WinText.U("Write.ConfirmHeading"),
+            Text = WinText.U("Write.ConfirmText", disk),
             Icon = TaskDialogIcon.ShieldWarningYellowBar,
             Buttons = { allow, cancel },
             DefaultButton = cancel,
@@ -281,7 +276,7 @@ internal sealed class AppController : IDisposable
     private static bool ConfirmBusy(IWin32Window? owner, string heading, string message, string proceed)
     {
         var go = new TaskDialogButton(proceed);
-        var cancel = new TaskDialogButton("Vazgeç");
+        var cancel = new TaskDialogButton(WinText.U("Action.Cancel"));
         var page = new TaskDialogPage
         {
             Caption = "APFS for Windows",
@@ -320,11 +315,11 @@ internal sealed class AppController : IDisposable
     {
         string path = File.Exists(ServiceLog.PathName) ? ServiceLog.PathName : ServiceLog.FallbackPathName;
         if (File.Exists(path)) Process.Start(new ProcessStartInfo("notepad.exe", $"\"{path}\"") { UseShellExecute = true });
-        else MessageBox.Show("Henüz günlük yok.", "APFS for Windows");
+        else MessageBox.Show(WinText.U("Log.NoneYet"), "APFS for Windows");
     }
 
     public static void ShowDetails(IWin32Window? owner, VolumeStatus v) =>
-        MessageBox.Show(owner, v.Message ?? "Bilinmeyen hata.", $"APFS for Windows: {v.Name}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        MessageBox.Show(owner, v.Message ?? WinText.U("Error.Unknown"), $"APFS for Windows: {v.Name}", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
     public void Dispose()
     {

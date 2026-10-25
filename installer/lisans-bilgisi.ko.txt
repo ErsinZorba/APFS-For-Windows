@@ -1,0 +1,12 @@
+﻿APFS for Windows
+Copyright (C) 2026 Ersin Zorba
+
+이 프로그램은 GNU 일반 공중 사용 허가서 버전 3(GPLv3)에 따라 배포되는 무료 오픈 소스 소프트웨어입니다. 무료로 사용, 복사, 공유할 수 있습니다. 수정한 버전을 배포하는 경우 그 소스 코드를 같은 라이선스로 공개해야 합니다.
+
+이 프로그램은 어떠한 보증도 없이 제공됩니다. 쓰기를 허용하기 전에 Mac 디스크를 백업하는 것이 좋습니다.
+
+소스 코드: https://github.com/ErsinZorba/APFS-for-Windows
+
+라이선스 전문은 설치 후 프로그램 폴더의 LICENSE 파일에 있습니다.
+
+파일 시스템 드라이버 WinFsp를 사용합니다: WinFsp - Windows File System Proxy, Copyright (C) Bill Zissimopoulos, https://github.com/winfsp/winfsp (GPLv3).

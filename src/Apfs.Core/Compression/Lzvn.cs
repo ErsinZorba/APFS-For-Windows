@@ -48,7 +48,7 @@ public static class Lzvn
         while (true)
         {
             if (d == dst.Length) return d; // hedef doldu (decmpfs blokları tam boyutla çözülür)
-            if (s >= src.Length) throw Corrupt("LZVN akışı beklenmeden bitti");
+            if (s >= src.Length) throw Corrupt(CoreText.T("Lzvn.UnexpectedEnd"));
             byte op = src[s];
             int L = 0, M = 0, D = dPrev, len;
             switch (Table[op])
@@ -99,14 +99,14 @@ public static class Lzvn
                 case Op.Eos:
                     return d;
                 default:
-                    throw Corrupt($"LZVN akışında tanımsız işlem kodu 0x{op:x2}");
+                    throw Corrupt(CoreText.T("Lzvn.UndefinedOpcode", op));
             }
             s += len;
 
             // Değişmez (literal) baytlar
             if (L > 0)
             {
-                if (s + L > src.Length) throw Corrupt("LZVN değişmez baytları akışın dışında");
+                if (s + L > src.Length) throw Corrupt(CoreText.T("Lzvn.LiteralsOutOfStream"));
                 int n = Math.Min(L, dst.Length - d);
                 src.Slice(s, n).CopyTo(dst[d..]);
                 d += n; s += L;
@@ -116,7 +116,7 @@ public static class Lzvn
             // Eşleşme (match): daha önce yazılan çıktının kopyası; kaynak ve hedef üst üste binebilir
             if (M > 0)
             {
-                if (D <= 0 || D > d) throw Corrupt($"LZVN eşleşme mesafesi geçersiz ({D})");
+                if (D <= 0 || D > d) throw Corrupt(CoreText.T("Lzvn.InvalidMatchDistance", D));
                 int n = Math.Min(M, dst.Length - d);
                 for (int i = 0; i < n; i++) dst[d + i] = dst[d + i - D];
                 d += n;
@@ -127,7 +127,7 @@ public static class Lzvn
 
     private static void Need(ReadOnlySpan<byte> src, int s, int n)
     {
-        if (s + n > src.Length) throw Corrupt("LZVN işlem kodu akışın dışına taşıyor");
+        if (s + n > src.Length) throw Corrupt(CoreText.T("Lzvn.OpcodeOutOfStream"));
     }
 
     private static ApfsException Corrupt(string detail) => new(ApfsErrorCode.Corrupt, detail);

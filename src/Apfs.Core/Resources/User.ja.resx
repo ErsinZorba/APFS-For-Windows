@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Error.AccessDenied" xml:space="preserve">
+    <value>アクセスが拒否されました。</value>
+  </data>
+  <data name="Error.AlreadyExists" xml:space="preserve">
+    <value>この名前のファイルまたはフォルダーは既に存在します。</value>
+  </data>
+  <data name="Error.ChecksumMismatch" xml:space="preserve">
+    <value>ディスク上のブロックのチェックサムが一致しません。この部分は破損している可能性があります。ディスクには何も書き込まれていません。</value>
+  </data>
+  <data name="Error.Corrupt" xml:space="preserve">
+    <value>ディスク上の構造が破損しているようです。この部分は読み取れませんでした。ディスクには何も書き込まれていません。</value>
+  </data>
+  <data name="Error.DirectoryNotEmpty" xml:space="preserve">
+    <value>フォルダーが空ではありません。</value>
+  </data>
+  <data name="Error.DiskFull" xml:space="preserve">
+    <value>ディスクがいっぱいです。</value>
+  </data>
+  <data name="Error.Encrypted" xml:space="preserve">
+    <value>このボリュームは暗号化されています。開くにはパスワードが必要です。</value>
+  </data>
+  <data name="Error.InvalidArgument" xml:space="preserve">
+    <value>無効な値です。</value>
+  </data>
+  <data name="Error.IoError" xml:space="preserve">
+    <value>ディスクを読み取れませんでした。取り外されたか、故障している可能性があります。</value>
+  </data>
+  <data name="Error.NoValidCheckpoint" xml:space="preserve">
+    <value>APFS コンテナのチェックポイントに正常なものが 1 つもありません。ディスクが深刻な損傷を受けている可能性があります。ディスクには何も書き込まれていません。</value>
+  </data>
+  <data name="Error.NotApfs" xml:space="preserve">
+    <value>このディスクまたはファイルは APFS 形式ではありません。</value>
+  </data>
+  <data name="Error.NotFound" xml:space="preserve">
+    <value>ファイルまたはフォルダーが見つかりません。</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>不明なエラーです。</value>
+  </data>
+  <data name="Error.Unsupported" xml:space="preserve">
+    <value>この機能はまだサポートされていません。</value>
+  </data>
+  <data name="Error.WrongPassword" xml:space="preserve">
+    <value>パスワードが正しくありません。</value>
+  </data>
+  <data name="Gate.BlockSize" xml:space="preserve">
+    <value>ブロック サイズが {0} です。サポートされているのは 4096 バイトのブロックのみです。</value>
+  </data>
+  <data name="Gate.CheckpointArea" xml:space="preserve">
+    <value>ディスクのチェックポイント領域が断片化しています。このレイアウトはサポートされていません。</value>
+  </data>
+  <data name="Gate.EncRolled" xml:space="preserve">
+    <value>ボリューム "{0}" の暗号化は後から変更されています（ENC_ROLLED）。このようなディスクには書き込みません。</value>
+  </data>
+  <data name="Gate.EncryptionInProgress" xml:space="preserve">
+    <value>ボリューム "{0}" で macOS が開始した暗号化処理がまだ完了していません。このようなディスクには書き込みません。</value>
+  </data>
+  <data name="Gate.Fusion" xml:space="preserve">
+    <value>Fusion Drive コンテナへの書き込みはサポートされていません。</value>
+  </data>
+  <data name="Gate.Inconsistent" xml:space="preserve">
+    <value>ディスクの内部構造に不整合が見つかりました。安全のため、書き込みは有効にしませんでした。Mac のディスクユーティリティ → First Aid でディスクを確認してください。</value>
+  </data>
+  <data name="Gate.Locked" xml:space="preserve">
+    <value>ボリューム "{0}" は暗号化されています。書き込みを許可する前にロックを解除してください。</value>
+  </data>
+  <data name="Gate.OmapUnreadable" xml:space="preserve">
+    <value>ボリューム "{0}" のオブジェクト マップを読み取れませんでした。</value>
+  </data>
+  <data name="Gate.OpenWarnings" xml:space="preserve">
+    <value>ディスクを開く際に問題が見つかりました（最新のチェックポイントが使用できない可能性があります）。</value>
+  </data>
+  <data name="Gate.Sealed" xml:space="preserve">
+    <value>"{0}" は署名済みシステムボリュームです。</value>
+  </data>
+  <data name="Gate.Snapshots" xml:space="preserve">
+    <value>ボリューム "{0}" にはスナップショット（Time Machine など）があります。このようなディスクへの書き込みはサポートされていません。</value>
+  </data>
+  <data name="Gate.SystemVolume" xml:space="preserve">
+    <value>"{0}" は macOS のシステム、バックアップ、または内部ボリュームです。このディスクには書き込みません。</value>
+  </data>
+  <data name="Gate.UnknownContainerFeature" xml:space="preserve">
+    <value>このディスクは、このバージョンでは認識できない APFS の機能を使用しています。</value>
+  </data>
+  <data name="Gate.UnknownVolumeFeature" xml:space="preserve">
+    <value>ボリューム "{0}" は、このバージョンでは認識できない APFS の機能を使用しています。</value>
+  </data>
+  <data name="Gate.Unresolvable" xml:space="preserve">
+    <value>このディスクには、このバージョンでは解釈できない構造があります。すべてのブロックの所有者を確認できなかったため、書き込みは有効にしませんでした。</value>
+  </data>
+  <data name="Gate.UnsupportedEncryption" xml:space="preserve">
+    <value>ボリューム "{0}" は、このバージョンでは書き込めない種類の暗号化（ハードウェア暗号化またはファイルごとのキー）を使用しています。</value>
+  </data>
+  <data name="Gate.UnsupportedVolumeSetting" xml:space="preserve">
+    <value>ボリューム "{0}" には、このバージョンでサポートされていない設定があります。</value>
+  </data>
+  <data name="Gate.VolumeUnreadable" xml:space="preserve">
+    <value>ボリュームを読み取れませんでした（{0}）。</value>
+  </data>
+  <data name="Gate.WriteBlocker" xml:space="preserve">
+    <value>このディスクには、このバージョンでは最新の状態に保てない機能があります（{0}）。書き込みは有効にしませんでした。</value>
+  </data>
+  <data name="Mount.WinFspMissing" xml:space="preserve">
+    <value>WinFsp がインストールされていません。インストールするには：winget install WinFsp.WinFsp</value>
+  </data>
+  <data name="Mount.WinFspNotLoaded" xml:space="preserve">
+    <value>WinFsp がインストールされていないか、読み込めませんでした（{0}）。インストールするには：winget install WinFsp.WinFsp</value>
+  </data>
+  <data name="Partition.Numbered" xml:space="preserve">
+    <value>パーティション {0}</value>
+  </data>
+  <data name="Partition.Unpartitioned" xml:space="preserve">
+    <value>パーティションのない APFS コンテナ</value>
+  </data>
+  <data name="Volume.RoleBackup" xml:space="preserve">
+    <value>バックアップ</value>
+  </data>
+  <data name="Volume.RoleData" xml:space="preserve">
+    <value>データ</value>
+  </data>
+  <data name="Volume.RoleInstaller" xml:space="preserve">
+    <value>インストーラー</value>
+  </data>
+  <data name="Volume.RolePreboot" xml:space="preserve">
+    <value>プリブート</value>
+  </data>
+  <data name="Volume.RoleRecovery" xml:space="preserve">
+    <value>復旧</value>
+  </data>
+  <data name="Volume.RoleSystem" xml:space="preserve">
+    <value>システム</value>
+  </data>
+  <data name="Volume.RoleUpdate" xml:space="preserve">
+    <value>アップデート</value>
+  </data>
+  <data name="Volume.RoleUser" xml:space="preserve">
+    <value>ユーザー</value>
+  </data>
+  <data name="Volume.RoleVm" xml:space="preserve">
+    <value>仮想メモリ</value>
+  </data>
+</root>

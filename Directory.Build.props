@@ -8,7 +8,7 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <!-- Unicode normalizasyonu (NFD) için ICU/NLS gerekli; invariant moda geçilmemeli. -->
     <InvariantGlobalization>false</InvariantGlobalization>
-    <Version>1.2.1</Version>
+    <Version>1.3.0</Version>
     <Authors>Ersin Zorba</Authors>
     <Product>APFS for Windows</Product>
     <Copyright>Copyright (c) 2026 Ersin Zorba</Copyright>

@@ -42,13 +42,13 @@ public sealed class ApfsWritableMount : IDisposable
         {
             host.Dispose();
             fs.Dispose();
-            throw new ApfsException(ApfsErrorCode.Unsupported, "WinFsp kurulu değil veya yüklenemedi", e);
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Fs.WinFspMissing"), e);
         }
         if (status != 0)
         {
             host.Dispose();
             fs.Dispose();
-            throw new ApfsException(ApfsErrorCode.IoError, $"sürücü bağlanamadı (NTSTATUS 0x{status:X8}); harf kullanımda olabilir");
+            throw new ApfsException(ApfsErrorCode.IoError, CoreText.T("Fs.MountFailed", status));
         }
         return new ApfsWritableMount(host, fs, session, host.MountPoint(), closeSession);
     }

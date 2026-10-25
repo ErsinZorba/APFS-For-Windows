@@ -33,8 +33,8 @@ public sealed class CallStats
         foreach (var (op, c) in _counters.OrderByDescending(kv => kv.Value.Ticks))
         {
             double ms = c.Ticks * 1000.0 / Stopwatch.Frequency;
-            string extra = c.Bytes > 0 ? $"  ort. {c.Bytes / Math.Max(1, c.Count) / 1024.0:0.#} KB/çağrı" : "";
-            yield return $"{op,-22} {c.Count,9:N0} çağrı  {ms,10:N1} ms toplam  {ms * 1000 / Math.Max(1, c.Count),8:N1} µs/çağrı{extra}";
+            string extra = c.Bytes > 0 ? CoreText.T("Stats.AvgBytes", c.Bytes / Math.Max(1, c.Count) / 1024.0) : "";
+            yield return CoreText.T("Stats.Line", op, c.Count, ms, ms * 1000 / Math.Max(1, c.Count), extra);
         }
     }
 }

@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Cli.AdminRequired" xml:space="preserve">
+    <value>bu komut yönetici olarak çalıştırılmalı</value>
+  </data>
+  <data name="Cli.ArgMissing" xml:space="preserve">
+    <value>&lt;{0}&gt; eksik</value>
+  </data>
+  <data name="Cli.ArgPath" xml:space="preserve">
+    <value>yol</value>
+  </data>
+  <data name="Cli.ArgSource" xml:space="preserve">
+    <value>kaynak</value>
+  </data>
+  <data name="Cli.ArgTarget" xml:space="preserve">
+    <value>hedef</value>
+  </data>
+  <data name="Cli.Bytes" xml:space="preserve">
+    <value>{0} bayt</value>
+  </data>
+  <data name="Cli.CaseInsensitive" xml:space="preserve">
+    <value>duyarsız</value>
+  </data>
+  <data name="Cli.CaseSensitive" xml:space="preserve">
+    <value>duyarlı</value>
+  </data>
+  <data name="Cli.CheckError" xml:space="preserve">
+    <value>  HATA: {0}</value>
+  </data>
+  <data name="Cli.CheckNoProblems" xml:space="preserve">
+    <value>Sonuç: sorun bulunmadı.</value>
+  </data>
+  <data name="Cli.CheckProblems" xml:space="preserve">
+    <value>Sonuç: {0} sorun bulundu (ayrıntılar yukarıda).</value>
+  </data>
+  <data name="Cli.CheckRead" xml:space="preserve">
+    <value>  Okunan: {0:N0} dosya, {1:N0} klasör, {2:N0} sembolik bağ, {3:N0} diğer; {4:N1} MB, {5:N1} sn</value>
+  </data>
+  <data name="Cli.Compressed" xml:space="preserve">
+    <value>  Sıkıştırılmış: {0}</value>
+  </data>
+  <data name="Cli.Copied" xml:space="preserve">
+    <value>Kopyalandı: {0} ({1})</value>
+  </data>
+  <data name="Cli.CountersDiffer" xml:space="preserve">
+    <value>  (fark var; gizli sistem klasörleri ve anlık görüntüler sayılmamış olabilir)</value>
+  </data>
+  <data name="Cli.CountersMatch" xml:space="preserve">
+    <value>  (eşleşiyor)</value>
+  </data>
+  <data name="Cli.Deleted" xml:space="preserve">
+    <value>Silindi: {0}</value>
+  </data>
+  <data name="Cli.DepthExceeded" xml:space="preserve">
+    <value>{0}: klasör derinliği 256'yı aştı (döngü olabilir)</value>
+  </data>
+  <data name="Cli.EncryptedUnlocked" xml:space="preserve">
+    <value> (şifreli, kilidi açıldı)</value>
+  </data>
+  <data name="Cli.Error" xml:space="preserve">
+    <value>Hata: {0}</value>
+  </data>
+  <data name="Cli.FullClean" xml:space="preserve">
+    <value>Sonuç: yapısal tutarlılık tam ({0:N1} sn).</value>
+  </data>
+  <data name="Cli.FullInconsistent" xml:space="preserve">
+    <value>Sonuç: {0} tutarsızlık bulundu ({1:N1} sn).</value>
+  </data>
+  <data name="Cli.GateCheck" xml:space="preserve">
+    <value>  Denetim: {0}</value>
+  </data>
+  <data name="Cli.GateClosed" xml:space="preserve">
+    <value>Yazma kapısı: KAPALI (disk salt okunur kalır).</value>
+  </data>
+  <data name="Cli.GateOpen" xml:space="preserve">
+    <value>Yazma kapısı: AÇILABİLİR (bu disk yazmaya açılabilir).</value>
+  </data>
+  <data name="Cli.GateReason" xml:space="preserve">
+    <value>  Neden: {0}</value>
+  </data>
+  <data name="Cli.HashError" xml:space="preserve">
+    <value>HATA: {0}</value>
+  </data>
+  <data name="Cli.Help" xml:space="preserve">
+    <value>APFS for Windows: Mac APFS disklerini Windows'ta salt okunur açar.
+
+Kullanım:
+  apfs info &lt;kaynak&gt;                         Kapsayıcı ve birim bilgilerini gösterir
+  apfs ls &lt;kaynak&gt; [yol] [-r] [--hash]       Klasör içeriğini listeler
+  apfs extract &lt;kaynak&gt; &lt;yol&gt; &lt;hedef&gt;        Bir dosyayı Windows'a kopyalar
+  apfs check &lt;kaynak&gt; [--full]               Salt okunur öz denetim (tüm dosyaları okur, sayaçları ve ad karmalarını karşılaştırır);
+                                             --full: yapısal tutarlılık (blok sahipliği, alan yöneticisi, başvuru sayıları)
+  apfs dump &lt;kaynak&gt;                         İç yapıyı döker (geliştirme: checkpoint, alan yöneticisi, birim süper blokları)
+  apfs mount &lt;kaynak&gt; [X:]                   Birimleri sürücü harfi olarak bağlar (Ctrl+C ile ayrılır);
+                                             birden çok birim varsa her biri ayrı harf alır, iç birimler için --all
+  apfs register / unregister                 (Yönetici) Fiziksel diskler için WinFsp kaydı
+
+&lt;kaynak&gt;: disk görüntüsü dosyası veya \\.\PhysicalDriveN (yönetici yetkisi gerekir)
+Seçenekler: --volume N (birim sırası, varsayılan 0), --partition N (APFS bölümü sırası)
+Şifreli birimler: --password-prompt (parolayı sorar) veya --password-stdin (parolayı standart girdiden okur)</value>
+  </data>
+  <data name="Cli.HelpHint" xml:space="preserve">
+    <value>Yardım için: apfs help</value>
+  </data>
+  <data name="Cli.InfoBlockSize" xml:space="preserve">
+    <value>  Blok boyutu     {0} bayt</value>
+  </data>
+  <data name="Cli.InfoCaseSensitivity" xml:space="preserve">
+    <value>  Harf duyarlılığı {0}</value>
+  </data>
+  <data name="Cli.InfoCheckpoint" xml:space="preserve">
+    <value>  Kontrol noktası xid {0} (blok {1})</value>
+  </data>
+  <data name="Cli.InfoContainer" xml:space="preserve">
+    <value>APFS kapsayıcısı  {0}</value>
+  </data>
+  <data name="Cli.InfoContents" xml:space="preserve">
+    <value>  İçerik          {0:N0} dosya, {1:N0} klasör, {2:N0} sembolik bağ</value>
+  </data>
+  <data name="Cli.InfoFingerprint" xml:space="preserve">
+    <value>  Parmak izi      {0} (blok 0 + {1} checkpoint bloğu)</value>
+  </data>
+  <data name="Cli.InfoSize" xml:space="preserve">
+    <value>  Boyut           {0} ({1:N0} blok)</value>
+  </data>
+  <data name="Cli.InfoUsed" xml:space="preserve">
+    <value>  Kullanılan      {0}</value>
+  </data>
+  <data name="Cli.InfoUsedFree" xml:space="preserve">
+    <value>  Kullanılan      {0}, boş {1} ({2})</value>
+  </data>
+  <data name="Cli.InfoVolumeFailed" xml:space="preserve">
+    <value>Birim {0}: açılamadı: {1}</value>
+  </data>
+  <data name="Cli.InternalVolumeSkipped" xml:space="preserve">
+    <value>Birim {0} "{1}" [{2}] macOS'un iç birimi olduğu için bağlanmadı (göstermek için --all).</value>
+  </data>
+  <data name="Cli.InvalidDriveLetter" xml:space="preserve">
+    <value>geçersiz sürücü harfi: {0} (örnek: X:)</value>
+  </data>
+  <data name="Cli.KernelFlagNotSet" xml:space="preserve">
+    <value>, çekirdek bayrağı ayarlanamadı</value>
+  </data>
+  <data name="Cli.LauncherMountFailed" xml:space="preserve">
+    <value>{0}: bağlanamadı: {1}</value>
+  </data>
+  <data name="Cli.LauncherMounted" xml:space="preserve">
+    <value>{0}: "{1}" {2} olarak bağlandı (salt okunur).</value>
+  </data>
+  <data name="Cli.LauncherPhysicalOnly" xml:space="preserve">
+    <value>Launcher üzerinden yalnızca PhysicalDriveN biçiminde fiziksel disk bağlanabilir</value>
+  </data>
+  <data name="Cli.LauncherRejected" xml:space="preserve">
+    <value>{0}: reddedildi: {1}</value>
+  </data>
+  <data name="Cli.LauncherRejectedLog" xml:space="preserve">
+    <value>Reddedildi: "{0}" bir fiziksel disk değil; arka planda yalnızca PhysicalDriveN bağlanabilir.</value>
+  </data>
+  <data name="Cli.LauncherUnmounted" xml:space="preserve">
+    <value>{0}: ayrıldı.</value>
+  </data>
+  <data name="Cli.MoreErrors" xml:space="preserve">
+    <value>  … ve {0} hata daha</value>
+  </data>
+  <data name="Cli.MountWarning" xml:space="preserve">
+    <value>Uyarı: {0}</value>
+  </data>
+  <data name="Cli.Mounted" xml:space="preserve">
+    <value>Bağlandı: {0}  "{1}"{2}  (salt okunur{3})</value>
+  </data>
+  <data name="Cli.MultipleVolumesNeedIndex" xml:space="preserve">
+    <value>diskte birden çok birim var; sürücü harfi verecekseniz --volume N ile birini seçin</value>
+  </data>
+  <data name="Cli.NameHashExamples" xml:space="preserve">
+    <value> (örnek: {0}; aramayı etkilemez)</value>
+  </data>
+  <data name="Cli.NameHashes" xml:space="preserve">
+    <value>  Ad karmaları: {0:N0} doğru, {1:N0} farklı</value>
+  </data>
+  <data name="Cli.NoMountableVolume" xml:space="preserve">
+    <value>bağlanabilecek birim yok</value>
+  </data>
+  <data name="Cli.NoSuchVolume" xml:space="preserve">
+    <value>birim {0} yok</value>
+  </data>
+  <data name="Cli.NoSuchVolumeCount" xml:space="preserve">
+    <value>birim {0} yok; kapsayıcıda {1} birim var</value>
+  </data>
+  <data name="Cli.NumberExpected" xml:space="preserve">
+    <value>{0} için sayı bekleniyordu</value>
+  </data>
+  <data name="Cli.PasswordHint" xml:space="preserve">
+    <value> Parola ipucu: {0}</value>
+  </data>
+  <data name="Cli.PasswordPrompt" xml:space="preserve">
+    <value>Parola: </value>
+  </data>
+  <data name="Cli.PressCtrlC" xml:space="preserve">
+    <value>Ayırmak için Ctrl+C'ye basın.</value>
+  </data>
+  <data name="Cli.RegisterMountHint" xml:space="preserve">
+    <value>Bir diski bağlamak için (yönetici gerekmez):</value>
+  </data>
+  <data name="Cli.RegisterUnmountHint" xml:space="preserve">
+    <value>Ayırmak için:</value>
+  </data>
+  <data name="Cli.Registered" xml:space="preserve">
+    <value>Kaydedildi. Program: {0}</value>
+  </data>
+  <data name="Cli.SuperblockCounters" xml:space="preserve">
+    <value>  Süper blok sayaçları: {0:N0} dosya, {1:N0} klasör, {2:N0} sembolik bağ</value>
+  </data>
+  <data name="Cli.Unexpected" xml:space="preserve">
+    <value>Beklenmeyen bir hata oluştu, diskinize hiçbir şey yazılmadı: {0}</value>
+  </data>
+  <data name="Cli.Unknown" xml:space="preserve">
+    <value>bilinmiyor</value>
+  </data>
+  <data name="Cli.Unmounting" xml:space="preserve">
+    <value>Ayrılıyor...</value>
+  </data>
+  <data name="Cli.Unreadable" xml:space="preserve">
+    <value>  Okunamadı: {0}</value>
+  </data>
+  <data name="Cli.Unregistered" xml:space="preserve">
+    <value>WinFsp kaydı kaldırıldı.</value>
+  </data>
+  <data name="Cli.VolumeEncrypted" xml:space="preserve">
+    <value>"{0}" birimi şifreli.{1}</value>
+  </data>
+  <data name="Cli.VolumeHeader" xml:space="preserve">
+    <value>Birim {0}: "{1}"{2}</value>
+  </data>
+  <data name="Cli.VolumeNotChecked" xml:space="preserve">
+    <value>Birim {0}: denetlenemedi: {1}</value>
+  </data>
+  <data name="Cli.VolumeNotMounted" xml:space="preserve">
+    <value>Birim {0} bağlanmadı: {1}</value>
+  </data>
+  <data name="Cli.Warning" xml:space="preserve">
+    <value>  Uyarı: {0}</value>
+  </data>
+  <data name="Cli.WinFspMissing" xml:space="preserve">
+    <value>WinFsp kurulu değil. Kurmak için: winget install WinFsp.WinFsp</value>
+  </data>
+  <data name="Ejector.InUse" xml:space="preserve">
+    <value>Disk başka bir program tarafından kullanılıyor ({0}). O programı kapatıp tekrar deneyin.</value>
+  </data>
+  <data name="Ejector.OpenHandles" xml:space="preserve">
+    <value>Diskte başka bir program açık dosya veya tanıtıcı tutuyor. Açık pencereleri ve programları kapatıp tekrar deneyin.</value>
+  </data>
+  <data name="Ejector.Refused" xml:space="preserve">
+    <value>Windows diski şu anda çıkaramadı (kod {0:X}/{1}{2}). Biraz sonra tekrar deneyin.</value>
+  </data>
+  <data name="Ipc.MessageTooLong" xml:space="preserve">
+    <value>ileti çok uzun</value>
+  </data>
+  <data name="Raw.DiskClosed" xml:space="preserve">
+    <value>disk kapatıldı</value>
+  </data>
+  <data name="Raw.LengthQueryFailed" xml:space="preserve">
+    <value>disk boyutu alınamadı</value>
+  </data>
+  <data name="Raw.LengthQueryFailedDetail" xml:space="preserve">
+    <value>disk boyutu alınamadı: {0}</value>
+  </data>
+  <data name="Raw.ReadAdminRequired" xml:space="preserve">
+    <value>{0}: ham diski okumak için yönetici yetkisi gerekir</value>
+  </data>
+  <data name="Raw.ReadOutOfRange" xml:space="preserve">
+    <value>disk sınırı dışında okuma: {0}+{1}</value>
+  </data>
+  <data name="Raw.ShortRead" xml:space="preserve">
+    <value>diskten beklenenden az veri okundu</value>
+  </data>
+  <data name="Raw.Unaligned" xml:space="preserve">
+    <value>sektör hizasız ham disk G/Ç'si: {0}+{1}</value>
+  </data>
+  <data name="Raw.WriteAdminRequired" xml:space="preserve">
+    <value>{0}: diske yazmak için yönetici yetkisi gerekir</value>
+  </data>
+  <data name="Raw.WriteDenied" xml:space="preserve">
+    <value>Windows bu bölüme yazmaya izin vermedi</value>
+  </data>
+  <data name="Raw.WriteOutOfRange" xml:space="preserve">
+    <value>disk sınırı dışında yazma: {0}+{1}</value>
+  </data>
+  <data name="Service.LanguageSet" xml:space="preserve">
+    <value>Dil: {0}</value>
+  </data>
+  <data name="Source.NoApfsPartition" xml:space="preserve">
+    <value>diskte APFS bölümü bulunamadı</value>
+  </data>
+  <data name="Source.PartitionIndex" xml:space="preserve">
+    <value>bölüm sırası {0}; diskte {1} APFS bölümü var</value>
+  </data>
+  <data name="Svc.DiskCheckFailed" xml:space="preserve">
+    <value>{0}: disk denetlenemedi: {1}</value>
+  </data>
+  <data name="Svc.DiskRemovedMeanwhile" xml:space="preserve">
+    <value>disk bu sırada çıkarıldı</value>
+  </data>
+  <data name="Svc.EjectDeferred" xml:space="preserve">
+    <value>{0}: çıkarma ertelendi, kullanımda: {1}</value>
+  </data>
+  <data name="Svc.EjectRefused" xml:space="preserve">
+    <value>{0}: çıkarma reddedildi: {1}</value>
+  </data>
+  <data name="Svc.Mounted" xml:space="preserve">
+    <value>{0}: "{1}" {2} olarak bağlandı.</value>
+  </data>
+  <data name="Svc.MountedWritable" xml:space="preserve">
+    <value>{0}: "{1}" yazılabilir bağlandı ({2}).</value>
+  </data>
+  <data name="Svc.PipeError" xml:space="preserve">
+    <value>kanal hatası: {0}</value>
+  </data>
+  <data name="Svc.RequestFailed" xml:space="preserve">
+    <value>kanal isteği işlenemedi: {0}: {1}</value>
+  </data>
+  <data name="Svc.Rescanned" xml:space="preserve">
+    <value>tarandı</value>
+  </data>
+  <data name="Svc.ScanError" xml:space="preserve">
+    <value>tarama hatası: {0}</value>
+  </data>
+  <data name="Svc.Started" xml:space="preserve">
+    <value>Hizmet başladı.</value>
+  </data>
+  <data name="Svc.StartedDev" xml:space="preserve">
+    <value>Hizmet geliştirme modunda başladı ({0} görüntü).</value>
+  </data>
+  <data name="Svc.Stopped" xml:space="preserve">
+    <value>Hizmet durdu.</value>
+  </data>
+  <data name="Svc.UnknownRequest" xml:space="preserve">
+    <value>bilinmeyen istek</value>
+  </data>
+  <data name="Svc.UnlockFailed" xml:space="preserve">
+    <value>{0}: "{1}" kilit açma başarısız: {2}</value>
+  </data>
+  <data name="Svc.UnmountError" xml:space="preserve">
+    <value>{0}: ayırma hatası: {1}</value>
+  </data>
+  <data name="Svc.WaitingForPassword" xml:space="preserve">
+    <value>{0}: "{1}" parola bekliyor.</value>
+  </data>
+  <data name="Svc.WritableUnmountError" xml:space="preserve">
+    <value>{0}: yazılabilir ayırma hatası: {1}</value>
+  </data>
+  <data name="Svc.WriteCheck" xml:space="preserve">
+    <value>{0}: bölüm {1} denetim: {2}</value>
+  </data>
+  <data name="Svc.WriteNotEnabled" xml:space="preserve">
+    <value>{0}: bölüm {1} yazmaya açılmadı: {2}</value>
+  </data>
+  <data name="Svc.WriteSessionAbandoned" xml:space="preserve">
+    <value>{0}: bölüm {1} yazma oturumu kaydedilmeden bırakıldı (son kayıt xid {2}).</value>
+  </data>
+  <data name="Svc.WriteSessionClosed" xml:space="preserve">
+    <value>{0}: bölüm {1} yazma oturumu kapatıldı (son kayıt xid {2}).</value>
+  </data>
+</root>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Error.AccessDenied" xml:space="preserve">
+    <value>Accès refusé.</value>
+  </data>
+  <data name="Error.AlreadyExists" xml:space="preserve">
+    <value>Un fichier ou un dossier portant ce nom existe déjà.</value>
+  </data>
+  <data name="Error.ChecksumMismatch" xml:space="preserve">
+    <value>Un bloc du disque n'a pas passé la vérification de sa somme de contrôle ; cette partie est peut-être endommagée. Rien n'a été écrit sur votre disque.</value>
+  </data>
+  <data name="Error.Corrupt" xml:space="preserve">
+    <value>Une structure du disque semble endommagée. Cette partie n'a pas pu être lue ; rien n'a été écrit sur votre disque.</value>
+  </data>
+  <data name="Error.DirectoryNotEmpty" xml:space="preserve">
+    <value>Le dossier n'est pas vide.</value>
+  </data>
+  <data name="Error.DiskFull" xml:space="preserve">
+    <value>Le disque est plein.</value>
+  </data>
+  <data name="Error.Encrypted" xml:space="preserve">
+    <value>Ce volume est chiffré. Un mot de passe est nécessaire pour l'ouvrir.</value>
+  </data>
+  <data name="Error.InvalidArgument" xml:space="preserve">
+    <value>Valeur non valide.</value>
+  </data>
+  <data name="Error.IoError" xml:space="preserve">
+    <value>Le disque n'a pas pu être lu. Il a peut-être été retiré ou il est défectueux.</value>
+  </data>
+  <data name="Error.NoValidCheckpoint" xml:space="preserve">
+    <value>Aucun des points de contrôle du conteneur APFS n'est intact. Le disque est peut-être gravement endommagé. Rien n'a été écrit sur votre disque.</value>
+  </data>
+  <data name="Error.NotApfs" xml:space="preserve">
+    <value>Ce disque ou ce fichier n'est pas au format APFS.</value>
+  </data>
+  <data name="Error.NotFound" xml:space="preserve">
+    <value>Fichier ou dossier introuvable.</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>Erreur inconnue.</value>
+  </data>
+  <data name="Error.Unsupported" xml:space="preserve">
+    <value>Cette fonctionnalité n'est pas encore prise en charge.</value>
+  </data>
+  <data name="Error.WrongPassword" xml:space="preserve">
+    <value>Mot de passe incorrect.</value>
+  </data>
+  <data name="Gate.BlockSize" xml:space="preserve">
+    <value>La taille de bloc est de {0} ; seuls les blocs de 4096 octets sont pris en charge.</value>
+  </data>
+  <data name="Gate.CheckpointArea" xml:space="preserve">
+    <value>La zone des points de contrôle du disque est fragmentée ; cette disposition n'est pas prise en charge.</value>
+  </data>
+  <data name="Gate.EncRolled" xml:space="preserve">
+    <value>Le chiffrement du volume "{0}" a été modifié ultérieurement (ENC_ROLLED) ; aucune écriture n'est faite sur un tel disque.</value>
+  </data>
+  <data name="Gate.EncryptionInProgress" xml:space="preserve">
+    <value>Une opération de chiffrement lancée par macOS n'est pas terminée sur le volume "{0}" ; aucune écriture n'est faite sur un tel disque.</value>
+  </data>
+  <data name="Gate.Fusion" xml:space="preserve">
+    <value>L'écriture sur un conteneur Fusion Drive n'est pas prise en charge.</value>
+  </data>
+  <data name="Gate.Inconsistent" xml:space="preserve">
+    <value>Une incohérence a été détectée dans la structure interne du disque ; par sécurité, l'écriture n'a pas été activée. Vérifiez le disque sur un Mac avec Utilitaire de disque → S.O.S.</value>
+  </data>
+  <data name="Gate.Locked" xml:space="preserve">
+    <value>Le volume "{0}" est chiffré ; déverrouillez-le avant d'autoriser l'écriture.</value>
+  </data>
+  <data name="Gate.OmapUnreadable" xml:space="preserve">
+    <value>La table des objets du volume "{0}" n'a pas pu être lue.</value>
+  </data>
+  <data name="Gate.OpenWarnings" xml:space="preserve">
+    <value>Des problèmes ont été constatés à l'ouverture du disque (le point de contrôle le plus récent est peut-être inutilisable).</value>
+  </data>
+  <data name="Gate.Sealed" xml:space="preserve">
+    <value>"{0}" est un volume système scellé.</value>
+  </data>
+  <data name="Gate.Snapshots" xml:space="preserve">
+    <value>Le volume "{0}" contient des instantanés (p. ex. Time Machine) ; l'écriture sur ce type de disque n'est pas prise en charge.</value>
+  </data>
+  <data name="Gate.SystemVolume" xml:space="preserve">
+    <value>"{0}" est un volume système, de sauvegarde ou interne de macOS ; aucune écriture n'est faite sur ce disque.</value>
+  </data>
+  <data name="Gate.UnknownContainerFeature" xml:space="preserve">
+    <value>Le disque utilise une fonctionnalité APFS que cette version ne reconnaît pas.</value>
+  </data>
+  <data name="Gate.UnknownVolumeFeature" xml:space="preserve">
+    <value>Le volume "{0}" utilise une fonctionnalité APFS que cette version ne reconnaît pas.</value>
+  </data>
+  <data name="Gate.Unresolvable" xml:space="preserve">
+    <value>Le disque contient une structure que cette version ne sait pas interpréter ; l'écriture n'a pas été activée, car le propriétaire de chaque bloc n'a pas pu être vérifié.</value>
+  </data>
+  <data name="Gate.UnsupportedEncryption" xml:space="preserve">
+    <value>Le volume "{0}" utilise un type de chiffrement sur lequel cette version ne peut pas écrire (chiffrement matériel ou clés par fichier).</value>
+  </data>
+  <data name="Gate.UnsupportedVolumeSetting" xml:space="preserve">
+    <value>Le volume "{0}" a un réglage que cette version ne prend pas en charge.</value>
+  </data>
+  <data name="Gate.VolumeUnreadable" xml:space="preserve">
+    <value>Un volume n'a pas pu être lu ({0}).</value>
+  </data>
+  <data name="Gate.WriteBlocker" xml:space="preserve">
+    <value>Le disque utilise une fonctionnalité que cette version ne sait pas maintenir à jour ({0}) ; l'écriture n'a pas été activée.</value>
+  </data>
+  <data name="Mount.WinFspMissing" xml:space="preserve">
+    <value>WinFsp n'est pas installé. Pour l'installer : winget install WinFsp.WinFsp</value>
+  </data>
+  <data name="Mount.WinFspNotLoaded" xml:space="preserve">
+    <value>WinFsp n'est pas installé ou n'a pas pu être chargé ({0}). Pour l'installer : winget install WinFsp.WinFsp</value>
+  </data>
+  <data name="Partition.Numbered" xml:space="preserve">
+    <value>partition {0}</value>
+  </data>
+  <data name="Partition.Unpartitioned" xml:space="preserve">
+    <value>conteneur APFS non partitionné</value>
+  </data>
+  <data name="Volume.RoleBackup" xml:space="preserve">
+    <value>Sauvegarde</value>
+  </data>
+  <data name="Volume.RoleData" xml:space="preserve">
+    <value>Données</value>
+  </data>
+  <data name="Volume.RoleInstaller" xml:space="preserve">
+    <value>Programme d'installation</value>
+  </data>
+  <data name="Volume.RolePreboot" xml:space="preserve">
+    <value>Preboot</value>
+  </data>
+  <data name="Volume.RoleRecovery" xml:space="preserve">
+    <value>Récupération</value>
+  </data>
+  <data name="Volume.RoleSystem" xml:space="preserve">
+    <value>Système</value>
+  </data>
+  <data name="Volume.RoleUpdate" xml:space="preserve">
+    <value>Mise à jour</value>
+  </data>
+  <data name="Volume.RoleUser" xml:space="preserve">
+    <value>Utilisateur</value>
+  </data>
+  <data name="Volume.RoleVm" xml:space="preserve">
+    <value>Mémoire virtuelle</value>
+  </data>
+</root>

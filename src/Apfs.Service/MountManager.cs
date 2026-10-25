@@ -116,7 +116,7 @@ internal sealed class MountManager : IDisposable
             }
             catch (Exception e)
             {
-                AddNotice("uyarı", $"{key} okunamadı: {e.Message}", throttleKey: key);
+                AddNotice("uyarı", WinText.U("Notice.DiskUnreadable", key, e.Message), throttleKey: key);
             }
             finally
             {
@@ -165,7 +165,7 @@ internal sealed class MountManager : IDisposable
             foreach (var r in c.OpenVolumes(keys: KeysOf(disk)))
             {
                 ulong oid = c.Superblock.FsOids[r.Index];
-                var tv = new TrackedVolume(c, p, r.Index, oid, r.Volume?.Name ?? $"birim {r.Index}");
+                var tv = new TrackedVolume(c, p, r.Index, oid, r.Volume?.Name ?? WinText.U("Volume.DefaultName", r.Index));
                 volumes.Add(tv);
                 if (r.Volume is { } v) TryMount(disk, tv, v);
                 else if (r.Error!.Code == ApfsErrorCode.Encrypted) MarkNeedsPassword(disk, tv);
@@ -173,7 +173,7 @@ internal sealed class MountManager : IDisposable
                 {
                     tv.State = VolumeStatus.Failed;
                     tv.Message = r.Error.Message;
-                    AddNotice("hata", $"{disk.Description}: birim {r.Index} açılamadı. {r.Error.Message}");
+                    AddNotice("hata", WinText.U("Notice.VolumeOpenFailed", disk.Description, r.Index, r.Error.Message));
                 }
             }
             bool published;
@@ -193,7 +193,7 @@ internal sealed class MountManager : IDisposable
         }
         catch (ApfsException e)
         {
-            AddNotice("hata", $"{disk.Description}: APFS kapsayıcısı açılamadı. {e.Message}");
+            AddNotice("hata", WinText.U("Notice.ContainerOpenFailed", disk.Description, e.Message));
         }
         catch (ObjectDisposedException) { } // disk bu arada bırakıldı (çıkarıldı)
     }
@@ -211,7 +211,7 @@ internal sealed class MountManager : IDisposable
         }
         foreach (var tv in volumes)
         {
-            try { tv.Mount?.Dispose(); } catch (Exception e) { ServiceLog.Write($"{disk.Key}: ayırma hatası: {e.Message}"); }
+            try { tv.Mount?.Dispose(); } catch (Exception e) { ServiceLog.Write(WinText.T("Svc.UnmountError", disk.Key, e.Message)); }
         }
         c?.Dispose();
     }
@@ -228,8 +228,8 @@ internal sealed class MountManager : IDisposable
         tv.State = VolumeStatus.NeedsPassword;
         tv.Hint = info?.Hint;
         tv.Message = null;
-        AddNotice("bilgi", $"\"{tv.Name}\" birimi şifreli. Açmak için tepsideki APFS simgesinden parolayı girin.");
-        ServiceLog.Write($"{disk.Key}: \"{tv.Name}\" parola bekliyor.");
+        AddNotice("bilgi", WinText.U("Notice.NeedsPassword", tv.Name));
+        ServiceLog.Write(WinText.T("Svc.WaitingForPassword", disk.Key, tv.Name));
     }
 
     /// <summary>Şifreli birimin adını ve ipucunu parola olmadan öğrenir (sağlayıcı null döndürür, bilgiyi yakalarız).</summary>
@@ -247,7 +247,7 @@ internal sealed class MountManager : IDisposable
         if (!v.IsUserVisible)
         {
             tv.State = VolumeStatus.Hidden;
-            tv.Message = $"macOS iç birimi ({v.RoleName})";
+            tv.Message = WinText.U("Volume.InternalRole", v.RoleName);
             return;
         }
         try
@@ -256,14 +256,14 @@ internal sealed class MountManager : IDisposable
             tv.Mount = m;
             tv.State = VolumeStatus.Mounted;
             tv.Message = null;
-            AddNotice("bilgi", $"\"{v.Name}\" {m.MountPoint} sürücüsü olarak bağlandı (salt okunur).");
-            ServiceLog.Write($"{disk.Key}: \"{v.Name}\" {m.MountPoint} olarak bağlandı.");
+            AddNotice("bilgi", WinText.U("Notice.Mounted", v.Name, m.MountPoint));
+            ServiceLog.Write(WinText.T("Svc.Mounted", disk.Key, v.Name, m.MountPoint));
         }
         catch (ApfsException e)
         {
             tv.State = VolumeStatus.Failed;
             tv.Message = e.Message;
-            AddNotice("hata", $"\"{v.Name}\" bağlanamadı. {e.Message}");
+            AddNotice("hata", WinText.U("Notice.MountFailed", v.Name, e.Message));
         }
     }
 
@@ -279,7 +279,7 @@ internal sealed class MountManager : IDisposable
             disk = _disks.GetValueOrDefault(diskKey);
             tv = disk?.Volumes.FirstOrDefault(x => x.ContainerIndex == container && x.Index == volumeIndex && x.State == VolumeStatus.NeedsPassword);
         }
-        if (disk is null || tv is null) return new UnlockResponse(false, "Bu birim artık parola beklemiyor.");
+        if (disk is null || tv is null) return new UnlockResponse(false, WinText.U("Unlock.NotWaiting"));
         VolumeKey? key = null;
         try
         {
@@ -294,13 +294,13 @@ internal sealed class MountManager : IDisposable
             key = null; // sahipliği diske geçti
             TryMount(disk, tv, v);
             return tv.State == VolumeStatus.Mounted
-                ? new UnlockResponse(true, $"\"{v.Name}\" {tv.Mount!.MountPoint} olarak bağlandı.")
-                : new UnlockResponse(false, tv.Message ?? "Bağlanamadı.");
+                ? new UnlockResponse(true, WinText.U("Unlock.Mounted", v.Name, tv.Mount!.MountPoint))
+                : new UnlockResponse(false, tv.Message ?? WinText.U("Unlock.MountFailed"));
         }
         catch (ApfsException e)
         {
             // Parola yanlışsa günlüğe yalnızca olay yazılır, parola asla.
-            ServiceLog.Write($"{disk.Key}: \"{tv.Name}\" kilit açma başarısız: {e.Code}");
+            ServiceLog.Write(WinText.T("Svc.UnlockFailed", disk.Key, tv.Name, e.Code));
             return new UnlockResponse(false, e.Message);
         }
         finally
@@ -325,13 +325,12 @@ internal sealed class MountManager : IDisposable
             disk = _disks.GetValueOrDefault(diskKey);
             busy = disk is null ? [] : BusyVolumes(disk);
         }
-        if (disk is null) return new UnlockResponse(false, "Bu disk artık takılı değil.");
+        if (disk is null) return new UnlockResponse(false, WinText.U("Disk.Gone"));
         if (!force && busy.Count > 0)
         {
-            ServiceLog.Write($"{diskKey}: çıkarma ertelendi, kullanımda: {string.Join(", ", busy)}");
+            ServiceLog.Write(WinText.T("Svc.EjectDeferred", diskKey, string.Join(", ", busy)));
             return new UnlockResponse(false,
-                $"{disk.Description} üzerindeki bir dosya şu anda açık veya kopyalanıyor ({string.Join(", ", busy)}). " +
-                "Şimdi çıkarırsanız kopyalama yarıda kalır; Mac diskinize zarar gelmez.", Busy: true);
+                WinText.U("Eject.Busy", disk.Description, string.Join(", ", busy)), Busy: true);
         }
 
         DiskEjector.Target? target = null;
@@ -342,19 +341,19 @@ internal sealed class MountManager : IDisposable
         ReleaseDisk(diskKey, "", rememberReleased: true, notify: false);
         if (target is not { Removable: true })
         {
-            AddNotice("bilgi", $"{disk.Description} birimleri ayrıldı. Bu disk çıkarılabilir bir aygıt olarak görünmüyor; yeniden bağlamak için \"Yeniden tara\".");
-            return new UnlockResponse(true, "Birimler ayrıldı.");
+            AddNotice("bilgi", WinText.U("Notice.Detached", disk.Description));
+            return new UnlockResponse(true, WinText.U("Eject.Detached"));
         }
         var (ok, error) = DiskEjector.Eject(target);
         if (ok)
         {
-            AddNotice("bilgi", $"{disk.Description} güvenle çıkarıldı. Kabloyu şimdi çekebilirsiniz.");
-            return new UnlockResponse(true, "Disk güvenle çıkarıldı.");
+            AddNotice("bilgi", WinText.U("Notice.Ejected", disk.Description));
+            return new UnlockResponse(true, WinText.U("Eject.Ejected"));
         }
-        ServiceLog.Write($"{diskKey}: çıkarma reddedildi: {error}");
+        ServiceLog.Write(WinText.T("Svc.EjectRefused", diskKey, error));
         lock (_gate) _released.Remove(diskKey);
         ThreadPool.QueueUserWorkItem(_ => Rescan());
-        return new UnlockResponse(false, error + " Disk yeniden bağlanıyor.");
+        return new UnlockResponse(false, WinText.U("Eject.Remounting", error));
     }
 
     // ---------------- Yazma (deneysel) ----------------
@@ -376,18 +375,17 @@ internal sealed class MountManager : IDisposable
         lock (_gate)
         {
             disk = _disks.GetValueOrDefault(diskKey);
-            if (disk is null) return new UnlockResponse(false, "Bu disk artık takılı değil.");
+            if (disk is null) return new UnlockResponse(false, WinText.U("Disk.Gone"));
             if (!disk.Containers.ContainsKey(container) && !disk.Writes.ContainsKey(container))
-                return new UnlockResponse(false, "Bu diskte böyle bir APFS bölümü yok.");
+                return new UnlockResponse(false, WinText.U("Write.NoSuchPartition"));
             bool writable = disk.Writes.ContainsKey(container);
             if (enable == writable)
-                return new UnlockResponse(true, enable ? "Bu bölüm zaten yazmaya açık." : "Bu bölüm zaten salt okunur.");
+                return new UnlockResponse(true, enable ? WinText.U("Write.AlreadyWritable") : WinText.U("Write.AlreadyReadOnly"));
             var busy = BusyVolumes(disk, container);
             if (!force && busy.Count > 0)
                 return new UnlockResponse(false,
-                    $"{disk.Description} üzerindeki bir dosya şu anda açık veya kopyalanıyor ({string.Join(", ", busy)}). " +
-                    "Devam ederseniz sürücü kısa bir süre ayrılıp yeniden bağlanır; açık dosyalar kapanır.", Busy: true);
-            if (!disk.Switching.Add(container)) return new UnlockResponse(false, "Bu bölüm için önceki istek henüz bitmedi.");
+                    WinText.U("Write.Busy", disk.Description, string.Join(", ", busy)), Busy: true);
+            if (!disk.Switching.Add(container)) return new UnlockResponse(false, WinText.U("Write.PreviousRequestPending"));
         }
         try
         {
@@ -412,22 +410,22 @@ internal sealed class MountManager : IDisposable
             using var c = SourceOpener.OpenContainer(disk.Device, container, ownsDevice: false);
             gate = WriteGate.Evaluate(c, KeysOf(disk));
             if (gate.Allowed && c.Superblock.FsOids.Count != 1)
-                refusal = "Bu bölüm birden çok birim içeriyor; bu sürümde yalnızca tek birimli bölümler yazmaya açılabiliyor.";
+                refusal = WinText.U("Write.MultipleVolumes");
             refusal ??= gate.Allowed ? null : string.Join(" ", gate.Reasons);
         }
         catch (Exception e)
         {
             gate = new GateResult(false, [], null, null);
-            refusal = $"Disk denetlenemedi: {e.Message}";
+            refusal = WinText.U("Write.CheckFailed", e.Message);
         }
         if (refusal is not null)
         {
-            ServiceLog.Write($"{key}: bölüm {container} yazmaya açılmadı: {refusal}");
+            ServiceLog.Write(WinText.T("Svc.WriteNotEnabled", key, container, refusal));
             // Denetimin ayrıntısı yalnız günlüğe (teşhis için); dosya ve klasör adları gizlenir
             foreach (var e in gate.Report?.Errors.Take(10) ?? [])
-                ServiceLog.Write($"{key}: bölüm {container} denetim: {Apfs.Diagnostics.CheckReport.HideNames(e)}");
+                ServiceLog.Write(WinText.T("Svc.WriteCheck", key, container, Apfs.Diagnostics.CheckReport.HideNames(e)));
             RemountReadOnly(disk, container, refusal);
-            AddNotice("uyarı", $"{description} yazmaya açılmadı. {refusal}");
+            AddNotice("uyarı", WinText.U("Notice.WriteRefused", description, refusal));
             return new UnlockResponse(false, refusal);
         }
 
@@ -463,10 +461,10 @@ internal sealed class MountManager : IDisposable
                     disk.Volumes.Add(tv);
                 }
             }
-            if (!attached) throw new ApfsException(ApfsErrorCode.NotFound, "disk bu sırada çıkarıldı");
-            AddNotice("bilgi", $"\"{vw.Name}\" {tv.WritableMount.MountPoint} sürücüsü YAZILABİLİR olarak bağlandı (deneysel). Diski çıkarmadan önce \"Güvenle çıkar\"ı kullanın.");
-            ServiceLog.Write($"{key}: \"{vw.Name}\" yazılabilir bağlandı ({tv.WritableMount.MountPoint}).");
-            return new UnlockResponse(true, $"\"{vw.Name}\" yazmaya açıldı ({tv.WritableMount.MountPoint}).");
+            if (!attached) throw new ApfsException(ApfsErrorCode.NotFound, WinText.T("Svc.DiskRemovedMeanwhile"));
+            AddNotice("bilgi", WinText.U("Notice.MountedWritable", vw.Name, tv.WritableMount.MountPoint));
+            ServiceLog.Write(WinText.T("Svc.MountedWritable", key, vw.Name, tv.WritableMount.MountPoint));
+            return new UnlockResponse(true, WinText.U("Write.Enabled", vw.Name, tv.WritableMount.MountPoint));
         }
         catch (Exception e)
         {
@@ -475,7 +473,7 @@ internal sealed class MountManager : IDisposable
             write?.RemovalWatch?.Dispose();
             write?.Session.Dispose();
             foreach (var r in resources) { try { r.Dispose(); } catch { } }
-            string msg = $"Yazmaya açılamadı: {e.Message}";
+            string msg = WinText.U("Write.EnableFailed", e.Message);
             ServiceLog.Write($"{key}: {msg}");
             bool stillAttached;
             lock (_gate) stillAttached = _disks.TryGetValue(key, out var current) && ReferenceEquals(current, disk);
@@ -489,8 +487,8 @@ internal sealed class MountManager : IDisposable
     {
         CloseWrite(disk, container, abandon: false); // son commit + blok 0; kimlik kilit içinde tazelenir
         RemountReadOnly(disk, container, null);
-        AddNotice("bilgi", $"{disk.Description} salt okunur olarak yeniden bağlandı; değişiklikler kaydedildi.");
-        return new UnlockResponse(true, "Disk salt okunur olarak yeniden bağlandı.");
+        AddNotice("bilgi", WinText.U("Notice.RemountedReadOnly", disk.Description));
+        return new UnlockResponse(true, WinText.U("Write.RemountedReadOnly"));
     }
 
     /// <summary>Bölümü diskten salt okunur yeniden açıp bağlar (yazma denemesinden ya da oturumdan sonra; bayat önbellek kalmasın).</summary>
@@ -530,25 +528,24 @@ internal sealed class MountManager : IDisposable
                     if (abandon) tv.WritableMount?.FileSystem.Dispose(); // commit zamanlayıcısı ve Flush artık yazmaz
                     tv.WritableMount?.Dispose();
                 }
-                catch (Exception e) { ServiceLog.Write($"{disk.Key}: yazılabilir ayırma hatası: {e.Message}"); }
+                catch (Exception e) { ServiceLog.Write(WinText.T("Svc.WritableUnmountError", disk.Key, e.Message)); }
                 tv.WritableMount = null;
             }
             if (abandon)
             {
                 write.Session.Dispose(); // açık işlem yazılmaz
-                ServiceLog.Write($"{disk.Key}: bölüm {container} yazma oturumu kaydedilmeden bırakıldı (son kayıt xid {write.Session.CommittedXid}).");
+                ServiceLog.Write(WinText.T("Svc.WriteSessionAbandoned", disk.Key, container, write.Session.CommittedXid));
             }
             else
             {
                 try
                 {
                     write.Session.Close();
-                    ServiceLog.Write($"{disk.Key}: bölüm {container} yazma oturumu kapatıldı (son kayıt xid {write.Session.CommittedXid}).");
+                    ServiceLog.Write(WinText.T("Svc.WriteSessionClosed", disk.Key, container, write.Session.CommittedXid));
                 }
                 catch (Exception e)
                 {
-                    AddNotice("hata", $"{disk.Description}: son değişikliklerin bir kısmı diske yazılamadı (disk çıkarılmış olabilir). " +
-                        "Disk bir önceki kayıtlı hâliyle açılır. Ayrıntı: " + e.Message);
+                    AddNotice("hata", WinText.U("Notice.CloseWriteFailed", disk.Description, e.Message));
                 }
             }
             // Yalnız geliştirme modu (testler): Close ile kimlik tazeleme arasındaki pencereyi genişletir
@@ -558,7 +555,7 @@ internal sealed class MountManager : IDisposable
             foreach (var r in write.Resources) { try { r.Dispose(); } catch { } }
             if (!abandon)
             {
-                // Close blok 0'ı yazdı: kimlik yeni hâline tazelenir (okunamazsa eski kalır; sonraki tarama "çıkarıldı" der)
+                // Close blok 0'ı yazdı: kimlik yeni hâline tazelenir (okunamazsa eski kalır; sonraki tarama WinText.U("Release.Removed") der)
                 try { disk.Fingerprint = PartitionLocator.Fingerprint(disk.Device); }
                 catch (Exception e) when (e is ApfsException or ObjectDisposedException) { }
             }
@@ -577,7 +574,7 @@ internal sealed class MountManager : IDisposable
         {
             case DeviceNotifications.NotifyAction.QueryRemove:
                 // Windows diski çıkarmak istiyor: tanıtıcıyı geri çağrının içinde, eşzamanlı olarak kapat.
-                ReleaseDisk(key, "güvenli kaldırma için ayrıldı; artık diski çıkarabilirsiniz", rememberReleased: true);
+                ReleaseDisk(key, WinText.U("Release.SafeToRemove"), rememberReleased: true);
                 break;
             case DeviceNotifications.NotifyAction.QueryRemoveFailed:
                 lock (_gate) _released.Remove(key);
@@ -585,7 +582,7 @@ internal sealed class MountManager : IDisposable
                 break;
             case DeviceNotifications.NotifyAction.RemovePending:
             case DeviceNotifications.NotifyAction.RemoveComplete:
-                ReleaseDisk(key, "çıkarıldı", rememberReleased: false);
+                ReleaseDisk(key, WinText.U("Release.Removed"), rememberReleased: false);
                 lock (_gate) _released.Remove(key);
                 break;
             case DeviceNotifications.NotifyAction.CustomEvent:
@@ -598,8 +595,8 @@ internal sealed class MountManager : IDisposable
     /// <summary>Hizmetten tarama isteği (diske özel aygıt olayı geldi); hizmet kısa bir gecikmeyle tek tarama yapar.</summary>
     public event Action? ScanRequested;
 
-    private const string ChangedReason =
-        "içeriği başka bir program tarafından değiştirildi (ör. yeniden biçimlendirildi); APFS sürücüsü kaldırıldı";
+    private static string ChangedReason =>
+        WinText.U("Release.Changed");
 
     /// <summary>
     /// Kaybolan (okuma hatası veren) ve içeriği değişen (APFS kimliği tutmayan: ör. Rufus ile biçimlendirilmiş) diskleri
@@ -623,15 +620,15 @@ internal sealed class MountManager : IDisposable
                 catch (ApfsException) { now = ""; }              // bölüm tablosu/kapsayıcı başı bozuk: içerik değişmiş
                 catch (Exception e)
                 {
-                    ServiceLog.Write($"{d.Key}: disk denetlenemedi: {e.Message}");
+                    ServiceLog.Write(WinText.T("Svc.DiskCheckFailed", d.Key, e.Message));
                     continue;
                 }
                 // Yazma oturumundaki disk doğrulanamıyorsa da kaydedilmeden bırakılır: biçimlendirme okuma hatası da
                 // doğurabilir; gerçekten çekilmiş diske zaten yazılamaz.
                 if (now is null)
-                    ReleaseDisk(d.Key, "çıkarıldı", rememberReleased: false, abandonWrites: true, expected: d);
+                    ReleaseDisk(d.Key, WinText.U("Release.Removed"), rememberReleased: false, abandonWrites: true, expected: d);
                 else if (now != d.Fingerprint)
-                    ReleaseDisk(d.Key, ChangedReason, rememberReleased: false, abandonWrites: true, expected: d);
+                    ReleaseDisk(d.Key, ChangedReason, rememberReleased: false, abandonWrites: true, expected: d, contentChanged: true);
             }
         }
         // Güvenli kaldırılmış ama aslında hâlâ takılı olmayan diskler listeden düşsün (yeniden takılınca bağlansın)
@@ -652,12 +649,13 @@ internal sealed class MountManager : IDisposable
     /// <param name="abandonWrites">Yazma oturumları varsa kaydetmeden bırak (bkz. <see cref="CloseWrite"/>).</param>
     /// <param name="expected">Verilirse yalnız anahtardaki disk hâlâ BU nesneyse bırakılır: tarama eski bir anlık görüntüyle
     /// çalışırken aynı anahtara yeni bağlanmış diski düşürmesin.</param>
+    /// <param name="contentChanged">Disk başka bir programca değiştirildi (bildirimde kaydedilmeyen değişikliklerin nedeni farklı).</param>
     /// <remarks>
     /// Tekrar çağrılabilir: diskin her açık tanıtıcısının (salt okunur + her yazma tanıtıcısı) güvenli kaldırma kaydı buraya gelir;
     /// ilk çağrı BÜTÜN tanıtıcıları eşzamanlı kapatır (QueryRemove geri çağrısının içinde), sonrakiler bir şey bulmaz.
     /// </remarks>
     private void ReleaseDisk(string key, string reason, bool rememberReleased, bool notify = true, bool abandonWrites = false,
-        TrackedDisk? expected = null)
+        TrackedDisk? expected = null, bool contentChanged = false)
     {
         TrackedDisk? disk;
         lock (_gate)
@@ -680,7 +678,7 @@ internal sealed class MountManager : IDisposable
             foreach (int p in writes) CloseWrite(disk, p, abandonWrites);
             foreach (var tv in mounted)
             {
-                try { tv.Mount?.Dispose(); } catch (Exception e) { ServiceLog.Write($"{key}: ayırma hatası: {e.Message}"); }
+                try { tv.Mount?.Dispose(); } catch (Exception e) { ServiceLog.Write(WinText.T("Svc.UnmountError", key, e.Message)); }
             }
             List<ApfsContainer> containers;
             lock (_gate) containers = [.. disk.Containers.Values];
@@ -693,10 +691,12 @@ internal sealed class MountManager : IDisposable
         }
         if (!notify) return;
         var names = mounted.Where(v => v.State == VolumeStatus.Mounted).Select(v => $"\"{v.Name}\"").ToList();
-        AddNotice(abandoned ? "uyarı" : "bilgi", $"{disk.Description}{(names.Count > 0 ? " (" + string.Join(", ", names) + ")" : "")} {reason}." +
-            (!abandoned ? "" : reason == ChangedReason
-                ? " Kaydedilmemiş son değişiklikler, diskteki yeni içeriği bozmamak için diske yazılmadı."
-                : " Kaydedilmemiş son değişiklikler diske yazılamadı; disk bir önceki kayıtlı hâliyle açılır."));
+        string text = $"{disk.Description}{(names.Count > 0 ? " (" + string.Join(", ", names) + ")" : "")} {reason}.";
+        if (abandoned)
+            text += " " + (contentChanged
+                ? WinText.U("Release.UnsavedNotWrittenChanged")
+                : WinText.U("Release.UnsavedLost"));
+        AddNotice(abandoned ? "uyarı" : "bilgi", text);
         ServiceLog.Write($"{key}: {reason}.");
     }
 
@@ -737,13 +737,13 @@ internal sealed class MountManager : IDisposable
     {
         double gb = device.Length / 1e9;
         string size = gb >= 1 ? $"{gb:0.#} GB" : $"{device.Length / 1e6:0.#} MB";
-        return key.StartsWith("PhysicalDrive", StringComparison.OrdinalIgnoreCase) ? $"Disk {key[13..]} ({size})" : $"{Path.GetFileName(key)} ({size})";
+        return key.StartsWith("PhysicalDrive", StringComparison.OrdinalIgnoreCase) ? WinText.U("Disk.PhysicalName", key[13..], size) : $"{Path.GetFileName(key)} ({size})";
     }
 
     public void Dispose()
     {
         List<string> keys;
         lock (_gate) keys = [.. _disks.Keys];
-        foreach (var k in keys) ReleaseDisk(k, "hizmet durdurulduğu için ayrıldı", rememberReleased: false);
+        foreach (var k in keys) ReleaseDisk(k, WinText.U("Release.ServiceStopped"), rememberReleased: false);
     }
 }

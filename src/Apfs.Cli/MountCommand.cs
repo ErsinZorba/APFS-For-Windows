@@ -14,31 +14,31 @@ internal static partial class MountCommand
 
     public static int Run(CliOptions o)
     {
-        string source = o.Require(0, "kaynak");
+        string source = o.Require(0, WinText.T("Cli.ArgSource"));
         string? mountPoint = o.Positional.Count > 1 ? ParseMountPoint(o.Positional[1]) : null;
 
         using var container = SourceOpener.OpenContainer(source, o.Partition);
         var volumes = SelectVolumes(container, o.Has("--volume-set") ? o.Volume : null, o.Has("--all"), Console.Error.WriteLine, Passwords.FromOptions(o));
         if (volumes.Count == 0)
-            throw new ApfsException(ApfsErrorCode.NotFound, "bağlanabilecek birim yok");
+            throw new ApfsException(ApfsErrorCode.NotFound, WinText.T("Cli.NoMountableVolume"));
         if (mountPoint is not null && volumes.Count > 1)
-            throw new CliUsageException("diskte birden çok birim var; sürücü harfi verecekseniz --volume N ile birini seçin");
+            throw new CliUsageException(WinText.T("Cli.MultipleVolumesNeedIndex"));
 
         var mounts = new List<ApfsMount>();
         try
         {
             foreach (var volume in volumes)
             {
-                var mount = ApfsMount.Mount(volume, mountPoint, msg => Console.Error.WriteLine($"Uyarı: {msg}"));
+                var mount = ApfsMount.Mount(volume, mountPoint, msg => Console.Error.WriteLine(WinText.T("Cli.MountWarning", msg)));
                 mount.FileSystem.Stats.Enabled = o.Has("--stats");
                 mounts.Add(mount);
-                Console.WriteLine($"Bağlandı: {mount.MountPoint}  \"{volume.Name}\"{(volume.RoleName.Length > 0 ? $" [{volume.RoleName}]" : "")}  (salt okunur{(mount.FileSystem.KernelReadOnlyFlagSet ? "" : ", çekirdek bayrağı ayarlanamadı")})");
+                Console.WriteLine(WinText.T("Cli.Mounted", mount.MountPoint, volume.Name, (volume.RoleName.Length > 0 ? $" [{volume.RoleName}]" : ""), (mount.FileSystem.KernelReadOnlyFlagSet ? "" : WinText.T("Cli.KernelFlagNotSet"))));
             }
-            Console.WriteLine("Ayırmak için Ctrl+C'ye basın.");
+            Console.WriteLine(WinText.T("Cli.PressCtrlC"));
             using var stop = new ManualResetEventSlim();
             Console.CancelKeyPress += (_, e) => { e.Cancel = true; stop.Set(); };
             stop.Wait();
-            Console.WriteLine("Ayrılıyor...");
+            Console.WriteLine(WinText.T("Cli.Unmounting"));
             foreach (var m in mounts.Where(m => m.FileSystem.Stats.Enabled))
                 foreach (var line in m.FileSystem.Stats.Report()) Console.WriteLine($"{m.MountPoint} {line}");
         }
@@ -62,18 +62,18 @@ internal static partial class MountCommand
             if (index is int want && r.Index != want) continue;
             if (r.Volume is not { } v)
             {
-                report($"Birim {r.Index} bağlanmadı: {r.Error!.Message}");
+                report(WinText.T("Cli.VolumeNotMounted", r.Index, r.Error!.Message));
                 continue;
             }
             if (index is null && !includeSystem && !v.IsUserVisible)
             {
-                report($"Birim {r.Index} \"{v.Name}\" [{v.RoleName}] macOS'un iç birimi olduğu için bağlanmadı (göstermek için --all).");
+                report(WinText.T("Cli.InternalVolumeSkipped", r.Index, v.Name, v.RoleName));
                 continue;
             }
             result.Add(v);
         }
         if (index is int i && result.Count == 0 && opened.All(r => r.Index != i))
-            throw new ApfsException(ApfsErrorCode.InvalidArgument, $"birim {i} yok");
+            throw new ApfsException(ApfsErrorCode.InvalidArgument, WinText.T("Cli.NoSuchVolume", i));
         return result;
     }
 
@@ -86,8 +86,8 @@ internal static partial class MountCommand
         string disk = o.Require(0, "disk");
         if (SourceOpener.ParsePhysicalDrive(disk) is null)
         {
-            ServiceLog.Write($"Reddedildi: \"{disk}\" bir fiziksel disk değil; arka planda yalnızca PhysicalDriveN bağlanabilir.");
-            throw new CliUsageException("Launcher üzerinden yalnızca PhysicalDriveN biçiminde fiziksel disk bağlanabilir");
+            ServiceLog.Write(WinText.T("Cli.LauncherRejectedLog", disk));
+            throw new CliUsageException(WinText.T("Cli.LauncherPhysicalOnly"));
         }
         string? mountPoint;
         try
@@ -96,7 +96,7 @@ internal static partial class MountCommand
         }
         catch (CliUsageException e)
         {
-            ServiceLog.Write($"{disk}: reddedildi: {e.Message}");
+            ServiceLog.Write(WinText.T("Cli.LauncherRejected", disk, e.Message));
             throw;
         }
         return new LauncherService(disk, mountPoint, o.Has("--volume-set") ? o.Volume : null).Run();
@@ -105,7 +105,7 @@ internal static partial class MountCommand
     private static string? ParseMountPoint(string s)
     {
         if (s == "*") return null;
-        if (!DriveLetterRegex().IsMatch(s)) throw new CliUsageException($"geçersiz sürücü harfi: {s} (örnek: X:)");
+        if (!DriveLetterRegex().IsMatch(s)) throw new CliUsageException(WinText.T("Cli.InvalidDriveLetter", s));
         return s.ToUpperInvariant();
     }
 
@@ -121,17 +121,17 @@ internal static partial class MountCommand
             {
                 _container = SourceOpener.OpenContainer(disk);
                 var volumes = SelectVolumes(_container, volumeIndex, includeSystem: false, msg => ServiceLog.Write($"{disk}: {msg}"));
-                if (volumes.Count == 0) throw new ApfsException(ApfsErrorCode.NotFound, "bağlanabilecek birim yok");
+                if (volumes.Count == 0) throw new ApfsException(ApfsErrorCode.NotFound, WinText.T("Cli.NoMountableVolume"));
                 foreach (var volume in volumes)
                 {
                     var m = ApfsMount.Mount(volume, volumes.Count == 1 ? mountPoint : null, msg => ServiceLog.Write($"{disk}: {msg}"));
                     _mounts.Add(m);
-                    ServiceLog.Write($"{disk}: \"{volume.Name}\" {m.MountPoint} olarak bağlandı (salt okunur).");
+                    ServiceLog.Write(WinText.T("Cli.LauncherMounted", disk, volume.Name, m.MountPoint));
                 }
             }
             catch (Exception e)
             {
-                ServiceLog.Write($"{disk}: bağlanamadı: {e.Message}");
+                ServiceLog.Write(WinText.T("Cli.LauncherMountFailed", disk, e.Message));
                 foreach (var m in _mounts) m.Dispose();
                 _container?.Dispose();
                 throw;
@@ -142,7 +142,7 @@ internal static partial class MountCommand
         {
             foreach (var m in _mounts) m.Dispose();
             _container?.Dispose();
-            ServiceLog.Write($"{disk}: ayrıldı.");
+            ServiceLog.Write(WinText.T("Cli.LauncherUnmounted", disk));
         }
     }
 }

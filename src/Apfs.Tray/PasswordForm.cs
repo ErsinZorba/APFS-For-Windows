@@ -10,7 +10,7 @@ internal sealed class PasswordForm : Form
 
     public PasswordForm(string volumeName, string? hint, string? error)
     {
-        Text = "APFS for Windows: şifreli birim";
+        Text = WinText.U("Password.Title");
         Icon = Theme.AppIcon(32);
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = MinimizeBox = false;
@@ -34,24 +34,24 @@ internal sealed class PasswordForm : Form
             FlowDirection = FlowDirection.TopDown, AutoSize = true, WrapContents = false,
             Padding = new Padding(this.S(20), this.S(16), this.S(20), this.S(14)),
         };
-        layout.Controls.Add(Line($"\"{volumeName}\" kilitli", Theme.Font(12f, FontStyle.Bold), Theme.Text));
-        layout.Controls.Add(Line("Bu birim şifreli. Açmak için Mac'te kullandığınız parolayı girin.", Theme.Body, Theme.Muted, 4));
+        layout.Controls.Add(Line(WinText.U("Password.Locked", volumeName), Theme.Font(12f, FontStyle.Bold), Theme.Text));
+        layout.Controls.Add(Line(WinText.U("Password.Prompt"), Theme.Body, Theme.Muted, 4));
         if (!string.IsNullOrEmpty(hint))
-            layout.Controls.Add(Line($"İpucu: {hint}", Theme.Body, Theme.Muted, 6));
+            layout.Controls.Add(Line(WinText.U("Password.Hint", hint), Theme.Body, Theme.Muted, 6));
         _password = new TextBox { UseSystemPasswordChar = true, Width = width, Font = Theme.Font(11f), Margin = new Padding(0, this.S(12), 0, 0) };
         layout.Controls.Add(_password);
         _error = Line(error ?? "", Theme.Body, Theme.Red, 6);
         _error.Visible = error is not null;
         layout.Controls.Add(_error);
-        layout.Controls.Add(Line("Disk yalnızca okunur; parola hiçbir yere kaydedilmez.", Theme.Small, Theme.Muted, 10));
+        layout.Controls.Add(Line(WinText.U("Password.Reassurance"), Theme.Small, Theme.Muted, 10));
 
         var buttons = new FlowLayoutPanel
         {
             FlowDirection = FlowDirection.RightToLeft, AutoSize = true, Width = width, Margin = new Padding(0, this.S(12), 0, 0),
         };
         buttons.MinimumSize = new Size(width, 0);
-        var ok = new FriendlyButton("Kilidi aç") { DialogResult = DialogResult.OK };
-        var cancel = new FriendlyButton("İptal", FriendlyButton.Kind.Secondary) { DialogResult = DialogResult.Cancel };
+        var ok = new FriendlyButton(WinText.U("Action.Unlock")) { DialogResult = DialogResult.OK };
+        var cancel = new FriendlyButton(WinText.U("Action.CancelDialog"), FriendlyButton.Kind.Secondary) { DialogResult = DialogResult.Cancel };
         ok.Click += (_, _) => { DialogResult = DialogResult.OK; Close(); };
         cancel.Click += (_, _) => { DialogResult = DialogResult.Cancel; Close(); };
         buttons.Controls.Add(ok);

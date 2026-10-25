@@ -37,9 +37,9 @@ public sealed partial class VolumeWriter
         if ((Bin.U64(_apsb, 264) & 3) != ApfsConstants.ApfsFsUnencrypted)
         {
             // Şifreli birim: yalnız yazılım şifrelemesi, tek anahtar (ONEKEY); kilidi açılmış anahtar şart
-            if (key is null) throw new ApfsException(ApfsErrorCode.Encrypted, "şifreli birime anahtarsız yazılmaz; önce kilidi açın");
-            if ((Bin.U64(_apsb, 264) & ApfsConstants.ApfsFsOneKey) == 0) throw new ApfsException(ApfsErrorCode.Unsupported, "dosya başına anahtarlı şifreli birime yazılmaz");
-            if (key.VolumeUuid != Bin.Uuid(_apsb, 240)) throw new ApfsException(ApfsErrorCode.InvalidArgument, "anahtar bu birime ait değil");
+            if (key is null) throw new ApfsException(ApfsErrorCode.Encrypted, CoreText.T("VolWriter.EncryptedNoKey"));
+            if ((Bin.U64(_apsb, 264) & ApfsConstants.ApfsFsOneKey) == 0) throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("VolWriter.PerFileKeys"));
+            if (key.VolumeUuid != Bin.Uuid(_apsb, 240)) throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("VolWriter.KeyWrongVolume"));
             _key = key.Clone();
             Crypto = _key.CreateCrypto((uint)bs);
         }
@@ -88,11 +88,11 @@ public sealed partial class VolumeWriter
         ulong? found = null;
         foreach (var e in _omap.Scan(k => Bin.U64(k, 0).CompareTo(oid)))
         {
-            if (found is not null) throw ApfsException.Corrupt($"nesne {oid} için birden çok omap kaydı");
-            if ((Bin.U32(e.Value, 0) & ApfsConstants.OmapValDeleted) != 0) throw ApfsException.Corrupt($"nesne {oid} silinmiş işaretli");
+            if (found is not null) throw ApfsException.Corrupt(CoreText.T("VolWriter.MultipleOmapRecords", oid));
+            if ((Bin.U32(e.Value, 0) & ApfsConstants.OmapValDeleted) != 0) throw ApfsException.Corrupt(CoreText.T("VolWriter.OmapDeleted", oid));
             found = Bin.U64(e.Value, 8);
         }
-        return found ?? throw ApfsException.Corrupt($"nesne {oid} birim omap'inde yok");
+        return found ?? throw ApfsException.Corrupt(CoreText.T("VolWriter.NotInVolumeOmap", oid));
     }
 
     /// <summary>Şifreli birimde fs ağacı düğümlerinin omap kaydı OMAP_VAL_ENCRYPTED taşır (apfsck btree.c: iki yönde denetler).</summary>
@@ -209,7 +209,7 @@ public sealed partial class VolumeWriter
     {
         if (_view is not null) return _view;
         if (container.Xid != _s.CommittedXid && _dirtyEver)
-            throw new InvalidOperationException("görüntü, oturumun ilk değişikliğinden önce kurulmalı");
+            throw new InvalidOperationException(CoreText.T("VolWriter.ViewTooLate"));
         var v = _key is null ? ApfsVolume.Open(container, Oid) : ApfsVolume.Open(container, Oid, _key);
         v.UseSessionSource(compare => _fs.Scan(compare));
         return _view = v;
@@ -250,15 +250,15 @@ public sealed partial class VolumeWriter
     /// <summary>APFS ad kuralları: boş değil, "." / ".." değil, "/" ve NUL içermez, UTF-8 en fazla 255 bayt.</summary>
     public static void ValidateName(string name)
     {
-        if (name.Length == 0 || name is "." or "..") throw new ApfsException(ApfsErrorCode.InvalidArgument, "geçersiz ad");
-        if (name.Contains('/') || name.Contains('\0')) throw new ApfsException(ApfsErrorCode.InvalidArgument, "adda geçersiz karakter");
-        if (Encoding.UTF8.GetByteCount(name) > 255) throw new ApfsException(ApfsErrorCode.InvalidArgument, "ad çok uzun (en fazla 255 bayt)");
+        if (name.Length == 0 || name is "." or "..") throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("VolWriter.InvalidName"));
+        if (name.Contains('/') || name.Contains('\0')) throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("VolWriter.InvalidNameChar"));
+        if (Encoding.UTF8.GetByteCount(name) > 255) throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("VolWriter.NameTooLong"));
     }
 
     private InodeRecord RequireDirectory(ulong dirId)
     {
-        var dir = GetInode(dirId) ?? throw new ApfsException(ApfsErrorCode.NotFound, $"klasör {dirId}");
-        if (!dir.IsDirectory) throw new ApfsException(ApfsErrorCode.InvalidArgument, "klasör değil");
+        var dir = GetInode(dirId) ?? throw new ApfsException(ApfsErrorCode.NotFound, CoreText.T("VolWriter.DirectoryId", dirId));
+        if (!dir.IsDirectory) throw new ApfsException(ApfsErrorCode.InvalidArgument, CoreText.T("VolWriter.NotADirectory"));
         return dir;
     }
 

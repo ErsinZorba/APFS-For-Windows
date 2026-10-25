@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About.Text" xml:space="preserve">
+    <value>Öffnet auf dem Mac formatierte APFS-Datenträger in Windows: standardmäßig schreibgeschützt, Schreiben optional (experimentell). Open Source, Lizenz GPLv3.</value>
+  </data>
+  <data name="Action.AllowWriting" xml:space="preserve">
+    <value>Schreiben erlauben</value>
+  </data>
+  <data name="Action.BackToReadOnly" xml:space="preserve">
+    <value>Schreibschutz aktivieren</value>
+  </data>
+  <data name="Action.Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Action.CancelDialog" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Action.Checking" xml:space="preserve">
+    <value>Wird geprüft…</value>
+  </data>
+  <data name="Action.ContinueAnyway" xml:space="preserve">
+    <value>Trotzdem fortfahren</value>
+  </data>
+  <data name="Action.Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Action.EjectAnyway" xml:space="preserve">
+    <value>Trotzdem auswerfen</value>
+  </data>
+  <data name="Action.Ejecting" xml:space="preserve">
+    <value>Wird ausgeworfen…</value>
+  </data>
+  <data name="Action.Exit" xml:space="preserve">
+    <value>Beenden</value>
+  </data>
+  <data name="Action.Open" xml:space="preserve">
+    <value>Öffnen</value>
+  </data>
+  <data name="Action.OpenLog" xml:space="preserve">
+    <value>Protokoll öffnen</value>
+  </data>
+  <data name="Action.OpenMain" xml:space="preserve">
+    <value>Hauptfenster öffnen</value>
+  </data>
+  <data name="Action.Rescan" xml:space="preserve">
+    <value>Erneut scannen</value>
+  </data>
+  <data name="Action.Rescanning" xml:space="preserve">
+    <value>Wird gescannt…</value>
+  </data>
+  <data name="Action.SafelyEject" xml:space="preserve">
+    <value>Sicher auswerfen</value>
+  </data>
+  <data name="Action.Saving" xml:space="preserve">
+    <value>Wird gespeichert…</value>
+  </data>
+  <data name="Action.Unlock" xml:space="preserve">
+    <value>Entsperren</value>
+  </data>
+  <data name="Card.Checking" xml:space="preserve">
+    <value>Datenträger wird geprüft…</value>
+  </data>
+  <data name="Card.DriveState" xml:space="preserve">
+    <value>Laufwerk {0} · {1}</value>
+  </data>
+  <data name="Card.Failed" xml:space="preserve">
+    <value>Konnte nicht geöffnet werden</value>
+  </data>
+  <data name="Card.NeedsPassword" xml:space="preserve">
+    <value>Verschlüsselt · Passwort erforderlich</value>
+  </data>
+  <data name="Card.NoVolumes" xml:space="preserve">
+    <value>Dieser Datenträger enthält keine anzeigbaren Volumes (nur interne macOS-Volumes).</value>
+  </data>
+  <data name="Card.ReadOnly" xml:space="preserve">
+    <value>schreibgeschützt</value>
+  </data>
+  <data name="Card.Writable" xml:space="preserve">
+    <value>beschreibbar (experimentell)</value>
+  </data>
+  <data name="Card.WriteRefused" xml:space="preserve">
+    <value>Schreiben konnte nicht aktiviert werden: {0}</value>
+  </data>
+  <data name="Disk.Gone" xml:space="preserve">
+    <value>Dieser Datenträger ist nicht mehr angeschlossen.</value>
+  </data>
+  <data name="Disk.PhysicalName" xml:space="preserve">
+    <value>Datenträger {0} ({1})</value>
+  </data>
+  <data name="Eject.Busy" xml:space="preserve">
+    <value>Eine Datei auf {0} ist gerade geöffnet oder wird kopiert ({1}). Wenn Sie jetzt auswerfen, wird der Kopiervorgang abgebrochen; Ihr Mac-Datenträger wird dabei nicht beschädigt.</value>
+  </data>
+  <data name="Eject.BusyHeading" xml:space="preserve">
+    <value>Offenbar läuft gerade ein Kopiervorgang</value>
+  </data>
+  <data name="Eject.Detached" xml:space="preserve">
+    <value>Volumes getrennt.</value>
+  </data>
+  <data name="Eject.Ejected" xml:space="preserve">
+    <value>Der Datenträger wurde sicher ausgeworfen.</value>
+  </data>
+  <data name="Eject.Failed" xml:space="preserve">
+    <value>Der Datenträger konnte nicht ausgeworfen werden.</value>
+  </data>
+  <data name="Eject.Remounting" xml:space="preserve">
+    <value>{0} Der Datenträger wird erneut eingebunden.</value>
+  </data>
+  <data name="Error.OperationFailed" xml:space="preserve">
+    <value>Der Vorgang konnte nicht abgeschlossen werden.</value>
+  </data>
+  <data name="Error.ServiceUnreachable" xml:space="preserve">
+    <value>Der Dienst ist nicht erreichbar.</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>Unbekannter Fehler.</value>
+  </data>
+  <data name="Language.Windows" xml:space="preserve">
+    <value>Windows-Sprache</value>
+  </data>
+  <data name="List.Connecting" xml:space="preserve">
+    <value>Verbindung wird hergestellt…</value>
+  </data>
+  <data name="List.NoDiskBody" xml:space="preserve">
+    <value>Schließen Sie Ihren Mac-Datenträger an; er erscheint innerhalb weniger Sekunden hier. Ihr Datenträger wird zunächst schreibgeschützt geöffnet; wenn Sie darauf schreiben möchten, erlauben Sie das separat über die Schaltfläche auf seiner Karte.</value>
+  </data>
+  <data name="List.NoDiskHeading" xml:space="preserve">
+    <value>Noch kein Mac-Datenträger</value>
+  </data>
+  <data name="List.ServiceDownBody" xml:space="preserve">
+    <value>Der Dienst, der die Datenträger einbindet, ist nicht erreichbar. Versuchen Sie, den Computer neu zu starten oder das Programm neu zu installieren.</value>
+  </data>
+  <data name="List.ServiceDownHeading" xml:space="preserve">
+    <value>Der Hintergrunddienst läuft nicht</value>
+  </data>
+  <data name="Log.NoneYet" xml:space="preserve">
+    <value>Es gibt noch kein Protokoll.</value>
+  </data>
+  <data name="Main.Subtitle" xml:space="preserve">
+    <value>Ihre Mac-Datenträger sind sicher: zuerst schreibgeschützt, beschreibbar, wenn Sie es wünschen.</value>
+  </data>
+  <data name="Main.Version" xml:space="preserve">
+    <value>Version {0}</value>
+  </data>
+  <data name="Notice.CloseWriteFailed" xml:space="preserve">
+    <value>{0}: Einige der letzten Änderungen konnten nicht auf den Datenträger geschrieben werden (er wurde möglicherweise entfernt). Der Datenträger wird im zuletzt gespeicherten Zustand geöffnet. Details: {1}</value>
+  </data>
+  <data name="Notice.ContainerOpenFailed" xml:space="preserve">
+    <value>{0}: Der APFS-Container konnte nicht geöffnet werden. {1}</value>
+  </data>
+  <data name="Notice.Detached" xml:space="preserve">
+    <value>Die Volumes von {0} wurden getrennt. Dieser Datenträger wird nicht als Wechselmedium angezeigt; um ihn erneut einzubinden, verwenden Sie "Erneut scannen".</value>
+  </data>
+  <data name="Notice.DiskUnreadable" xml:space="preserve">
+    <value>{0} konnte nicht gelesen werden: {1}</value>
+  </data>
+  <data name="Notice.Ejected" xml:space="preserve">
+    <value>{0} wurde sicher ausgeworfen. Sie können das Kabel jetzt abziehen.</value>
+  </data>
+  <data name="Notice.MountFailed" xml:space="preserve">
+    <value>"{0}" konnte nicht eingebunden werden. {1}</value>
+  </data>
+  <data name="Notice.Mounted" xml:space="preserve">
+    <value>"{0}" wurde als Laufwerk {1} eingebunden (schreibgeschützt).</value>
+  </data>
+  <data name="Notice.MountedWritable" xml:space="preserve">
+    <value>"{0}" wurde MIT SCHREIBZUGRIFF als Laufwerk {1} eingebunden (experimentell). Verwenden Sie "Sicher auswerfen", bevor Sie den Datenträger entfernen.</value>
+  </data>
+  <data name="Notice.NeedsPassword" xml:space="preserve">
+    <value>Das Volume "{0}" ist verschlüsselt. Um es zu öffnen, geben Sie das Passwort über das APFS-Symbol im Infobereich ein.</value>
+  </data>
+  <data name="Notice.RemountedReadOnly" xml:space="preserve">
+    <value>{0} wurde wieder schreibgeschützt eingebunden; die Änderungen wurden gespeichert.</value>
+  </data>
+  <data name="Notice.VolumeOpenFailed" xml:space="preserve">
+    <value>{0}: Volume {1} konnte nicht geöffnet werden. {2}</value>
+  </data>
+  <data name="Notice.WriteRefused" xml:space="preserve">
+    <value>Das Schreiben auf {0} wurde nicht aktiviert. {1}</value>
+  </data>
+  <data name="Password.Hint" xml:space="preserve">
+    <value>Hinweis: {0}</value>
+  </data>
+  <data name="Password.Locked" xml:space="preserve">
+    <value>"{0}" ist gesperrt</value>
+  </data>
+  <data name="Password.Prompt" xml:space="preserve">
+    <value>Dieses Volume ist verschlüsselt. Um es zu öffnen, geben Sie das Passwort ein, das Sie auf dem Mac verwenden.</value>
+  </data>
+  <data name="Password.Reassurance" xml:space="preserve">
+    <value>Der Datenträger wird nur gelesen; das Passwort wird nirgends gespeichert.</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>APFS for Windows: verschlüsseltes Volume</value>
+  </data>
+  <data name="Release.Changed" xml:space="preserve">
+    <value>wurde von einem anderen Programm geändert (z. B. neu formatiert); das APFS-Laufwerk wurde entfernt</value>
+  </data>
+  <data name="Release.Removed" xml:space="preserve">
+    <value>wurde entfernt</value>
+  </data>
+  <data name="Release.SafeToRemove" xml:space="preserve">
+    <value>wurde für das sichere Entfernen getrennt; Sie können den Datenträger jetzt entfernen</value>
+  </data>
+  <data name="Release.ServiceStopped" xml:space="preserve">
+    <value>wurde getrennt, weil der Dienst beendet wurde</value>
+  </data>
+  <data name="Release.UnsavedLost" xml:space="preserve">
+    <value>Die letzten nicht gespeicherten Änderungen konnten nicht geschrieben werden; der Datenträger wird im zuletzt gespeicherten Zustand geöffnet.</value>
+  </data>
+  <data name="Release.UnsavedNotWrittenChanged" xml:space="preserve">
+    <value>Die letzten nicht gespeicherten Änderungen wurden nicht geschrieben, um den neuen Inhalt des Datenträgers nicht zu beschädigen.</value>
+  </data>
+  <data name="Tray.MenuEject" xml:space="preserve">
+    <value>{0}{1}: sicher auswerfen</value>
+  </data>
+  <data name="Tray.MenuNoDisk" xml:space="preserve">
+    <value>Kein Mac-Datenträger angeschlossen</value>
+  </data>
+  <data name="Tray.MenuServiceDown" xml:space="preserve">
+    <value>Dienst läuft nicht (Installation überprüfen)</value>
+  </data>
+  <data name="Tray.StillRunning" xml:space="preserve">
+    <value>Das Programm wird im Infobereich weiter ausgeführt. Von hier aus erreichen Sie Ihre Datenträger.</value>
+  </data>
+  <data name="Tray.TipMounted" xml:space="preserve">
+    <value>APFS for Windows: {0} Volume(s) eingebunden</value>
+  </data>
+  <data name="Tray.TipNoVolumes" xml:space="preserve">
+    <value>APFS for Windows: keine Volumes eingebunden</value>
+  </data>
+  <data name="Tray.TipServiceDown" xml:space="preserve">
+    <value>APFS for Windows: Dienst läuft nicht</value>
+  </data>
+  <data name="Unlock.Failed" xml:space="preserve">
+    <value>Entsperren fehlgeschlagen.</value>
+  </data>
+  <data name="Unlock.MountFailed" xml:space="preserve">
+    <value>Konnte nicht eingebunden werden.</value>
+  </data>
+  <data name="Unlock.Mounted" xml:space="preserve">
+    <value>"{0}" wurde als {1} eingebunden.</value>
+  </data>
+  <data name="Unlock.NotWaiting" xml:space="preserve">
+    <value>Dieses Volume wartet nicht mehr auf ein Passwort.</value>
+  </data>
+  <data name="Volume.DefaultName" xml:space="preserve">
+    <value>Volume {0}</value>
+  </data>
+  <data name="Volume.InternalRole" xml:space="preserve">
+    <value>macOS-internes Volume ({0})</value>
+  </data>
+  <data name="Write.AlreadyReadOnly" xml:space="preserve">
+    <value>Diese Partition ist bereits schreibgeschützt.</value>
+  </data>
+  <data name="Write.AlreadyWritable" xml:space="preserve">
+    <value>Das Schreiben ist auf dieser Partition bereits erlaubt.</value>
+  </data>
+  <data name="Write.Busy" xml:space="preserve">
+    <value>Eine Datei auf {0} ist gerade geöffnet oder wird kopiert ({1}). Wenn Sie fortfahren, wird das Laufwerk kurz getrennt und wieder eingebunden; geöffnete Dateien werden geschlossen.</value>
+  </data>
+  <data name="Write.BusyHeading" xml:space="preserve">
+    <value>Der Datenträger wird verwendet</value>
+  </data>
+  <data name="Write.CheckFailed" xml:space="preserve">
+    <value>Der Datenträger konnte nicht geprüft werden: {0}</value>
+  </data>
+  <data name="Write.ConfirmHeading" xml:space="preserve">
+    <value>Schreiben auf diesen Datenträger erlauben?</value>
+  </data>
+  <data name="Write.ConfirmText" xml:space="preserve">
+    <value>{0}
+
+Das Schreiben ist EXPERIMENTELL. Stellen Sie sicher, dass Sie eine Sicherung Ihrer wichtigen Dateien haben.
+
+• Der Datenträger wird zuerst geprüft; wird ein Problem gefunden, wird das Schreiben nicht aktiviert.
+• Verwenden Sie immer "Sicher auswerfen", bevor Sie den Datenträger entfernen oder an einen Mac anschließen.
+• Auf diesem Datenträger gelöschte Dateien werden nicht in den Papierkorb verschoben, sondern endgültig gelöscht.
+• Sie können jederzeit "Schreibschutz aktivieren" wählen; Ihre Änderungen werden gespeichert.</value>
+  </data>
+  <data name="Write.EnableFailed" xml:space="preserve">
+    <value>Schreiben konnte nicht aktiviert werden: {0}</value>
+  </data>
+  <data name="Write.EnableFailedTitle" xml:space="preserve">
+    <value>Schreiben konnte nicht aktiviert werden</value>
+  </data>
+  <data name="Write.Enabled" xml:space="preserve">
+    <value>Das Schreiben auf "{0}" ist jetzt erlaubt ({1}).</value>
+  </data>
+  <data name="Write.MultipleVolumes" xml:space="preserve">
+    <value>Diese Partition enthält mehr als ein Volume; in dieser Version kann das Schreiben nur auf Partitionen mit einem einzigen Volume erlaubt werden.</value>
+  </data>
+  <data name="Write.NoSuchPartition" xml:space="preserve">
+    <value>Dieser Datenträger hat keine solche APFS-Partition.</value>
+  </data>
+  <data name="Write.PreviousRequestPending" xml:space="preserve">
+    <value>Die vorherige Anfrage für diese Partition ist noch nicht abgeschlossen.</value>
+  </data>
+  <data name="Write.RemountedReadOnly" xml:space="preserve">
+    <value>Der Datenträger wurde wieder schreibgeschützt eingebunden.</value>
+  </data>
+</root>

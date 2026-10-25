@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Error.AccessDenied" xml:space="preserve">
+    <value>Erişim izni yok.</value>
+  </data>
+  <data name="Error.AlreadyExists" xml:space="preserve">
+    <value>Bu adda bir dosya veya klasör zaten var.</value>
+  </data>
+  <data name="Error.ChecksumMismatch" xml:space="preserve">
+    <value>Diskteki bir bloğun sağlama toplamı tutmuyor; bu bölüm hasarlı olabilir. Diskinize hiçbir şey yazılmadı.</value>
+  </data>
+  <data name="Error.Corrupt" xml:space="preserve">
+    <value>Diskteki bir yapı bozuk görünüyor. Bu kısım okunamadı, diskinize hiçbir şey yazılmadı.</value>
+  </data>
+  <data name="Error.DirectoryNotEmpty" xml:space="preserve">
+    <value>Klasör boş değil.</value>
+  </data>
+  <data name="Error.DiskFull" xml:space="preserve">
+    <value>Diskte yer kalmadı.</value>
+  </data>
+  <data name="Error.Encrypted" xml:space="preserve">
+    <value>Bu birim şifreli. Açmak için parola gerekiyor.</value>
+  </data>
+  <data name="Error.InvalidArgument" xml:space="preserve">
+    <value>Geçersiz değer.</value>
+  </data>
+  <data name="Error.IoError" xml:space="preserve">
+    <value>Diskten okunamadı. Disk çıkarılmış veya arızalı olabilir.</value>
+  </data>
+  <data name="Error.NoValidCheckpoint" xml:space="preserve">
+    <value>APFS kapsayıcısının hiçbir kontrol noktası sağlam değil. Disk ciddi şekilde hasarlı olabilir. Diskinize hiçbir şey yazılmadı.</value>
+  </data>
+  <data name="Error.NotApfs" xml:space="preserve">
+    <value>Bu disk veya dosya APFS biçiminde değil.</value>
+  </data>
+  <data name="Error.NotFound" xml:space="preserve">
+    <value>Dosya veya klasör bulunamadı.</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>Bilinmeyen hata.</value>
+  </data>
+  <data name="Error.Unsupported" xml:space="preserve">
+    <value>Bu özellik henüz desteklenmiyor.</value>
+  </data>
+  <data name="Error.WrongPassword" xml:space="preserve">
+    <value>Parola yanlış.</value>
+  </data>
+  <data name="Gate.BlockSize" xml:space="preserve">
+    <value>Blok boyutu {0}; yalnızca 4096 baytlık bloklar destekleniyor.</value>
+  </data>
+  <data name="Gate.CheckpointArea" xml:space="preserve">
+    <value>Diskin kontrol noktası alanı parçalı; bu düzen desteklenmiyor.</value>
+  </data>
+  <data name="Gate.EncRolled" xml:space="preserve">
+    <value>"{0}" biriminin şifrelemesi sonradan değiştirilmiş (ENC_ROLLED); böyle bir diske yazılmaz.</value>
+  </data>
+  <data name="Gate.EncryptionInProgress" xml:space="preserve">
+    <value>"{0}" biriminde macOS'un başlattığı bir şifreleme işlemi henüz bitmemiş; böyle bir diske yazılmaz.</value>
+  </data>
+  <data name="Gate.Fusion" xml:space="preserve">
+    <value>Fusion Drive kapsayıcısına yazma desteklenmiyor.</value>
+  </data>
+  <data name="Gate.Inconsistent" xml:space="preserve">
+    <value>Diskin iç yapısında tutarsızlık bulundu; güvenlik için yazmaya açılmadı. Diski Mac'te Disk İzlencesi → İlk Yardım ile denetleyin.</value>
+  </data>
+  <data name="Gate.Locked" xml:space="preserve">
+    <value>"{0}" birimi şifreli; yazmaya açmak için önce kilidini açın.</value>
+  </data>
+  <data name="Gate.OmapUnreadable" xml:space="preserve">
+    <value>"{0}" biriminin nesne haritası okunamadı.</value>
+  </data>
+  <data name="Gate.OpenWarnings" xml:space="preserve">
+    <value>Disk açılırken sorun görüldü (en yeni kontrol noktası kullanılamıyor olabilir).</value>
+  </data>
+  <data name="Gate.Sealed" xml:space="preserve">
+    <value>"{0}" mühürlü bir sistem birimi.</value>
+  </data>
+  <data name="Gate.Snapshots" xml:space="preserve">
+    <value>"{0}" biriminde anlık görüntü (ör. Time Machine) var; böyle disklere yazma desteklenmiyor.</value>
+  </data>
+  <data name="Gate.SystemVolume" xml:space="preserve">
+    <value>"{0}" bir macOS sistem, yedek veya iç birimi; bu diske yazılmaz.</value>
+  </data>
+  <data name="Gate.UnknownContainerFeature" xml:space="preserve">
+    <value>Disk, bu sürümün tanımadığı bir APFS özelliği kullanıyor.</value>
+  </data>
+  <data name="Gate.UnknownVolumeFeature" xml:space="preserve">
+    <value>"{0}" birimi bu sürümün tanımadığı bir APFS özelliği kullanıyor.</value>
+  </data>
+  <data name="Gate.Unresolvable" xml:space="preserve">
+    <value>Diskte bu sürümün çözümleyemediği bir yapı var; her bloğun sahibi doğrulanamadığı için yazmaya açılmadı.</value>
+  </data>
+  <data name="Gate.UnsupportedEncryption" xml:space="preserve">
+    <value>"{0}" birimi bu sürümün yazamadığı bir türde şifreli (donanım şifrelemesi ya da dosya başına anahtar).</value>
+  </data>
+  <data name="Gate.UnsupportedVolumeSetting" xml:space="preserve">
+    <value>"{0}" biriminde bu sürümün desteklemediği bir ayar var.</value>
+  </data>
+  <data name="Gate.VolumeUnreadable" xml:space="preserve">
+    <value>Bir birim okunamadı ({0}).</value>
+  </data>
+  <data name="Gate.WriteBlocker" xml:space="preserve">
+    <value>Diskte bu sürümün güncel tutamadığı bir özellik var ({0}); yazmaya açılmadı.</value>
+  </data>
+  <data name="Mount.WinFspMissing" xml:space="preserve">
+    <value>WinFsp kurulu değil. Kurmak için: winget install WinFsp.WinFsp</value>
+  </data>
+  <data name="Mount.WinFspNotLoaded" xml:space="preserve">
+    <value>WinFsp kurulu değil veya yüklenemedi ({0}). Kurmak için: winget install WinFsp.WinFsp</value>
+  </data>
+  <data name="Partition.Numbered" xml:space="preserve">
+    <value>bölüm {0}</value>
+  </data>
+  <data name="Partition.Unpartitioned" xml:space="preserve">
+    <value>bölümsüz APFS kapsayıcısı</value>
+  </data>
+  <data name="Volume.RoleBackup" xml:space="preserve">
+    <value>Yedek</value>
+  </data>
+  <data name="Volume.RoleData" xml:space="preserve">
+    <value>Veri</value>
+  </data>
+  <data name="Volume.RoleInstaller" xml:space="preserve">
+    <value>Yükleyici</value>
+  </data>
+  <data name="Volume.RolePreboot" xml:space="preserve">
+    <value>Önyükleme</value>
+  </data>
+  <data name="Volume.RoleRecovery" xml:space="preserve">
+    <value>Kurtarma</value>
+  </data>
+  <data name="Volume.RoleSystem" xml:space="preserve">
+    <value>Sistem</value>
+  </data>
+  <data name="Volume.RoleUpdate" xml:space="preserve">
+    <value>Güncelleme</value>
+  </data>
+  <data name="Volume.RoleUser" xml:space="preserve">
+    <value>Kullanıcı</value>
+  </data>
+  <data name="Volume.RoleVm" xml:space="preserve">
+    <value>Sanal bellek</value>
+  </data>
+</root>

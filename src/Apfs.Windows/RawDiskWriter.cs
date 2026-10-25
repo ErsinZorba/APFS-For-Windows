@@ -33,12 +33,12 @@ public sealed class RawDiskWriter : IWritableBlockDevice
             int err = Marshal.GetLastPInvokeError();
             _handle.Dispose();
             throw err == 5
-                ? new ApfsException(ApfsErrorCode.AccessDenied, $"{Path}: diske yazmak için yönetici yetkisi gerekir")
+                ? new ApfsException(ApfsErrorCode.AccessDenied, WinText.T("Raw.WriteAdminRequired", Path))
                 : new ApfsException(ApfsErrorCode.IoError, $"{Path}: {new Win32Exception(err).Message}");
         }
         Span<byte> len = stackalloc byte[8];
         if (!DeviceIoControl(_handle, IoctlDiskGetLengthInfo, IntPtr.Zero, 0, ref MemoryMarshal.GetReference(len), 8, out _, IntPtr.Zero))
-            throw new ApfsException(ApfsErrorCode.IoError, "disk boyutu alınamadı");
+            throw new ApfsException(ApfsErrorCode.IoError, WinText.T("Raw.LengthQueryFailed"));
         Length = BitConverter.ToInt64(len);
         Span<byte> geo = stackalloc byte[256];
         SectorSize = DeviceIoControl(_handle, IoctlDiskGetDriveGeometryEx, IntPtr.Zero, 0, ref MemoryMarshal.GetReference(geo), 256, out _, IntPtr.Zero)
@@ -54,7 +54,7 @@ public sealed class RawDiskWriter : IWritableBlockDevice
     /// <summary>Okuma: hizasız istekler (dosya verisinin ortasından) sektör hizalı ara bellekle karşılanır.</summary>
     public void Read(long offset, Span<byte> buffer)
     {
-        if (offset < 0 || offset > Length - buffer.Length) throw new ApfsException(ApfsErrorCode.Corrupt, $"disk sınırı dışında okuma: {offset}+{buffer.Length}");
+        if (offset < 0 || offset > Length - buffer.Length) throw new ApfsException(ApfsErrorCode.Corrupt, WinText.T("Raw.ReadOutOfRange", offset, buffer.Length));
         if (buffer.IsEmpty) return;
         long start = offset / SectorSize * SectorSize;
         long end = (offset + buffer.Length + SectorSize - 1) / SectorSize * SectorSize;
@@ -66,7 +66,7 @@ public sealed class RawDiskWriter : IWritableBlockDevice
             while (done < target.Length)
             {
                 int n = RandomAccess.Read(_handle, target[done..], start + done);
-                if (n <= 0) throw new ApfsException(ApfsErrorCode.IoError, "diskten beklenenden az veri okundu");
+                if (n <= 0) throw new ApfsException(ApfsErrorCode.IoError, WinText.T("Raw.ShortRead"));
                 done += n;
             }
         }
@@ -76,10 +76,10 @@ public sealed class RawDiskWriter : IWritableBlockDevice
 
     public void Write(long offset, ReadOnlySpan<byte> data)
     {
-        if (offset < 0 || offset > Length - data.Length) throw new ApfsException(ApfsErrorCode.InvalidArgument, $"disk sınırı dışında yazma: {offset}+{data.Length}");
+        if (offset < 0 || offset > Length - data.Length) throw new ApfsException(ApfsErrorCode.InvalidArgument, WinText.T("Raw.WriteOutOfRange", offset, data.Length));
         Aligned(offset, data.Length);
         try { RandomAccess.Write(_handle, data, offset); }
-        catch (UnauthorizedAccessException e) { throw new ApfsException(ApfsErrorCode.AccessDenied, "Windows bu bölüme yazmaya izin vermedi", e); }
+        catch (UnauthorizedAccessException e) { throw new ApfsException(ApfsErrorCode.AccessDenied, WinText.T("Raw.WriteDenied"), e); }
         catch (IOException e) { throw new ApfsException(ApfsErrorCode.IoError, e.Message, e); }
     }
 
@@ -93,7 +93,7 @@ public sealed class RawDiskWriter : IWritableBlockDevice
     private void Aligned(long offset, int length)
     {
         if (offset % SectorSize != 0 || length % SectorSize != 0)
-            throw new ArgumentException($"sektör hizasız ham disk G/Ç'si: {offset}+{length}");
+            throw new ArgumentException(WinText.T("Raw.Unaligned", offset, length));
     }
 
     public void Dispose() => _handle.Dispose();

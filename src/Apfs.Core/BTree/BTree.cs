@@ -37,16 +37,16 @@ public sealed class BTree
         _crypto = crypto;
         _rootEncrypted = rootEncrypted;
         if (rootEncrypted && crypto is null)
-            throw new ApfsException(ApfsErrorCode.Encrypted, "şifreli düğüm için anahtar yok");
+            throw new ApfsException(ApfsErrorCode.Encrypted, CoreText.T("BTree.NoKeyForEncryptedNode"));
 
         var root = _reader.ReadObject(rootPaddr, ApfsConstants.TypeBTree, decrypt: rootEncrypted ? crypto : null);
         CheckSubtype(root, rootPaddr);
         if ((Bin.U16(root, 32) & ApfsConstants.BtNodeRoot) == 0)
-            throw ApfsException.Corrupt($"B-ağacı kökü kök olarak işaretlenmemiş (blok {rootPaddr})");
+            throw ApfsException.Corrupt(CoreText.T("BTree.RootNotMarked", rootPaddr));
         int info = root.Length - ApfsConstants.BTreeInfoSize;
         uint nodeSize = Bin.U32(root, info + 4);
         if (nodeSize != reader.BlockSize)
-            throw new ApfsException(ApfsErrorCode.Unsupported, $"blok boyutundan farklı B-ağacı düğüm boyutu ({nodeSize})");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("BTree.NodeSizeMismatch", nodeSize));
         _fixedKeySize = (int)Bin.U32(root, info + 8);
         _fixedValSize = (int)Bin.U32(root, info + 12);
         Height = Bin.U16(root, 34);
@@ -67,18 +67,18 @@ public sealed class BTree
     private IEnumerable<BTreeEntry> ScanNode(ulong paddr, bool encrypted, uint objType, int expectedLevel, Func<ReadOnlySpan<byte>, int> compare, int depth, bool includeGhosts)
     {
         if (depth > MaxDepth)
-            throw ApfsException.Corrupt("B-ağacı çok derin (döngü olabilir)");
+            throw ApfsException.Corrupt(CoreText.T("BTree.TooDeep"));
 
         if (encrypted && _crypto is null)
-            throw new ApfsException(ApfsErrorCode.Encrypted, "şifreli düğüm için anahtar yok");
+            throw new ApfsException(ApfsErrorCode.Encrypted, CoreText.T("BTree.NoKeyForEncryptedNode"));
         var data = _reader.ReadObject(paddr, objType, decrypt: encrypted ? _crypto : null);
         CheckSubtype(data, paddr);
         var node = Node.Parse(data, paddr, _fixedKeySize, _fixedValSize);
         if (expectedLevel >= 0 && node.Level != expectedLevel)
-            throw ApfsException.Corrupt($"B-ağacı düğüm seviyesi tutarsız (blok {paddr})");
+            throw ApfsException.Corrupt(CoreText.T("BTree.LevelInconsistent", paddr));
         bool isLeaf = (node.Flags & ApfsConstants.BtNodeLeaf) != 0;
         if (isLeaf != (node.Level == 0))
-            throw ApfsException.Corrupt($"B-ağacı yaprak bayrağı ile seviye tutarsız (blok {paddr})");
+            throw ApfsException.Corrupt(CoreText.T("BTree.LeafFlagLevelMismatch", paddr));
 
         if (isLeaf)
         {
@@ -108,7 +108,7 @@ public sealed class BTree
                 var next = node.Entry(i + 1, leaf: false);
                 if (compare(data.AsSpan(next.KeyOff, next.KeyLen)) < 0) continue; // bu çocuğun tamamı aralıktan küçük
             }
-            if (e.ValLen < 8) throw ApfsException.Corrupt($"B-ağacı iç düğüm değeri geçersiz (blok {paddr})");
+            if (e.ValLen < 8) throw ApfsException.Corrupt(CoreText.T("BTree.InvalidIndexValue", paddr));
             ulong childOid = Bin.U64(data, e.ValOff);
             var (childPaddr, childEncrypted) = _resolveVirtual is null ? (childOid, false) : _resolveVirtual(childOid);
             foreach (var r in ScanNode(childPaddr, childEncrypted, ApfsConstants.TypeBTreeNode, node.Level - 1, compare, depth + 1, includeGhosts))
@@ -129,23 +129,23 @@ public sealed class BTree
     private IEnumerable<NodeVisit> EnumerateNode(ulong paddr, bool encrypted, uint objType, int expectedLevel, int depth)
     {
         if (depth > MaxDepth)
-            throw ApfsException.Corrupt("B-ağacı çok derin (döngü olabilir)");
+            throw ApfsException.Corrupt(CoreText.T("BTree.TooDeep"));
         if (encrypted && _crypto is null)
-            throw new ApfsException(ApfsErrorCode.Encrypted, "şifreli düğüm için anahtar yok");
+            throw new ApfsException(ApfsErrorCode.Encrypted, CoreText.T("BTree.NoKeyForEncryptedNode"));
         var data = _reader.ReadObject(paddr, objType, decrypt: encrypted ? _crypto : null);
         CheckSubtype(data, paddr);
         var node = Node.Parse(data, paddr, _fixedKeySize, _fixedValSize);
         if (expectedLevel >= 0 && node.Level != expectedLevel)
-            throw ApfsException.Corrupt($"B-ağacı düğüm seviyesi tutarsız (blok {paddr})");
+            throw ApfsException.Corrupt(CoreText.T("BTree.LevelInconsistent", paddr));
         bool isLeaf = (node.Flags & ApfsConstants.BtNodeLeaf) != 0;
         if (isLeaf != (node.Level == 0))
-            throw ApfsException.Corrupt($"B-ağacı yaprak bayrağı ile seviye tutarsız (blok {paddr})");
+            throw ApfsException.Corrupt(CoreText.T("BTree.LeafFlagLevelMismatch", paddr));
         yield return new NodeVisit(paddr, Bin.U64(data, 8), node.Level, node.Count, Bin.U32(data, 24));
         if (isLeaf) yield break;
         for (int i = 0; i < node.Count; i++)
         {
             var e = node.Entry(i, leaf: false);
-            if (e.ValLen < 8) throw ApfsException.Corrupt($"B-ağacı iç düğüm değeri geçersiz (blok {paddr})");
+            if (e.ValLen < 8) throw ApfsException.Corrupt(CoreText.T("BTree.InvalidIndexValue", paddr));
             ulong childOid = Bin.U64(data, e.ValOff);
             var (childPaddr, childEncrypted) = _resolveVirtual is null ? (childOid, false) : _resolveVirtual(childOid);
             foreach (var v in EnumerateNode(childPaddr, childEncrypted, ApfsConstants.TypeBTreeNode, node.Level - 1, depth + 1))
@@ -157,7 +157,7 @@ public sealed class BTree
     {
         uint subtype = Bin.U32(data, 28) & ApfsConstants.ObjectTypeMask;
         if (_subtype != 0 && subtype != _subtype)
-            throw ApfsException.Corrupt($"B-ağacı düğümü beklenmeyen alt türde (blok {paddr})");
+            throw ApfsException.Corrupt(CoreText.T("BTree.UnexpectedSubtype", paddr));
     }
 
     private readonly record struct EntryLoc(int KeyOff, int KeyLen, int ValOff, int ValLen);
@@ -191,15 +191,15 @@ public sealed class BTree
             bool isFixed = (flags & ApfsConstants.BtNodeFixedKvSize) != 0;
 
             if (level >= MaxDepth)
-                throw ApfsException.Corrupt($"B-ağacı düğüm seviyesi geçersiz (blok {paddr})");
+                throw ApfsException.Corrupt(CoreText.T("BTree.InvalidLevel", paddr));
             int tocStart = ApfsConstants.BTreeNodeHeaderSize + tocOff;
             int keyStart = tocStart + tocLen;
             int valEnd = data.Length - (isRoot ? ApfsConstants.BTreeInfoSize : 0);
             int entrySize = isFixed ? 4 : 8;
             if (keyStart > valEnd || (long)nkeys * entrySize > tocLen)
-                throw ApfsException.Corrupt($"B-ağacı düğümünün içindekiler tablosu geçersiz (blok {paddr})");
+                throw ApfsException.Corrupt(CoreText.T("BTree.InvalidToc", paddr));
             if (isFixed && (keySize <= 0 || keySize > data.Length || valSize < 0 || valSize > data.Length))
-                throw ApfsException.Corrupt($"B-ağacı sabit anahtar/değer boyutu geçersiz (blok {paddr})");
+                throw ApfsException.Corrupt(CoreText.T("BTree.InvalidFixedKvSize", paddr));
 
             return new Node(data, flags, level, (int)nkeys, tocStart, keyStart, valEnd, keySize, valSize, isFixed);
         }
@@ -226,12 +226,12 @@ public sealed class BTree
             }
             int kStart = _keyStart + kOff;
             if (kStart + kLen > _valEnd)
-                throw ApfsException.Corrupt("B-ağacı anahtarı düğüm sınırı dışında");
+                throw ApfsException.Corrupt(CoreText.T("BTree.KeyOutOfNode"));
             if (vOff == 0xFFFF)
                 return new EntryLoc(kStart, kLen, 0, -1);
             int vStart = _valEnd - vOff;
             if (vStart < _keyStart || vStart + vLen > _valEnd)
-                throw ApfsException.Corrupt("B-ağacı değeri düğüm sınırı dışında");
+                throw ApfsException.Corrupt(CoreText.T("BTree.ValueOutOfNode"));
             return new EntryLoc(kStart, kLen, vStart, vLen);
         }
     }

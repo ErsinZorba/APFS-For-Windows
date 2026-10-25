@@ -55,9 +55,9 @@ internal sealed class TrayFlyout : Form
             Dock = DockStyle.Bottom, AutoSize = true, BackColor = Theme.Background, FlowDirection = FlowDirection.LeftToRight,
             Padding = new Padding(this.S(8), this.S(2), this.S(8), this.S(8)),
         };
-        var main = new FriendlyButton("Ana pencereyi aç", FriendlyButton.Kind.Quiet);
+        var main = new FriendlyButton(WinText.U("Action.OpenMain"), FriendlyButton.Kind.Quiet);
         main.Click += (_, _) => { Hide(); openMain(); };
-        var rescan = new FriendlyButton("Yeniden tara", FriendlyButton.Kind.Quiet) { BusyText = "Taranıyor…" };
+        var rescan = new FriendlyButton(WinText.U("Action.Rescan"), FriendlyButton.Kind.Quiet) { BusyText = WinText.U("Action.Rescanning") };
         rescan.Click += async (_, _) => await _app.RescanAsync();
         footer.Controls.Add(main);
         footer.Controls.Add(rescan);

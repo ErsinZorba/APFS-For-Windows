@@ -37,9 +37,10 @@ public sealed record UnlockResponse(bool Ok, string Message, bool Busy = false);
 /// Tepsiden hizmete istek. "status" (since: son görülen bildirim), "unlock" (disk, birim, parola), "rescan",
 /// "eject" (disk; force: açık dosya olsa da çıkar), "set-writable" (disk, container; enable: yazmayı aç/kapat; force: açık dosya
 /// olsa da). Container: APFS bölüm sırası ("unlock" ve "set-writable"; eski istemcide 0 = ilk bölüm).
+/// Lang: tepsinin arayüz dili (ör. "de"); hizmet bildirimleri ve nedenleri bu dilde üretir. Yoksa hizmetin dili değişmez.
 /// </summary>
 public sealed record Request(string Op, long Since = 0, string? Disk = null, int Volume = 0, string? Password = null, bool Force = false, bool Enable = false,
-    int Container = 0);
+    int Container = 0, string? Lang = null);
 
 /// <summary>
 /// Adlandırılmış kanal: her bağlantıda tek satır JSON istek, tek satır JSON yanıt. Erişim listesi yalnızca SYSTEM, Yöneticiler ve
@@ -50,6 +51,9 @@ public static class PipeProtocol
     /// <summary>Kanal adı. Yalnızca geliştirme modunda (`--console --pipe ad`) değiştirilir; kurulu hizmet ile çakışmasın diye.</summary>
     public static string PipeName { get; set; } = "APFSforWindows";
     public const int MaxMessageBytes = 64 * 1024;
+
+    /// <summary>İstemcinin arayüz dili; <see cref="SendAsync{T}"/> dili belirtilmemiş her isteğe ekler (tepsi açılışta ayarlar).</summary>
+    public static string? ClientLanguage { get; set; }
 
     public static readonly JsonSerializerOptions Json = new(JsonSerializerDefaults.Web);
 
@@ -78,7 +82,7 @@ public static class PipeProtocol
             if (one[0] == (byte)'\n') return Encoding.UTF8.GetString([.. buf]);
             buf.Add(one[0]);
         }
-        throw new InvalidDataException("ileti çok uzun");
+        throw new InvalidDataException(WinText.T("Ipc.MessageTooLong"));
     }
 
     public static async Task WriteLineAsync(Stream s, object value, CancellationToken ct)
@@ -95,7 +99,7 @@ public static class PipeProtocol
         using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
         cts.CancelAfter(timeout);
         await client.ConnectAsync(cts.Token);
-        await WriteLineAsync(client, request, cts.Token);
+        await WriteLineAsync(client, request.Lang is null && ClientLanguage is not null ? request with { Lang = ClientLanguage } : request, cts.Token);
         var line = await ReadLineAsync(client, cts.Token);
         return line is null ? default : JsonSerializer.Deserialize<T>(line, Json);
     }

@@ -40,8 +40,8 @@ internal sealed class CliOptions
     public string Require(int index, string name) =>
         index < Positional.Count && !string.IsNullOrWhiteSpace(Positional[index])
             ? Positional[index]
-            : throw new CliUsageException($"<{name}> eksik");
+            : throw new CliUsageException(WinText.T("Cli.ArgMissing", name));
 
     private static int ParseInt(string[] args, int i, string name) =>
-        i < args.Length && int.TryParse(args[i], out int v) && v >= 0 ? v : throw new CliUsageException($"{name} için sayı bekleniyordu");
+        i < args.Length && int.TryParse(args[i], out int v) && v >= 0 ? v : throw new CliUsageException(WinText.T("Cli.NumberExpected", name));
 }

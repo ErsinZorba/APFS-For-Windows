@@ -24,7 +24,7 @@ public sealed class AesXts : IDisposable
     public AesXts(ReadOnlySpan<byte> key1, ReadOnlySpan<byte> key2)
     {
         if (key1.Length != 16 || key2.Length != 16)
-            throw new ApfsException(ApfsErrorCode.Unsupported, "yalnızca AES-XTS-128 destekleniyor");
+            throw new ApfsException(ApfsErrorCode.Unsupported, CoreText.T("Crypto.OnlyAesXts128"));
         _dataKey = Aes.Create();
         _dataKey.Key = key1.ToArray();
         _tweakKey = Aes.Create();
@@ -40,7 +40,7 @@ public sealed class AesXts : IDisposable
     private void Process(Span<byte> data, ulong firstSector, bool encrypt)
     {
         if (data.Length % UnitSize != 0)
-            throw new ArgumentException("XTS verisi 512 baytın katı olmalı", nameof(data));
+            throw new ArgumentException(CoreText.T("Crypto.XtsLengthNotMultiple"), nameof(data));
         if (data.IsEmpty) return;
         int units = data.Length / UnitSize;
 

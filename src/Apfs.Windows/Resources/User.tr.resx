@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="About.Text" xml:space="preserve">
+    <value>Mac'te biçimlendirilmiş APFS diskleri Windows'ta açar: varsayılan olarak salt okunur, isteğe bağlı yazma (deneysel). Açık kaynak, GPLv3 lisansı.</value>
+  </data>
+  <data name="Action.AllowWriting" xml:space="preserve">
+    <value>Yazmaya izin ver</value>
+  </data>
+  <data name="Action.BackToReadOnly" xml:space="preserve">
+    <value>Salt okunura dön</value>
+  </data>
+  <data name="Action.Cancel" xml:space="preserve">
+    <value>Vazgeç</value>
+  </data>
+  <data name="Action.CancelDialog" xml:space="preserve">
+    <value>İptal</value>
+  </data>
+  <data name="Action.Checking" xml:space="preserve">
+    <value>Denetleniyor…</value>
+  </data>
+  <data name="Action.ContinueAnyway" xml:space="preserve">
+    <value>Yine de devam et</value>
+  </data>
+  <data name="Action.Details" xml:space="preserve">
+    <value>Ayrıntı</value>
+  </data>
+  <data name="Action.EjectAnyway" xml:space="preserve">
+    <value>Yine de çıkar</value>
+  </data>
+  <data name="Action.Ejecting" xml:space="preserve">
+    <value>Çıkarılıyor…</value>
+  </data>
+  <data name="Action.Exit" xml:space="preserve">
+    <value>Çıkış</value>
+  </data>
+  <data name="Action.Open" xml:space="preserve">
+    <value>Aç</value>
+  </data>
+  <data name="Action.OpenLog" xml:space="preserve">
+    <value>Günlüğü aç</value>
+  </data>
+  <data name="Action.OpenMain" xml:space="preserve">
+    <value>Ana pencereyi aç</value>
+  </data>
+  <data name="Action.Rescan" xml:space="preserve">
+    <value>Yeniden tara</value>
+  </data>
+  <data name="Action.Rescanning" xml:space="preserve">
+    <value>Taranıyor…</value>
+  </data>
+  <data name="Action.SafelyEject" xml:space="preserve">
+    <value>Güvenle çıkar</value>
+  </data>
+  <data name="Action.Saving" xml:space="preserve">
+    <value>Kaydediliyor…</value>
+  </data>
+  <data name="Action.Unlock" xml:space="preserve">
+    <value>Kilidi aç</value>
+  </data>
+  <data name="Card.Checking" xml:space="preserve">
+    <value>Disk denetleniyor…</value>
+  </data>
+  <data name="Card.DriveState" xml:space="preserve">
+    <value>{0} sürücüsü · {1}</value>
+  </data>
+  <data name="Card.Failed" xml:space="preserve">
+    <value>Açılamadı</value>
+  </data>
+  <data name="Card.NeedsPassword" xml:space="preserve">
+    <value>Şifreli · parola gerekiyor</value>
+  </data>
+  <data name="Card.NoVolumes" xml:space="preserve">
+    <value>Bu diskte gösterilecek birim yok (yalnızca macOS iç birimleri).</value>
+  </data>
+  <data name="Card.ReadOnly" xml:space="preserve">
+    <value>salt okunur</value>
+  </data>
+  <data name="Card.Writable" xml:space="preserve">
+    <value>yazılabilir (deneysel)</value>
+  </data>
+  <data name="Card.WriteRefused" xml:space="preserve">
+    <value>Yazmaya açılamadı: {0}</value>
+  </data>
+  <data name="Disk.Gone" xml:space="preserve">
+    <value>Bu disk artık takılı değil.</value>
+  </data>
+  <data name="Disk.PhysicalName" xml:space="preserve">
+    <value>Disk {0} ({1})</value>
+  </data>
+  <data name="Eject.Busy" xml:space="preserve">
+    <value>{0} üzerindeki bir dosya şu anda açık veya kopyalanıyor ({1}). Şimdi çıkarırsanız kopyalama yarıda kalır; Mac diskinize zarar gelmez.</value>
+  </data>
+  <data name="Eject.BusyHeading" xml:space="preserve">
+    <value>Kopyalama sürüyor gibi görünüyor</value>
+  </data>
+  <data name="Eject.Detached" xml:space="preserve">
+    <value>Birimler ayrıldı.</value>
+  </data>
+  <data name="Eject.Ejected" xml:space="preserve">
+    <value>Disk güvenle çıkarıldı.</value>
+  </data>
+  <data name="Eject.Failed" xml:space="preserve">
+    <value>Disk çıkarılamadı.</value>
+  </data>
+  <data name="Eject.Remounting" xml:space="preserve">
+    <value>{0} Disk yeniden bağlanıyor.</value>
+  </data>
+  <data name="Error.OperationFailed" xml:space="preserve">
+    <value>İşlem yapılamadı.</value>
+  </data>
+  <data name="Error.ServiceUnreachable" xml:space="preserve">
+    <value>Hizmete ulaşılamadı.</value>
+  </data>
+  <data name="Error.Unknown" xml:space="preserve">
+    <value>Bilinmeyen hata.</value>
+  </data>
+  <data name="Language.Windows" xml:space="preserve">
+    <value>Windows dili</value>
+  </data>
+  <data name="List.Connecting" xml:space="preserve">
+    <value>Bağlanıyor…</value>
+  </data>
+  <data name="List.NoDiskBody" xml:space="preserve">
+    <value>Mac diskinizi takın; birkaç saniye içinde burada görünür. Diskiniz önce salt okunur açılır; yazmak isterseniz kartındaki düğmeyle ayrıca izin verirsiniz.</value>
+  </data>
+  <data name="List.NoDiskHeading" xml:space="preserve">
+    <value>Henüz bir Mac diski yok</value>
+  </data>
+  <data name="List.ServiceDownBody" xml:space="preserve">
+    <value>Diskleri bağlayan hizmete ulaşılamıyor. Bilgisayarı yeniden başlatmayı veya programı yeniden kurmayı deneyin.</value>
+  </data>
+  <data name="List.ServiceDownHeading" xml:space="preserve">
+    <value>Arka plan hizmeti çalışmıyor</value>
+  </data>
+  <data name="Log.NoneYet" xml:space="preserve">
+    <value>Henüz günlük yok.</value>
+  </data>
+  <data name="Main.Subtitle" xml:space="preserve">
+    <value>Mac diskleriniz güvende: önce salt okunur, isterseniz yazılabilir.</value>
+  </data>
+  <data name="Main.Version" xml:space="preserve">
+    <value>Sürüm {0}</value>
+  </data>
+  <data name="Notice.CloseWriteFailed" xml:space="preserve">
+    <value>{0}: son değişikliklerin bir kısmı diske yazılamadı (disk çıkarılmış olabilir). Disk bir önceki kayıtlı hâliyle açılır. Ayrıntı: {1}</value>
+  </data>
+  <data name="Notice.ContainerOpenFailed" xml:space="preserve">
+    <value>{0}: APFS kapsayıcısı açılamadı. {1}</value>
+  </data>
+  <data name="Notice.Detached" xml:space="preserve">
+    <value>{0} birimleri ayrıldı. Bu disk çıkarılabilir bir aygıt olarak görünmüyor; yeniden bağlamak için "Yeniden tara".</value>
+  </data>
+  <data name="Notice.DiskUnreadable" xml:space="preserve">
+    <value>{0} okunamadı: {1}</value>
+  </data>
+  <data name="Notice.Ejected" xml:space="preserve">
+    <value>{0} güvenle çıkarıldı. Kabloyu şimdi çekebilirsiniz.</value>
+  </data>
+  <data name="Notice.MountFailed" xml:space="preserve">
+    <value>"{0}" bağlanamadı. {1}</value>
+  </data>
+  <data name="Notice.Mounted" xml:space="preserve">
+    <value>"{0}" {1} sürücüsü olarak bağlandı (salt okunur).</value>
+  </data>
+  <data name="Notice.MountedWritable" xml:space="preserve">
+    <value>"{0}" {1} sürücüsü YAZILABİLİR olarak bağlandı (deneysel). Diski çıkarmadan önce "Güvenle çıkar"ı kullanın.</value>
+  </data>
+  <data name="Notice.NeedsPassword" xml:space="preserve">
+    <value>"{0}" birimi şifreli. Açmak için tepsideki APFS simgesinden parolayı girin.</value>
+  </data>
+  <data name="Notice.RemountedReadOnly" xml:space="preserve">
+    <value>{0} salt okunur olarak yeniden bağlandı; değişiklikler kaydedildi.</value>
+  </data>
+  <data name="Notice.VolumeOpenFailed" xml:space="preserve">
+    <value>{0}: birim {1} açılamadı. {2}</value>
+  </data>
+  <data name="Notice.WriteRefused" xml:space="preserve">
+    <value>{0} yazmaya açılmadı. {1}</value>
+  </data>
+  <data name="Password.Hint" xml:space="preserve">
+    <value>İpucu: {0}</value>
+  </data>
+  <data name="Password.Locked" xml:space="preserve">
+    <value>"{0}" kilitli</value>
+  </data>
+  <data name="Password.Prompt" xml:space="preserve">
+    <value>Bu birim şifreli. Açmak için Mac'te kullandığınız parolayı girin.</value>
+  </data>
+  <data name="Password.Reassurance" xml:space="preserve">
+    <value>Disk yalnızca okunur; parola hiçbir yere kaydedilmez.</value>
+  </data>
+  <data name="Password.Title" xml:space="preserve">
+    <value>APFS for Windows: şifreli birim</value>
+  </data>
+  <data name="Release.Changed" xml:space="preserve">
+    <value>içeriği başka bir program tarafından değiştirildi (ör. yeniden biçimlendirildi); APFS sürücüsü kaldırıldı</value>
+  </data>
+  <data name="Release.Removed" xml:space="preserve">
+    <value>çıkarıldı</value>
+  </data>
+  <data name="Release.SafeToRemove" xml:space="preserve">
+    <value>güvenli kaldırma için ayrıldı; artık diski çıkarabilirsiniz</value>
+  </data>
+  <data name="Release.ServiceStopped" xml:space="preserve">
+    <value>hizmet durdurulduğu için ayrıldı</value>
+  </data>
+  <data name="Release.UnsavedLost" xml:space="preserve">
+    <value>Kaydedilmemiş son değişiklikler diske yazılamadı; disk bir önceki kayıtlı hâliyle açılır.</value>
+  </data>
+  <data name="Release.UnsavedNotWrittenChanged" xml:space="preserve">
+    <value>Kaydedilmemiş son değişiklikler, diskteki yeni içeriği bozmamak için diske yazılmadı.</value>
+  </data>
+  <data name="Tray.MenuEject" xml:space="preserve">
+    <value>{0}{1}: güvenle çıkar</value>
+  </data>
+  <data name="Tray.MenuNoDisk" xml:space="preserve">
+    <value>Takılı Mac diski yok</value>
+  </data>
+  <data name="Tray.MenuServiceDown" xml:space="preserve">
+    <value>Hizmet çalışmıyor (kurulumu kontrol edin)</value>
+  </data>
+  <data name="Tray.StillRunning" xml:space="preserve">
+    <value>Program tepside çalışmaya devam ediyor. Disklerinize buradan ulaşabilirsiniz.</value>
+  </data>
+  <data name="Tray.TipMounted" xml:space="preserve">
+    <value>APFS for Windows: {0} birim bağlı</value>
+  </data>
+  <data name="Tray.TipNoVolumes" xml:space="preserve">
+    <value>APFS for Windows: bağlı birim yok</value>
+  </data>
+  <data name="Tray.TipServiceDown" xml:space="preserve">
+    <value>APFS for Windows: hizmet çalışmıyor</value>
+  </data>
+  <data name="Unlock.Failed" xml:space="preserve">
+    <value>Kilit açılamadı.</value>
+  </data>
+  <data name="Unlock.MountFailed" xml:space="preserve">
+    <value>Bağlanamadı.</value>
+  </data>
+  <data name="Unlock.Mounted" xml:space="preserve">
+    <value>"{0}" {1} olarak bağlandı.</value>
+  </data>
+  <data name="Unlock.NotWaiting" xml:space="preserve">
+    <value>Bu birim artık parola beklemiyor.</value>
+  </data>
+  <data name="Volume.DefaultName" xml:space="preserve">
+    <value>birim {0}</value>
+  </data>
+  <data name="Volume.InternalRole" xml:space="preserve">
+    <value>macOS iç birimi ({0})</value>
+  </data>
+  <data name="Write.AlreadyReadOnly" xml:space="preserve">
+    <value>Bu bölüm zaten salt okunur.</value>
+  </data>
+  <data name="Write.AlreadyWritable" xml:space="preserve">
+    <value>Bu bölüm zaten yazmaya açık.</value>
+  </data>
+  <data name="Write.Busy" xml:space="preserve">
+    <value>{0} üzerindeki bir dosya şu anda açık veya kopyalanıyor ({1}). Devam ederseniz sürücü kısa bir süre ayrılıp yeniden bağlanır; açık dosyalar kapanır.</value>
+  </data>
+  <data name="Write.BusyHeading" xml:space="preserve">
+    <value>Disk kullanımda</value>
+  </data>
+  <data name="Write.CheckFailed" xml:space="preserve">
+    <value>Disk denetlenemedi: {0}</value>
+  </data>
+  <data name="Write.ConfirmHeading" xml:space="preserve">
+    <value>Bu diske yazmaya izin verilsin mi?</value>
+  </data>
+  <data name="Write.ConfirmText" xml:space="preserve">
+    <value>{0}
+
+Yazma özelliği DENEYSELDİR. Önemli dosyalarınızın bir yedeği olsun.
+
+• Önce disk denetlenir; bir sorun görülürse yazmaya açılmaz.
+• Diski çıkarmadan ya da Mac'e takmadan önce mutlaka "Güvenle çıkar"ı kullanın.
+• Bu diskte silinen dosyalar Geri Dönüşüm Kutusu'na gitmez, kalıcı olarak silinir.
+• İstediğiniz an "Salt okunura dön" diyebilirsiniz; yaptığınız değişiklikler kaydedilir.</value>
+  </data>
+  <data name="Write.EnableFailed" xml:space="preserve">
+    <value>Yazmaya açılamadı: {0}</value>
+  </data>
+  <data name="Write.EnableFailedTitle" xml:space="preserve">
+    <value>Yazmaya açılamadı</value>
+  </data>
+  <data name="Write.Enabled" xml:space="preserve">
+    <value>"{0}" yazmaya açıldı ({1}).</value>
+  </data>
+  <data name="Write.MultipleVolumes" xml:space="preserve">
+    <value>Bu bölüm birden çok birim içeriyor; bu sürümde yalnızca tek birimli bölümler yazmaya açılabiliyor.</value>
+  </data>
+  <data name="Write.NoSuchPartition" xml:space="preserve">
+    <value>Bu diskte böyle bir APFS bölümü yok.</value>
+  </data>
+  <data name="Write.PreviousRequestPending" xml:space="preserve">
+    <value>Bu bölüm için önceki istek henüz bitmedi.</value>
+  </data>
+  <data name="Write.RemountedReadOnly" xml:space="preserve">
+    <value>Disk salt okunur olarak yeniden bağlandı.</value>
+  </data>
+</root>

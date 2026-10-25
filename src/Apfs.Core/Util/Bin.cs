@@ -16,7 +16,7 @@ internal static class Bin
     public static ReadOnlySpan<byte> Slice(ReadOnlySpan<byte> s, int off, int len)
     {
         if (off < 0 || len < 0 || off > s.Length - len)
-            throw ApfsException.Corrupt($"kayıt sınırı aşıldı ({off}+{len} > {s.Length})");
+            throw ApfsException.Corrupt(CoreText.T("Bin.RecordBoundsExceeded", off, len, s.Length));
         return s.Slice(off, len);
     }
 
