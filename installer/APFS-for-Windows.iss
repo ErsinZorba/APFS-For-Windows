@@ -23,7 +23,8 @@ VersionInfoVersion={#AppVersion}
 DefaultDirName={autopf}\{#AppName}
 DisableDirPage=yes
 DisableProgramGroupPage=yes
-LicenseFile=..\LICENSE
+; GPL kullanım için kabul şartı koymaz (madde 9): "kabul ediyorum" sayfası yerine kısa bilgi sayfası (dile göre, [Languages]).
+; GPL'in tam metni program klasöründeki LICENSE dosyasıdır (build-release.ps1 kopyalar).
 OutputDir=..\publish
 OutputBaseFilename=APFS-for-Windows-Setup-{#AppVersion}
 SetupIconFile=..\src\Apfs.Tray\app.ico
@@ -40,8 +41,8 @@ MinVersion=10.0.17763
 CloseApplications=no
 
 [Languages]
-Name: "tr"; MessagesFile: "compiler:Languages\Turkish.isl"
-Name: "en"; MessagesFile: "compiler:Default.isl"
+Name: "tr"; MessagesFile: "compiler:Languages\Turkish.isl"; InfoBeforeFile: "lisans-bilgisi.tr.txt"
+Name: "en"; MessagesFile: "compiler:Default.isl"; InfoBeforeFile: "lisans-bilgisi.en.txt"
 
 [CustomMessages]
 tr.LaunchApp=APFS for Windows'u aç
